@@ -1,0 +1,18 @@
+.btn {
+  border-radius: 10px;
+  background-color: var(--dark);
+  min-width: fit-content;
+  width: 200px;
+  height: 50px;
+  margin: 0 10px;
+  box-shadow: 12px 12px 0px -4px #00c6ae;
+  border: #000 1px solid;
+  -webkit-box-shadow: 12px 12px 0px -4px #00c6ae;
+  -moz-box-shadow: 12px 12px 0px -4px #00c6ae;
+}
+
+.btn:hover {
+  transform: scale(1.01);
+  opacity: .9;
+  cursor: pointer;
+}
