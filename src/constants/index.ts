@@ -1,13 +1,13 @@
 export type TMenu = {
   id: string;
-  text: string;
+  name: string;
   path: string;
 }
 
 export const menu: Array<TMenu> = [
-  { id: "1", text: "Blog", path: "/blog" },
-  { id: "2", text: "Projects", path: '/projects' },
-  { id: "3", text: "Resume/CV", path: "/resume" },
+  { id: "1", name: "Blog", path: "/blog" },
+  { id: "2", name: "Projects", path: '/projects' },
+  { id: "3", name: "Resume/CV", path: "/resume" },
 ]
 
 export type TProjects = {
