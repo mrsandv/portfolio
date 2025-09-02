@@ -1,6 +1,7 @@
 "use client"
 import Link from "next/link";
 import { useLang, Lang } from "hooks/useLang";
+import Image from "next/image";
 
 export const menuItems = [
   { href: "/blog", key: "blog" },
@@ -12,7 +13,7 @@ const Menu = () => {
 
   return <nav className="bg-zinc-950 flex items-center justify-between p-4 h-[15vh] w-full">
     <Link href="/">
-      <img src="/logo.png" alt="Logo" className="h-30" />
+      <Image src="/logo.png" alt="Logo" width={100} height={100} priority />
     </Link>
     <div className="flex space-x-4">
       {menuItems.map(item => (
