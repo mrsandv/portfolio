@@ -1,5 +1,5 @@
 "use client"
-import { ChangeEvent, FormEvent, ReactNode, useState } from "react";
+import { ReactNode, useState } from "react";
 
 const tabs: Array<{ id: number, label: string, component: ReactNode }> = [
   { id: 0, label: "Projects", component: <p>Acá una muestra de que ya me logee</p> },

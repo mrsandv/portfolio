@@ -1,10 +1,8 @@
-type TParams = {
-  params: {
-    slug: string
-  }
-}
-
-export default async function BlogEntry({ params }: TParams) {
+export default async function BlogEntry({
+  params
+}: {
+  params: Promise<{ slug: string }>
+}) {
   const { slug } = await params;
 
   console.log(slug)

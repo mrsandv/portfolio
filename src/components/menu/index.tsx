@@ -2,12 +2,6 @@
 import Link from "next/link";
 import { useLang, Lang } from "hooks/useLang";
 
-type MenuItem = {
-  _id: string;
-  href: string;
-  name: { [lang: string]: string };
-};
-
 export const menuItems = [
   { href: "/blog", key: "blog" },
   { href: "/projects", key: "projects" },

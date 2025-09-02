@@ -52,7 +52,7 @@ export async function POST(req: Request) {
 }
 
 
-export async function GET(req: Request) {
+export async function GET() {
   try {
     await db();
     const users = await UserModel.find().select({ password: 0, __v: 0 });

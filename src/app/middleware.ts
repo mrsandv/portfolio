@@ -13,6 +13,7 @@ export function middleware(req: NextRequest) {
     verifyToken(token);
     return NextResponse.next();
   } catch (err) {
+    console.log(err)
     return NextResponse.redirect(new URL("/login", req.url));
   }
 }

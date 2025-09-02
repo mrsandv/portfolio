@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { IBM_Plex_Sans } from "next/font/google";
 import "./globals.css";
-import Link from "next/link";
 import { Menu, Footer } from "components/";
 
 const ibmSans = IBM_Plex_Sans({
