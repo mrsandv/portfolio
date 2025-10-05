@@ -1,34 +1,31 @@
-import type { Metadata } from "next";
-import { IBM_Plex_Sans } from "next/font/google";
-import "./globals.css";
-import { Menu, Footer } from "components/";
+import AppProvider from 'context/AppProvider';
+import type { ReactNode } from 'react';
+import './globals.css';
+import type { Metadata } from 'next';
+import { IBM_Plex_Sans } from 'next/font/google';
 
 const ibmSans = IBM_Plex_Sans({
-  variable: "--font-ibm-sans",
-  subsets: ["latin"],
+	variable: '--font-ibm-sans',
+	subsets: ['latin'],
 });
 
 export const metadata: Metadata = {
-  title: "Space-hole Tech by  by mrsan",
-  description: "My personal portfolio and blog",
+	title: 'Space-hole Tech by  by mrsan',
+	description: 'My personal portfolio and blog',
 };
 
 export default function RootLayout({
-  children,
+	children,
 }: Readonly<{
-  children: React.ReactNode;
+	children: ReactNode;
 }>) {
-  return (
-    <html lang="en">
-      <body
-        className={`${ibmSans.variable} flex flex-col min-h-screen bg-white`}
-      >
-        <Menu />
-        <main className="flex flex-col bg-zinc-100 min-h-[80vh] p-2">
-          {children}
-        </main>
-        <Footer />
-      </body>
-    </html>
-  );
+	return (
+		<html lang="en">
+			<body
+				className={`${ibmSans.variable} flex flex-col min-h-screen bg-white dark:bg-zinc-800`}
+			>
+				<AppProvider>{children}</AppProvider>
+			</body>
+		</html>
+	);
 }

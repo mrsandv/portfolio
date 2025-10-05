@@ -1,6 +1,6 @@
 {
-  "menu": {
-    "projects": "Proyectos",
-    "blog": "Blog"
-  }
+	"menu": {
+		"projects": "Proyectos",
+		"blog": "Blog"
+	}
 }
