@@ -14,7 +14,7 @@ type TContext = { theme: TTheme; toggleTheme: () => void };
 const ThemeContext = createContext<TContext | null>(null);
 
 export const ThemeProvider = ({ children }: { children: ReactNode }) => {
-	const [theme, setTheme] = useState<TTheme>('light');
+	const [theme, setTheme] = useState<TTheme>('dark');
 	const toggleTheme = () => setTheme((t) => (t === 'light' ? 'dark' : 'light'));
 
 	useEffect(() => {

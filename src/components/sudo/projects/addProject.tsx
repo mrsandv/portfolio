@@ -1,10 +1,10 @@
 import { Button, ImageLibrary, Input, TextArea } from 'components/ui/';
-import type { IProject } from 'models/projects';
 import { type ChangeEvent, type FormEvent, useId, useState } from 'react';
 import { toast } from 'react-toastify';
+import type { TProject } from 'types/projects';
 
 const AddProject = () => {
-	const [form, setForm] = useState<IProject>({
+	const [form, setForm] = useState<Partial<TProject>>({
 		title: '',
 		description: '',
 		type: 'front',

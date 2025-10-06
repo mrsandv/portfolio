@@ -33,6 +33,7 @@ const Menu = ({ toggleMode }: TMenuProps) => {
 					{theme === 'light' ? <FaMoon /> : <FaSun />}
 				</button>
 				<button
+					disabled
 					type="button"
 					className="cursor-pointer mx-5"
 					onClick={() => toggleMode('fun')}

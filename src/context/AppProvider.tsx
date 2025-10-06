@@ -8,7 +8,7 @@ import { ToastContainer } from 'react-toastify';
 type TMode = 'fun' | 'normal';
 
 const AppProvider = ({ children }: { children: ReactNode }) => {
-	const [mode, setMode] = useState<TMode>('fun');
+	const [mode, setMode] = useState<TMode>('normal');
 
 	const toggleMode = () => {
 		setMode((prevMode) => (prevMode === 'fun' ? 'normal' : 'fun'));

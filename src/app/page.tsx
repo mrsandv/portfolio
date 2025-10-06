@@ -7,8 +7,11 @@ export default function Home() {
 		<div className="flex flex-1">
 			<HomeCard size="xl">
 				<div className="flex flex-col justify-around h-2/3 p-5">
-					<p className="animate-pulse text-black dark:text-white ">
-						Welcome to my space hole 🪅 Software developer
+					<p className="animate-pulse text-black dark:text-white">
+						Exploring, learning, and building through code.
+					</p>
+					<p className="text-sm text-black dark:text-white">
+						Find me online or support my projects ☕️
 					</p>
 					<div className="flex w-1/4 justify-between">
 						<Link
@@ -19,7 +22,7 @@ export default function Home() {
 							<FaGithub />
 						</Link>
 						<Link
-							href="htpps://linkedin.com/in/mrsan"
+							href="https://linkedin.com/in/mrsan"
 							target="_blank"
 							className="text-lg text-indigo-800 hover:opacity-90 dark:text-zinc-200"
 						>
@@ -42,26 +45,25 @@ export default function Home() {
 					</div>
 				</div>
 			</HomeCard>
+
 			<div className="text-black dark:text-white mx-2 flex flex-col justify-between w-2/3 min-h-full gap-2">
 				<HomeCard size="lg" link="/projects">
 					<p className="my-2">
 						<span className="text-3xl">💻</span> Projects
 					</p>
-					<p className="my-2 text-xl">Descubre lo que he construido</p>
+					<p className="my-2 text-xl">Discover my creations</p>
 				</HomeCard>
 				<HomeCard size="lg" link="/blog">
 					<p className="my-2">
 						<span className="text-3xl">👾</span> Blog
 					</p>
-					<p className="my-2 text-xl">Capsulas y opiniones sobre tecnología</p>
+					<p className="my-2 text-xl">Sometimes I write about tech stuff</p>
 				</HomeCard>
 				<HomeCard size="lg" link="/resume">
 					<p className="my-2">
 						<span className="text-3xl">💼</span> Resume
 					</p>
-					<p className="my-2 text-xl">
-						Mi experiencia profesional y habilidades
-					</p>
+					<p className="my-2 text-xl">Check out my experience and skills</p>
 				</HomeCard>
 			</div>
 		</div>

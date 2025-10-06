@@ -2,12 +2,12 @@
 
 import { Modal } from 'components/ui';
 import Button from 'components/ui/button';
-import type { IProject } from 'models/projects';
 import { useEffect, useState } from 'react';
+import type { TProject } from 'types/projects';
 import AddProject from './addProject';
 
 const ProjectsWrapper = () => {
-	const [projects, setProjects] = useState<Array<IProject>>([]);
+	const [projects, setProjects] = useState<Array<TProject>>([]);
 	const [modalStatus, setModalStatus] = useState<boolean>(false);
 
 	const fetchProjects = async () => {
