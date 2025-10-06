@@ -1,8 +1,7 @@
-import { Schema } from 'mongoose';
+import { type Document, Schema } from 'mongoose';
 import { getModel } from 'utils/db/modelFactory';
 
-export interface IImages {
-	_id?: string;
+interface IImages extends Document {
 	url: string;
 	alt: string;
 	title: string;

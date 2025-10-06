@@ -1,16 +1,16 @@
 export default async function BlogEntry({
-  params
+	params,
 }: {
-  params: Promise<{ slug: string }>
+	params: Promise<{ slug: string }>;
 }) {
-  const { slug } = await params;
+	const { slug } = await params;
 
-  console.log(slug)
+	console.log(slug);
 
-  return (
-    <div className="text-black">
-      <h1>Blog Entry</h1>
-      <p>Slug: {slug}</p>
-    </div>
-  )
+	return (
+		<div className="text-black">
+			<h1>Blog Entry</h1>
+			<p>Slug: {slug}</p>
+		</div>
+	);
 }

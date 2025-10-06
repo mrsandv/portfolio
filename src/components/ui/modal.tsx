@@ -1,17 +1,15 @@
 'use client';
-import { CloseCircleIcon } from 'assets/icons';
-import { type ReactNode, useEffect } from 'react';
 import clsx from 'clsx';
+import { useEffect, useId } from 'react';
+import { FaTimesCircle } from 'react-icons/fa';
 
 type TModal = {
-	children: ReactNode;
 	title: string;
 	isOpen: boolean;
 	onClose: () => void;
-	size?: TModalSize;
+	size?: 'sm' | 'md' | 'lg' | 'full' | 'auto';
+	children: React.ReactNode;
 };
-
-type TModalSize = 'sm' | 'md' | 'lg' | 'full' | 'auto';
 
 const sizes = {
 	auto: 'max-w-auto',
@@ -21,46 +19,69 @@ const sizes = {
 	full: 'max-w-full',
 };
 
-const Modal = ({ children, title, isOpen, onClose, size = 'md' }: TModal) => {
+export default function Modal({
+	title,
+	isOpen,
+	onClose,
+	size = 'md',
+	children,
+}: TModal) {
+	const labelId = useId();
+	const modalId = useId();
+
 	useEffect(() => {
-		const handleKeyDown = (event: KeyboardEvent) => {
-			if (event.key === 'Escape' && isOpen) {
-				onClose();
-			}
+		const handleKeyDown = (e: KeyboardEvent) => {
+			if (e.key === 'Escape' && isOpen) onClose();
 		};
 
-		window.addEventListener('keydown', handleKeyDown);
+		if (isOpen) {
+			const prevFocus = document.activeElement as HTMLElement;
+			const dialog = document.getElementById(modalId);
+			dialog?.focus();
 
-		return () => {
-			window.removeEventListener('keydown', handleKeyDown);
-		};
-	}, [isOpen, onClose]);
+			window.addEventListener('keydown', handleKeyDown);
+			return () => {
+				window.removeEventListener('keydown', handleKeyDown);
+				prevFocus?.focus();
+			};
+		}
+	}, [isOpen, onClose, modalId]);
 
 	if (!isOpen) return null;
+
 	return (
-		<div className="fixed inset-0 bg-black/60 ">
+		<div className="fixed inset-0 flex items-center justify-center">
 			<div
+				className="fixed inset-0 bg-black/60"
+				aria-hidden="true"
 				onClick={onClose}
-				className="flex items-center justify-center h-full"
+			/>
+			<div
+				id={modalId}
+				role="dialog"
+				aria-modal="true"
+				aria-labelledby={labelId}
+				tabIndex={-1}
+				className={clsx(
+					'relative bg-white p-4 rounded shadow-md z-10',
+					sizes[size]
+				)}
 			>
-				<div
-					onClick={(e) => e.stopPropagation()}
-					className={clsx('bg-white p-4 rounded shadow-md', sizes[size])}
-				>
-					<div className="flex justify-between items-center">
-						<h2 className="text-lg font-bold">{title}</h2>
-						<button
-							className=" text-gray-600 hover:text-gray-800 cursor-pointer"
-							onClick={onClose}
-						>
-							<CloseCircleIcon />
-						</button>
-					</div>
-					<div className="mt-2">{children}</div>
-				</div>
+				<header className="flex justify-between items-center">
+					<h2 id={labelId} className="text-lg font-bold">
+						{title}
+					</h2>
+					<button
+						type="button"
+						aria-label="Close modal"
+						onClick={onClose}
+						className="text-gray-600 hover:text-gray-800"
+					>
+						<FaTimesCircle />
+					</button>
+				</header>
+				<main className="mt-2">{children}</main>
 			</div>
 		</div>
 	);
-};
-
-export default Modal;
+}

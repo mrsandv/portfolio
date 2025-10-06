@@ -1,30 +1,33 @@
 'use client';
 import { Card } from 'components/ui';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
+import type { TProject } from 'types/projects';
 
 export default function ProjectsPage() {
-	const [projects, setProjects] = useState([]);
+	const [projects, setProjects] = useState<TProject[]>([]);
 
-	const getProjects = async () => {
+	const getProjects = useCallback(async () => {
 		const res = await fetch('/api/projects');
-		if (res.ok) setProjects(await res.json());
-	};
+		if (res.ok) {
+			const { data } = await res.json();
+			setProjects(data);
+		}
+	}, []);
 
 	useEffect(() => {
 		getProjects();
-	});
+	}, [getProjects]);
 
 	return (
 		<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-4">
-			{Object.keys(projects).map((key) => {
-				console.log(key);
-				return <h1 key={key}>some</h1>;
-			})}
-			<Card
-				title="some"
-				description="fksndsjabsdjnasdjn fvojasnsa dijasd asdijasd nasdijasd nasdjkbasdmn asdjk"
-				img="dfsdfsndf"
-			/>
+			{projects.map((project) => (
+				<Card
+					key={project._id}
+					title={project.title}
+					description={project.description}
+					img={project.image}
+				/>
+			))}
 		</div>
 	);
 }

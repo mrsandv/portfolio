@@ -1,10 +1,9 @@
-import { Schema } from 'mongoose';
+import { type Document, Schema } from 'mongoose';
 import { getModel } from 'utils/db/modelFactory';
 
 type TType = 'front' | 'back' | 'full' | 'ia';
 
-export interface IProject {
-	_id?: string;
+export interface IProject extends Document {
 	title: string;
 	description: string;
 	image: string;

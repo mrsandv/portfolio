@@ -1,10 +1,9 @@
 'use client';
-import { HomerIcon, MoonIcon, SunIcon } from 'assets/icons';
+import { HomerIcon } from 'assets/icons';
 import { useTheme } from 'context';
 import Image from 'next/image';
 import Link from 'next/link';
-
-// import { useLang } from 'hooks/useLang';
+import { FaMoon, FaSun } from 'react-icons/fa';
 
 export const menuItems = [
 	{ href: '/blog', key: 'blog' },
@@ -18,7 +17,6 @@ type TMenuProps = {
 };
 
 const Menu = ({ toggleMode }: TMenuProps) => {
-	// const { lang, setLang, t } = useLang();
 	const { theme, toggleTheme } = useTheme();
 
 	return (
@@ -27,17 +25,12 @@ const Menu = ({ toggleMode }: TMenuProps) => {
 				<Image src="/logo.png" alt="Logo" width={80} height={80} priority />
 			</Link>
 			<div className="flex space-x-4">
-				{/* {menuItems.map((item) => (
-          <Link key={item.key} href={item.href}>
-            {t(`menu.${item.key}`)}
-          </Link>
-        ))} */}
 				<button
 					type="button"
 					className="cursor-pointer mx-5"
 					onClick={toggleTheme}
 				>
-					{theme === 'light' ? <MoonIcon /> : <SunIcon />}
+					{theme === 'light' ? <FaMoon /> : <FaSun />}
 				</button>
 				<button
 					type="button"
@@ -46,10 +39,6 @@ const Menu = ({ toggleMode }: TMenuProps) => {
 				>
 					<HomerIcon />
 				</button>
-				{/* <select value={lang} onChange={(e) => setLang(e.target.value as Lang)}>
-          <option value="es">🇲🇽</option>
-          <option value="en">🇬🇧</option>
-        </select> */}
 			</div>
 		</nav>
 	);

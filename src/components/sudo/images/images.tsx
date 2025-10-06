@@ -1,14 +1,15 @@
 'use client';
-import { CloseCircleIcon } from 'assets/icons';
 import { Modal, UploadImage } from 'components/ui/';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
+import { FaTimesCircle } from 'react-icons/fa';
+import type { TImages } from 'types/images';
 
 const ImagesWrapper = () => {
-	const [images, setImages] = useState<Array<any>>([]);
+	const [images, setImages] = useState<TImages[]>([]);
 	const [modalStatus, setModalStatus] = useState<boolean>(false);
 
-	const handleDelete = async (id: string) => {
+	const handleDelete = async (id: string | unknown) => {
 		const res = await fetch(`/api/images/${id}`, {
 			method: 'DELETE',
 		});
@@ -62,7 +63,7 @@ const ImagesWrapper = () => {
 							className="absolute top-1 right-1"
 							onClick={() => handleDelete(image._id)}
 						>
-							<CloseCircleIcon />
+							<FaTimesCircle />
 						</button>
 						<Image src={image.url} alt={image.title} width={200} height={100} />
 					</div>

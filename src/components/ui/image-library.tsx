@@ -3,6 +3,7 @@ import { Modal } from 'components/ui/';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
+import type { TImages } from 'types/images';
 
 type TImageLibrary = {
 	selected?: string;
@@ -10,7 +11,7 @@ type TImageLibrary = {
 };
 
 const ImageLibrary = ({ selected, onChange }: TImageLibrary) => {
-	const [images, setImages] = useState<Array<any>>([]);
+	const [images, setImages] = useState<TImages[]>([]);
 	const [modalStatus, setModalStatus] = useState<boolean>(false);
 	const [selectedImage, setSelectedImage] = useState<string | null>(
 		selected || null
