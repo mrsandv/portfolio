@@ -1,19 +1,35 @@
 import HomeCard from 'components/home/card';
 import Link from 'next/link';
-import { FaCoffee, FaGithub, FaHackerrank, FaLinkedinIn } from 'react-icons/fa';
+import {
+	FaCoffee,
+	FaGithub,
+	FaHackerrank,
+	FaLaptopCode,
+	FaLinkedinIn,
+	FaRegFileCode,
+	FaSith,
+} from 'react-icons/fa';
 
 export default function Home() {
 	return (
-		<div className="flex flex-1">
-			<HomeCard size="xl">
-				<div className="flex flex-col justify-around h-2/3 p-5">
-					<p className="animate-pulse text-black dark:text-white">
-						Exploring, learning, and building through code.
+		<div className="flex flex-1 flex-col md:flex-row gap-4">
+			<div className="flex w-full sm:w-1/2 lg:w-1/3 flex-col flex-1 gap-4">
+				<HomeCard>
+					<p className="animate-pulse text-black dark:text-white text-3xl sm:text-5xl mb-5">
+						Marco Sandoval
 					</p>
-					<p className="text-sm text-black dark:text-white">
+					<p className="text-md text-black dark:text-white">
+						Software Developer
+					</p>
+				</HomeCard>
+				<HomeCard>
+					<p className="animate-pulse text-black dark:text-white text-2xl sm:text-4xl">
+						Explore, learn, and build through code.
+					</p>
+					<p className="text-sm text-black dark:text-white my-5">
 						Find me online or support my projects ☕️
 					</p>
-					<div className="flex w-1/4 justify-between">
+					<div className="flex gap-4">
 						<Link
 							href="https://github.com/mrsandv"
 							target="_blank"
@@ -43,27 +59,28 @@ export default function Home() {
 							<FaCoffee />
 						</Link>
 					</div>
-				</div>
-			</HomeCard>
+				</HomeCard>
+			</div>
 
-			<div className="text-black dark:text-white mx-2 flex flex-col justify-between w-2/3 min-h-full gap-2">
-				<HomeCard size="lg" link="/projects">
-					<p className="my-2">
-						<span className="text-3xl">💻</span> Projects
+			<div className="text-black dark:text-white flex flex-col justify-between sm:w-1/2 lg:w-2/3 gap-4">
+				<HomeCard link="/projects">
+					<p className="my-2  text-black dark:text-white text-2xl sm:text-3xl flex items-center">
+						<FaLaptopCode className="text-xl animate-pulse mr-2" />
+						Projects
 					</p>
-					<p className="my-2 text-xl">Discover my creations</p>
+					<p className="text-md">Discover my creations</p>
 				</HomeCard>
-				<HomeCard size="lg" link="/blog">
-					<p className="my-2">
-						<span className="text-3xl">👾</span> Blog
+				<HomeCard link="/blog">
+					<p className="my-2  text-black dark:text-white text-2xl sm:text-3xl flex items-center">
+						<FaSith className="text-xl animate-pulse mr-2" /> Blog
 					</p>
-					<p className="my-2 text-xl">Sometimes I write about tech stuff</p>
+					<p className="my-2 text-md">Sometimes I write about tech stuff</p>
 				</HomeCard>
-				<HomeCard size="lg" link="/resume">
-					<p className="my-2">
-						<span className="text-3xl">💼</span> Resume
+				<HomeCard link="/resume">
+					<p className="my-2  text-black dark:text-white text-2xl sm:text-3xl flex items-center">
+						<FaRegFileCode className="text-xl animate-pulse mr-2" /> Resume
 					</p>
-					<p className="my-2 text-xl">Check out my experience and skills</p>
+					<p className="my-2 text-md">Check out my experience and skills</p>
 				</HomeCard>
 			</div>
 		</div>

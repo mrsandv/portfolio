@@ -3,7 +3,7 @@
 
 
 body {
-  font-family: --font-ibm-sans, sans-serif;
+  font-family: --font-ibm-mono, monospace;
 }
 
 @font-face {
@@ -13,4 +13,8 @@ body {
 
 :root {
   --cooper-font: "Cooper-Black";
+}
+
+* {
+  /* outline: papayawhip 1px dashed; */
 }

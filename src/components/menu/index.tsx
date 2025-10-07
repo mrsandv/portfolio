@@ -20,7 +20,7 @@ const Menu = ({ toggleMode }: TMenuProps) => {
 	const { theme, toggleTheme } = useTheme();
 
 	return (
-		<nav className="bg-zinc-100 dark:bg-zinc-950 dark:text-white text-black flex items-center justify-between p-4 h-[10vh] w-full">
+		<nav className="bg-zinc-100 dark:bg-zinc-950 dark:text-white text-black flex items-center justify-between sm:p-2 p-4 h-[10vh] w-full">
 			<Link href="/">
 				<Image src="/logo.png" alt="Logo" width={80} height={80} priority />
 			</Link>
