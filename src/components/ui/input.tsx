@@ -6,15 +6,16 @@ type TInput = {
 	message?: string;
 	variant?: 'info' | 'accent' | 'danger';
 };
+
 const baseStyles =
-	'bg-red-50 border border-red-500 text-red-900 placeholder-red-700 text-sm rounded-lg focus:ring-red-500 dark:bg-gray-700 focus:border-red-500 block w-full p-2.5 dark:text-red-500 dark:placeholder-red-500 dark:border-red-500';
+	'block w-full rounded-lg text-sm p-2.5 border focus:ring-2 transition-all duration-200';
 
 const variants = {
 	info: 'text-white bg-gray-800 hover:bg-gray-900 focus:ring-gray-300 dark:bg-gray-800 dark:hover:bg-gray-900 dark:focus:ring-gray-800',
 	accent:
-		'text-white bg-violet-700 hover:bg-violet-800  focus:ring-violet-300 dark:bg-violet-600 dark:hover:bg-violet-700 dark:focus:ring-violet-800',
+		'text-white bg-indigo-700 hover:bg-indigo-800 focus:ring-indigo-300 dark:bg-indigo-600 dark:hover:bg-indigo-700 dark:focus:ring-indigo-800',
 	danger:
-		'text-white bg-rose-700 hover:bg-rose-800  focus:ring-rose-300 dark:bg-rose-600 dark:hover:bg-rose-700 dark:focus:ring-rose-800',
+		'text-white bg-rose-700 hover:bg-rose-800 focus:ring-rose-300 dark:bg-rose-600 dark:hover:bg-rose-700 dark:focus:ring-rose-800',
 };
 
 const disabledStyles = 'opacity-60 pointer-events-none';
@@ -26,25 +27,28 @@ const Input = ({
 	...restProps
 }: TInput & InputHTMLAttributes<HTMLInputElement>) => {
 	const { disabled, name } = restProps;
+
 	return (
 		<div className="flex flex-col">
 			<label
 				htmlFor={`${name}-input`}
-				className="block mb text-sm font-medium text-red-700 dark:text-red-500"
+				className={clsx('block mb-1 text-sm font-medium', variants[variant])}
 			>
 				{label}
 			</label>
+
 			<input
 				{...restProps}
-				type="text"
 				id={`${name}-input`}
 				className={clsx(baseStyles, variants[variant], {
 					[disabledStyles]: disabled,
 				})}
-				placeholder="Error input"
 			/>
+
 			{message && (
-				<p className="mt-2 text-sm text-red-600 dark:text-red-500">{message}</p>
+				<p className="mt-2 text-sm text-rose-500 dark:text-rose-400">
+					{message}
+				</p>
 			)}
 		</div>
 	);

@@ -1,8 +1,8 @@
 'use client';
 import { Modal, UploadImage } from 'components/ui/';
 import Image from 'next/image';
-import { useEffect, useState } from 'react';
-import { FaTimesCircle } from 'react-icons/fa';
+import { useCallback, useEffect, useState } from 'react';
+import { FaTrash } from 'react-icons/fa';
 import type { TImages } from 'types/images';
 
 const ImagesWrapper = () => {
@@ -18,7 +18,7 @@ const ImagesWrapper = () => {
 		}
 	};
 
-	const fetchImages = async () => {
+	const fetchImages = useCallback(async () => {
 		const res = await fetch('/api/images');
 		if (res.ok) {
 			const { data, success, message } = await res.json();
@@ -28,10 +28,11 @@ const ImagesWrapper = () => {
 				console.error(message);
 			}
 		}
-	};
+	}, []);
+
 	useEffect(() => {
 		fetchImages();
-	});
+	}, [fetchImages]);
 
 	return (
 		<div className="w-full">
@@ -55,17 +56,25 @@ const ImagesWrapper = () => {
 					<UploadImage />
 				</Modal>
 			</div>
-			<div className="grid grid-cols-3 gap-2">
+			<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
 				{images.map((image) => (
-					<div key={image._id} className="rounded-4xl bg-red-400 relative">
+					<div
+						key={image._id}
+						className="rounded-2xl overflow-hidden h-[200px] relative"
+					>
 						<button
 							type="button"
-							className="absolute top-1 right-1"
+							className="absolute top-1 right-1 z-10 bg-zinc-800/90 rounded-full p-1 cursor-pointer"
 							onClick={() => handleDelete(image._id)}
 						>
-							<FaTimesCircle />
+							<FaTrash className="text-red-600" />
 						</button>
-						<Image src={image.url} alt={image.title} width={200} height={100} />
+						<Image
+							src={image.url}
+							alt={image.title}
+							fill
+							className="object-cover object-center"
+						/>
 					</div>
 				))}
 			</div>

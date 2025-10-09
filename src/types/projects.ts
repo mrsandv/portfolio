@@ -5,8 +5,8 @@ export type TProject = {
 	title: string;
 	description: string;
 	image: string;
-	url: string;
-	code: string;
+	liveUrl: string;
+	repoUrl: string;
 	type: TType;
 	createdAt?: Date;
 	updatedAt?: Date;

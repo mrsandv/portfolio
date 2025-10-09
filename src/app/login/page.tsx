@@ -17,7 +17,6 @@ export default function LoginPage() {
 			},
 			body: JSON.stringify({ email: user, password }),
 		});
-		console.log({ user, password });
 	};
 
 	const handleChange = (e: ChangeEvent<HTMLInputElement>) => {

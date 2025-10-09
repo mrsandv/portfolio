@@ -203,7 +203,7 @@ const HomerMode = ({ toggleMode }: THomerProps) => {
 				className="my-5 "
 				href="https://github.com/franciscominen"
 				target="_blank"
-				rel="noopener"
+				rel="noopener noreferrer"
 			>
 				Kudos to github.com/franciscominen, i just adapt his work to a react
 				version

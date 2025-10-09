@@ -22,7 +22,7 @@ export default function SudoPage() {
 				{tabs.map(({ id, label }) => (
 					<button
 						type="button"
-						className={`${activeTab === id ? 'border-slate-800' : 'border-slate-300'} cursor-pointer border-b-2 pb-0.5 mx-5 text-black`}
+						className={`${activeTab === id ? 'border-indigo-600' : 'border-zinc-300'} cursor-pointer border-b-1 pb-0.5 mx-5 text-black`}
 						key={id}
 						onClick={() => {
 							setActiveTab(id);

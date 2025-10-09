@@ -11,7 +11,6 @@ export async function POST(req: Request) {
 		const { password, name, email } = body;
 
 		const data = await UserModel.findOne({ email });
-		console.log({ data });
 
 		if (data) {
 			return new Response(
@@ -25,14 +24,12 @@ export async function POST(req: Request) {
 
 		const hash = await argon2.hash(password);
 
-		const userObect = await UserModel.create({
+		await UserModel.create({
 			name,
 			user: email.split('@')[0],
 			email,
 			password: hash,
 		});
-
-		console.log({ userObect });
 
 		return new Response(
 			JSON.stringify({

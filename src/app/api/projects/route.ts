@@ -29,17 +29,18 @@ export async function POST(req: Request) {
 	try {
 		await db();
 
+		console.log(req);
 		const body = await req.json();
 
-		const { title, description, image, url, type, code } = body;
+		const { title, description, image, liveUrl, type, repoUrl } = body;
 
 		const data = await ProjectsModel.create({
 			title,
 			description,
 			image,
-			url,
+			liveUrl,
 			type,
-			code,
+			repoUrl,
 		});
 
 		return new Response(

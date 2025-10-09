@@ -7,8 +7,8 @@ export interface IProject extends Document {
 	title: string;
 	description: string;
 	image: string;
-	url: string;
-	code: string;
+	liveUrl?: string;
+	repoUrl: string;
 	type: TType;
 	createdAt?: Date;
 	updatedAt?: Date;
@@ -28,11 +28,10 @@ const ProjectSchema = new Schema<IProject>(
 			type: String,
 			required: true,
 		},
-		url: {
+		liveUrl: {
 			type: String,
-			required: true,
 		},
-		code: {
+		repoUrl: {
 			type: String,
 			required: true,
 		},
