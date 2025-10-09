@@ -1,4 +1,4 @@
-import { ImageModel } from 'models/images';
+import { ImageModel } from 'models/image';
 import { db } from 'utils/db';
 
 export async function GET() {

@@ -1,5 +1,5 @@
 import { put } from '@vercel/blob';
-import { ImageModel } from 'models/images';
+import { ImageModel } from 'models/image';
 import { db } from 'utils/db';
 
 export async function POST(request: Request) {

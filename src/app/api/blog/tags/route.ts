@@ -1,15 +1,36 @@
-import { ProjectModel } from 'models/project';
+import { TagModel } from 'models/tag';
 import { db } from 'utils/db';
 
 export async function GET() {
 	try {
 		await db();
-		const data = await ProjectModel.find().sort({ createdAt: -1 }).lean();
+		const tagsWithCount = await TagModel.aggregate([
+			{
+				$lookup: {
+					from: 'posts',
+					localField: '_id',
+					foreignField: 'tags',
+					as: 'posts',
+				},
+			},
+			{
+				$project: {
+					name: 1,
+					count: {
+						$size: '$posts',
+					},
+				},
+			},
+			{
+				$sort: { count: -1 },
+			},
+		]);
+
 		return new Response(
 			JSON.stringify({
 				success: true,
-				message: 'Projects fetched successfully',
-				data,
+				message: 'Tags fetched successfully',
+				data: tagsWithCount,
 			})
 		);
 	} catch (err) {
@@ -31,21 +52,17 @@ export async function POST(req: Request) {
 
 		const body = await req.json();
 
-		const { title, description, image, liveUrl, type, repoUrl } = body;
+		const { name, displayName } = body;
 
-		const data = await ProjectModel.create({
-			title,
-			description,
-			image,
-			liveUrl,
-			type,
-			repoUrl,
+		const data = await TagModel.create({
+			name,
+			displayName,
 		});
 
 		return new Response(
 			JSON.stringify({
 				success: true,
-				message: 'Project created successfully',
+				message: 'Tag created successfully',
 				data,
 			}),
 			{ status: 201 }

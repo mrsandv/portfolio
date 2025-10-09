@@ -1,5 +1,5 @@
 import { del } from '@vercel/blob';
-import { ImageModel } from 'models/images';
+import { ImageModel } from 'models/image';
 import { db } from 'utils/db';
 
 export async function PATCH(
@@ -51,7 +51,6 @@ export async function DELETE(
 		const { id } = await params;
 		await db();
 		const data = await ImageModel.findOne({ _id: id });
-		console.log(data);
 		if (!data) {
 			return new Response(
 				JSON.stringify({

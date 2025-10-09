@@ -29,4 +29,4 @@ const ImageSchema = new Schema<IImages>(
 	}
 );
 
-export const ImageModel = getModel<IImages>('Image', ImageSchema, 'Image');
+export const ImageModel = getModel<IImages>('Image', ImageSchema);

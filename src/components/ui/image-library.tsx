@@ -6,7 +6,7 @@ import { toast } from 'react-toastify';
 import type { TImages } from 'types/images';
 
 type TImageLibrary = {
-	selected?: string; // URL
+	selected?: string;
 	onChange?: (url: string | null) => void;
 };
 

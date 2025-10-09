@@ -1,4 +1,4 @@
-import { ProjectModel } from 'models/project';
+import { PostModel } from 'models/post';
 import mongoose from 'mongoose';
 import { db } from 'utils/db';
 
@@ -11,12 +11,12 @@ export async function GET(
 
 		await db();
 
-		const data = await ProjectModel.findOne({ _id: id });
+		const data = await PostModel.findOne({ _id: id });
 
 		return new Response(
 			JSON.stringify({
 				success: true,
-				message: 'Success on getting project by id',
+				message: 'Success on getting post by id',
 				data,
 			}),
 			{ status: 200 }
@@ -44,7 +44,7 @@ export async function PATCH(
 		await db();
 		const body = await request.json();
 
-		const data = await ProjectModel.findOneAndUpdate({ _id: id }, body, {
+		const data = await PostModel.findOneAndUpdate({ _id: id }, body, {
 			new: true,
 		});
 		if (!data) {
@@ -91,7 +91,7 @@ export async function DELETE(
 			);
 		}
 
-		const deleted = await ProjectModel.findByIdAndDelete({ _id: id });
+		const deleted = await PostModel.findByIdAndDelete({ _id: id });
 
 		if (!deleted) {
 			return new Response(

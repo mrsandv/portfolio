@@ -3,8 +3,7 @@ import { getModel } from 'utils/db/modelFactory';
 
 type TRol = 'owner' | 'admin' | 'guest';
 
-export interface IUser {
-	_id?: string;
+export interface IUser extends Document {
 	name: string;
 	user: string;
 	email: string;
@@ -40,4 +39,4 @@ const UserSchema = new Schema<IUser>(
 	}
 );
 
-export const UserModel = getModel<IUser>('User', UserSchema, 'Users');
+export const UserModel = getModel<IUser>('User', UserSchema);

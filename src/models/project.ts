@@ -45,8 +45,4 @@ const ProjectSchema = new Schema<IProject>(
 	}
 );
 
-export const ProjectsModel = getModel<IProject>(
-	'Projects',
-	ProjectSchema,
-	'Projects'
-);
+export const ProjectModel = getModel<IProject>('Project', ProjectSchema);
