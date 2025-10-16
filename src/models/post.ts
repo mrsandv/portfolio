@@ -5,6 +5,7 @@ export interface IPost extends Document {
 	title: string;
 	subtitle: string;
 	content: string;
+	image: string;
 	ert: number; // estimated reading time
 	tags: string[];
 	claps: number;
@@ -28,7 +29,10 @@ const PostSchema = new Schema<IPost>(
 		content: {
 			type: String,
 			required: true,
-			trim: true,
+		},
+		image: {
+			type: String,
+			required: true,
 		},
 		ert: {
 			type: Number,

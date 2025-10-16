@@ -4,17 +4,18 @@ import type { TextareaHTMLAttributes } from 'react';
 type TInput = {
 	label: string;
 	message?: string;
-	variant?: 'info' | 'accent' | 'danger';
+	variant?: 'accent' | 'danger' | 'success';
 };
 const baseStyles =
 	'bg-red-50 border border-red-500 text-red-900 placeholder-red-700 text-sm rounded-lg focus:ring-red-500 dark:bg-gray-700 focus:border-red-500 block w-full p-2.5 dark:text-red-500 dark:placeholder-red-500 dark:border-red-500';
 
 const variants = {
-	info: 'text-white bg-gray-800 hover:bg-gray-900 focus:ring-gray-300 dark:bg-gray-800 dark:hover:bg-gray-900 dark:focus:ring-gray-800',
 	accent:
 		'text-white bg-indigo-700 hover:bg-indigo-800  focus:ring-indigo-300 dark:bg-indigo-600 dark:hover:bg-indigo-700 dark:focus:ring-indigo-800',
 	danger:
 		'text-white bg-rose-700 hover:bg-rose-800  focus:ring-rose-300 dark:bg-rose-600 dark:hover:bg-rose-700 dark:focus:ring-rose-800',
+	success:
+		'text-white bg-green-700 hover:bg-green-800  focus:ring-green-300 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800',
 };
 
 const disabledStyles = 'opacity-60 pointer-events-none';
@@ -22,7 +23,7 @@ const disabledStyles = 'opacity-60 pointer-events-none';
 const Input = ({
 	label,
 	message,
-	variant = 'info',
+	variant = 'accent',
 	...restProps
 }: TInput & TextareaHTMLAttributes<HTMLTextAreaElement>) => {
 	const { disabled, name } = restProps;

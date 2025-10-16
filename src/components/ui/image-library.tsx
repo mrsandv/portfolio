@@ -2,6 +2,7 @@
 import { Button, Modal } from 'components/ui';
 import Image from 'next/image';
 import { useCallback, useEffect, useState } from 'react';
+import { FaTimesCircle } from 'react-icons/fa';
 import { toast } from 'react-toastify';
 import type { TImages } from 'types/images';
 
@@ -62,9 +63,9 @@ const ImageLibrary = ({ selected, onChange }: TImageLibrary) => {
 	}, [fetchImages]);
 
 	return (
-		<div className="flex flex-col gap-2 items-center">
+		<div className="flex flex-col w-full gap-2 items-center justify-center bg-red-500">
 			{selectedImage ? (
-				<div className="relative">
+				<div className="relative w-full">
 					<Image
 						src={selectedImage.url}
 						alt="Selected image"
@@ -74,10 +75,10 @@ const ImageLibrary = ({ selected, onChange }: TImageLibrary) => {
 					/>
 					<button
 						type="button"
-						className="absolute top-1 right-1 bg-black/70 text-white text-xs px-2 py-1 rounded"
+						className="absolute top-1 right-1 bg-black/70 text-rose-600 text-xs px-2 py-1 rounded-full cursor-pointer"
 						onClick={handleClear}
 					>
-						X
+						<FaTimesCircle />
 					</button>
 				</div>
 			) : (

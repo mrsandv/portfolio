@@ -71,14 +71,15 @@ export async function POST(req: Request) {
 
 		const body = await req.json();
 
-		const { title, subtitle, content, ert, tags } = body;
-
+		const { title, subtitle, content, ert, tags, image } = body;
+		console.log(body);
 		const data = await PostModel.create({
 			title,
 			subtitle,
 			content,
 			ert,
 			tags,
+			image,
 		});
 
 		return new Response(

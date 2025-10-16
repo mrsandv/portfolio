@@ -62,15 +62,15 @@ const Dialog = ({
 				aria-modal="true"
 				aria-labelledby={labelId}
 				tabIndex={-1}
-				className=" bg-white p-5 rounded-md shadow-md z-10 h-[250px] flex flex-col justify-between items-center relative"
+				className=" bg-white dark:bg-zinc-800 p-5 rounded-md shadow-md z-10 h-[250px] flex flex-col justify-between items-center relative"
 			>
 				<button
 					type="button"
 					aria-label="Close modal"
 					onClick={onClose}
-					className="text-gray-600 hover:text-gray-800 cursor-pointer absolute top-4 right-4"
+					className="text-gray-600 hover:text-rose-800 cursor-pointer absolute top-4 right-4"
 				>
-					<FaTimesCircle className="w-4 h-4" />
+					<FaTimesCircle className="w-6 h-6" />
 				</button>
 
 				{variant === 'success' ? (
@@ -78,10 +78,10 @@ const Dialog = ({
 				) : (
 					<FaExclamationTriangle className="w-10 h-10 text-rose-500" />
 				)}
-				<h2 id={labelId} className="text-lg font-bold">
+				<h2 id={labelId} className="text-base font-bold dark:text-zinc-100">
 					{title}
 				</h2>
-				{content && <p>{content}</p>}
+				{content && <p className="dark:text-zinc-100 text-sm">{content}</p>}
 				<div className="flex justify-between w-full">
 					<Button onClick={onClose}>Cancel</Button>
 					<Button variant={variant} onClick={onConfirm}>

@@ -1,6 +1,8 @@
 export { default as Button } from './button';
 export { default as Card } from './card';
+export { default as Chip } from './chip';
 export { default as Dialog } from './dialog';
+export { default as Editor } from './editor';
 export { default as ImageLibrary } from './image-library';
 export { default as Input } from './input';
 export { default as Modal } from './modal';

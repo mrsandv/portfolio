@@ -51,7 +51,7 @@ export default function LoginPage() {
 					onChange={handleChange}
 				/>
 				<button
-					className="h-10 bg-slate-800 text-white rounded-sm p-2 "
+					className="h-10 bg-slate-800 text-zinc-100 rounded-sm p-2 "
 					type="submit"
 				>
 					Login

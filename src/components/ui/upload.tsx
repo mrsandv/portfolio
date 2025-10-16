@@ -1,63 +1,107 @@
 'use client';
 
-import type { PutBlobResult } from '@vercel/blob';
 import { type FormEvent, useRef, useState } from 'react';
+import { FaUpload } from 'react-icons/fa';
+import { toast } from 'react-toastify';
+import Button from './button';
 
-export default function UploadImage() {
+type TUploadImage = {
+	onSuccess: () => void;
+};
+
+export default function UploadImage({ onSuccess }: TUploadImage) {
 	const inputFileRef = useRef<HTMLInputElement>(null);
-	const [blob, setBlob] = useState<PutBlobResult | null>(null);
+	const [preview, setPreview] = useState<string | null>(null);
+	const [isUploading, setIsUploading] = useState(false);
+
+	const handleSelectFile = () => {
+		inputFileRef.current?.click();
+	};
+
+	const handleFileChange = () => {
+		const file = inputFileRef.current?.files?.[0];
+		if (file) {
+			setPreview(URL.createObjectURL(file));
+		}
+	};
 
 	const handleUpload = async (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-
-		if (!inputFileRef.current?.files) {
-			throw new Error('No file selected');
+		if (!inputFileRef.current?.files?.[0]) {
+			toast.error('Selecciona una imagen primero');
+			return;
 		}
 
-		const file = inputFileRef.current.files[0];
+		try {
+			setIsUploading(true);
+			const file = inputFileRef.current.files[0];
 
-		const response = await fetch(`/api/images/upload?filename=${file.name}`, {
-			method: 'POST',
-			body: file,
-		});
+			const res = await fetch(`/api/images/upload?filename=${file.name}`, {
+				method: 'POST',
+				body: file,
+			});
 
-		const { data } = await response.json();
+			const { success, message } = await res.json();
 
-		setBlob(data);
-	};
-
-	const handleCopy = (blobUrl: string) => {
-		navigator.clipboard.writeText(blobUrl);
+			if (success) {
+				toast.success(message);
+				setPreview(null);
+				onSuccess();
+				inputFileRef.current.value = '';
+			} else {
+				toast.error(message);
+			}
+		} catch (error) {
+			console.error(error);
+			toast.error('Error al subir la imagen');
+		} finally {
+			setIsUploading(false);
+		}
 	};
 
 	return (
-		<div className="flex flex-col">
+		<div className="flex flex-col items-center">
 			<form
 				onSubmit={handleUpload}
-				className="border-2 border-dashed border-blue-900 rounded-md p-4"
+				className="border-2 border-dashed border-indigo-900 rounded-md p-4 flex flex-col items-center gap-4"
 			>
+				{/* Input oculto */}
 				<input
-					name="file"
 					ref={inputFileRef}
 					type="file"
 					accept="image/jpeg, image/png, image/webp"
-					required
+					onChange={handleFileChange}
+					className="hidden"
 				/>
-				<button
-					type="submit"
-					className="bg-black text-white py-2 px-4 rounded-2xl"
+				<div
+					onClick={handleSelectFile}
+					className="cursor-pointer flex flex-col items-center justify-center p-6 rounded-md hover:bg-indigo-50 transition"
 				>
-					Upload
-				</button>
-			</form>
-			{blob && (
-				<div className="flex items-center justify-center flex-col mt-4">
-					Blob url:{' '}
-					<button type="button" onClick={() => handleCopy(blob.url)}>
-						{blob.url}
-					</button>
+					{preview ? (
+						<img
+							src={preview}
+							alt="Preview"
+							className="w-40 h-40 object-cover rounded-md border border-indigo-200"
+						/>
+					) : (
+						<>
+							<FaUpload className="text-indigo-900 text-3xl mb-2" />
+							<p className="text-sm text-indigo-900 font-medium">
+								Selecciona una imagen
+							</p>
+						</>
+					)}
 				</div>
-			)}
+				<Button
+					type="submit"
+					disabled={isUploading}
+					className={`bg-indigo-900 text-zinc-100 py-2 px-4 rounded-2xl hover:bg-indigo-800 transition ${
+						isUploading ? 'opacity-60 cursor-not-allowed' : ''
+					}`}
+				>
+					{isUploading ? 'Subiendo...' : 'Subir imagen'}
+				</Button>
+			</form>
 		</div>
 	);
 }

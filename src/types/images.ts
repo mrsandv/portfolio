@@ -1,4 +1,4 @@
-export type TImages = {
+export type TImage = {
 	_id: string;
 	url: string;
 	alt: string;

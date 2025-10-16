@@ -16,18 +16,18 @@ const HomePage = () => {
 		<div className="flex flex-1 flex-col md:flex-row gap-4">
 			<div className="flex w-full sm:w-1/2 lg:w-1/3 flex-col flex-1 gap-4">
 				<Widget>
-					<p className="animate-pulse text-black dark:text-white text-3xl sm:text-5xl mb-5">
+					<p className="animate-pulse text-black dark:text-zinc-100 text-3xl sm:text-5xl mb-5">
 						Marco Sandoval
 					</p>
-					<p className="text-md text-black dark:text-white">
+					<p className="text-md text-black dark:text-zinc-100">
 						Software Developer
 					</p>
 				</Widget>
 				<Widget>
-					<p className="animate-pulse text-black dark:text-white text-2xl sm:text-4xl">
+					<p className="animate-pulse text-black dark:text-zinc-100 text-2xl sm:text-4xl">
 						Explore, learn, and build through code.
 					</p>
-					<p className="text-sm text-black dark:text-white my-5">
+					<p className="text-sm text-black dark:text-zinc-100 my-5">
 						Find me online or support my projects ☕️
 					</p>
 					<div className="flex gap-4">
@@ -70,22 +70,22 @@ const HomePage = () => {
 				</Widget>
 			</div>
 
-			<div className="text-black dark:text-white flex flex-col justify-between sm:w-1/2 lg:w-2/3 gap-4">
+			<div className="text-black dark:text-zinc-100 flex flex-col justify-between sm:w-1/2 lg:w-2/3 gap-4">
 				<Widget link="/projects">
-					<p className="my-2  text-black dark:text-white text-2xl sm:text-3xl flex items-center">
+					<p className="my-2  text-black dark:text-zinc-100 text-2xl sm:text-3xl flex items-center">
 						<FaLaptopCode className="text-xl animate-pulse mr-2" />
 						Projects
 					</p>
 					<p className="text-md">Discover my creations</p>
 				</Widget>
 				<Widget link="/blog">
-					<p className="my-2  text-black dark:text-white text-2xl sm:text-3xl flex items-center">
+					<p className="my-2  text-black dark:text-zinc-100 text-2xl sm:text-3xl flex items-center">
 						<FaSith className="text-xl animate-pulse mr-2" /> Blog
 					</p>
 					<p className="my-2 text-md">Sometimes I write about tech stuff</p>
 				</Widget>
 				<Widget link="/resume">
-					<p className="my-2  text-black dark:text-white text-2xl sm:text-3xl flex items-center">
+					<p className="my-2  text-black dark:text-zinc-100 text-2xl sm:text-3xl flex items-center">
 						<FaRegFileCode className="text-xl animate-pulse mr-2" /> Resume
 					</p>
 					<p className="my-2 text-md">Check out my experience and skills</p>

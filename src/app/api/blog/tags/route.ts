@@ -16,6 +16,7 @@ export async function GET() {
 			{
 				$project: {
 					name: 1,
+					displayName: 1,
 					count: {
 						$size: '$posts',
 					},
