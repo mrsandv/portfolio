@@ -6,6 +6,8 @@ export { default as Editor } from './editor';
 export { default as ImageLibrary } from './image-library';
 export { default as Input } from './input';
 export { default as Modal } from './modal';
+export { default as MultiSelect } from './multi-select';
+export { default as Select } from './select';
 export { default as TextArea } from './text-area';
 export { default as UploadImage } from './upload';
 export { default as Widget } from './widget';

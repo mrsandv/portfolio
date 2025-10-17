@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { useCallback, useEffect, useState } from 'react';
 import { FaTimesCircle } from 'react-icons/fa';
 import { toast } from 'react-toastify';
-import type { TImages } from 'types/images';
+import type { TImage } from 'types/images';
 
 type TImageLibrary = {
 	selected?: string;
@@ -17,7 +17,7 @@ type TSelected = {
 };
 
 const ImageLibrary = ({ selected, onChange }: TImageLibrary) => {
-	const [images, setImages] = useState<TImages[]>([]);
+	const [images, setImages] = useState<TImage[]>([]);
 	const [loading, setLoading] = useState(false);
 	const [modalStatus, setModalStatus] = useState(false);
 	const [selectedImage, setSelectedImage] = useState<TSelected | null>(null);

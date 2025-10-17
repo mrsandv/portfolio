@@ -30,7 +30,10 @@ const Editor = ({
 				theme={theme}
 				editor={editor}
 				editable={editable}
-				onChange={onChange}
+				onChange={() => {
+					const json = editor.document;
+					onChange?.(JSON.stringify(json));
+				}}
 			/>
 		</div>
 	);

@@ -12,7 +12,6 @@ export async function GET(
 		await db();
 
 		const data = await PostModel.findOne({ _id: id });
-
 		return new Response(
 			JSON.stringify({
 				success: true,

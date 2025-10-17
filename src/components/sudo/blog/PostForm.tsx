@@ -1,4 +1,10 @@
-import { Button, Editor, ImageLibrary, Input, TextArea } from 'components/ui/';
+import {
+	Button,
+	Editor,
+	ImageLibrary,
+	Input,
+	MultiSelect,
+} from 'components/ui/';
 import {
 	type ChangeEvent,
 	type FormEvent,
@@ -28,6 +34,8 @@ const PostForm = ({ onSuccess, post, mode }: TPostForm) => {
 			toast.error(message);
 		}
 	}, []);
+
+	console.log(tags);
 
 	useEffect(() => {
 		fetchTags();
@@ -67,7 +75,7 @@ const PostForm = ({ onSuccess, post, mode }: TPostForm) => {
 	return (
 		<form className="flex flex-col p-2" onSubmit={handleSubmit}>
 			<div className="flex w-full gap-4">
-				<div className="flex flex-col w-2/3">
+				<div className="flex flex-col w-2/3 gap-2">
 					<Input
 						label="Título"
 						type="text"
@@ -77,32 +85,31 @@ const PostForm = ({ onSuccess, post, mode }: TPostForm) => {
 						onChange={handleChange}
 					/>
 					<Input
-						label="Reading time"
+						label="Subtitle"
+						name="subtitle"
+						placeholder="Subtitle"
+						value={form.subtitle}
+						onChange={handleChange}
+					/>
+					<Input
+						label="Estimated reading time"
 						type="number"
 						name="ert"
 						placeholder="Estimated reading time"
 						min={0}
 						max={30}
-						message="Menso"
-						variant="danger"
 						value={form.ert}
 						onChange={handleChange}
 					/>
-					<Input
-						label="Subtitle"
-						name="subtitle"
-						variant="success"
-						placeholder="Subtitle"
-						value={form.subtitle}
-						onChange={handleChange}
+					<MultiSelect
+						options={tags.map((tag) => ({
+							label: tag.displayName,
+							value: tag._id,
+						}))}
+						value={form.tags}
+						placeholder="Tags"
+						onSave={(value) => setForm({ ...form, tags: value })}
 					/>
-					<select name="tag" value={form.tags} multiple onChange={handleChange}>
-						{tags.map((tag) => (
-							<option key={tag._id} value={tag.name}>
-								{tag.displayName}
-							</option>
-						))}
-					</select>
 				</div>
 				<div className="flex justify-center items-center flex-1">
 					<ImageLibrary
@@ -111,14 +118,17 @@ const PostForm = ({ onSuccess, post, mode }: TPostForm) => {
 					/>
 				</div>
 			</div>
-			<Editor
-				content={JSON.stringify(form.content)}
-				onChange={(content) =>
-					setForm({ ...form, content: JSON.stringify(content) })
-				}
-			/>
-
-			<Button>{mode === 'create' ? 'Guardar' : 'Actualizar'}</Button>
+			<div className="my-5">
+				<Editor
+					content={JSON.stringify(form.content)}
+					onChange={(content) =>
+						setForm({ ...form, content: JSON.stringify(content) })
+					}
+				/>
+			</div>
+			<div className="flex justify-end">
+				<Button>{mode === 'create' ? 'Guardar' : 'Actualizar'}</Button>
+			</div>
 		</form>
 	);
 };

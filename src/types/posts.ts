@@ -8,8 +8,8 @@ export type TPost = {
 	tags: string[];
 	claps: number;
 	comments: string[];
-	createdAt?: Date;
-	updatedAt?: Date;
+	createdAt: string;
+	updatedAt: string;
 };
 
 export type TTag = {
