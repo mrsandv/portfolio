@@ -63,7 +63,7 @@ const BlogWrapper = () => {
 				</Button>
 			</div>
 			<div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
-				{posts.map((post) => (
+				{posts.map((post: TPost) => (
 					<Card
 						key={post._id}
 						title={post.title}
@@ -92,11 +92,18 @@ const BlogWrapper = () => {
 					isOpen
 					onClose={() => setModal({ type: 'none' })}
 				>
-					<PostForm mode="create" onSuccess={fetchPosts} />
+					<PostForm
+						mode="create"
+						onSuccess={() => {
+							fetchPosts();
+							setModal({ type: 'none' });
+						}}
+					/>
 				</Modal>
 			)}
 			{modal.type === 'edit' && (
 				<Modal
+					size="full"
 					title={`Edit: ${modal.post.title}`}
 					isOpen
 					onClose={() => setModal({ type: 'none' })}

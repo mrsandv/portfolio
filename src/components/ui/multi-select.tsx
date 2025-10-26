@@ -45,14 +45,14 @@ const MultiSelect = ({
 	return (
 		<div className="flex flex-col w-full">
 			{label && (
-				<p className="block text-[10px] font-medium text-indigo-700 mb-1">
+				<p className="block text-[10px] font-medium text-rose-700 mb-1">
 					{label}
 				</p>
 			)}
 
 			<div
 				className={clsx(
-					'min-h-[44px] border border-indigo-800 rounded-lg p-2 flex flex-wrap gap-2 items-center bg-white'
+					'min-h-[44px] border border-rose-800 rounded-lg p-2 flex flex-wrap gap-2 items-center bg-white'
 				)}
 			>
 				{selected.length === 0 && (
@@ -63,12 +63,12 @@ const MultiSelect = ({
 					return (
 						<span
 							key={val}
-							className="flex items-center gap-1 bg-indigo-100 text-indigo-800 px-2 py-1 rounded-full text-xs"
+							className="flex items-center gap-1 bg-rose-100 text-rose-800 px-2 py-1 rounded-full text-xs"
 						>
 							{item?.label}
 							<button
 								type="button"
-								className="text-indigo-600 hover:text-indigo-800"
+								className="text-rose-600 hover:text-rose-800"
 								onClick={() => handleRemoveTag(val)}
 							>
 								×
@@ -85,7 +85,7 @@ const MultiSelect = ({
 							key={opt.value}
 							type="button"
 							onClick={() => toggleOption(opt.value)}
-							className="flex items-center gap-1 bg-indigo-100 text-indigo-800 px-2 py-1 rounded-full text-xs"
+							className="flex items-center gap-1 bg-rose-100 text-rose-800 px-2 py-1 rounded-full text-xs"
 						>
 							{opt.label}
 						</button>

@@ -7,6 +7,7 @@ export type TPost = {
 	ert: number; // estimated raeding time
 	tags: string[];
 	claps: number;
+	author: string;
 	comments: string[];
 	createdAt: string;
 	updatedAt: string;

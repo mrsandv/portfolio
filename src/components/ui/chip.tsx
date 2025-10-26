@@ -14,8 +14,8 @@ const Chip = ({
 	...restProps
 }: TChip & ButtonHTMLAttributes<HTMLButtonElement>) => {
 	const baseStyles =
-		'inline-flex items-center px-5 py-2.5 text-sm font-medium text-center text-zinc-100 bg-indigo-700 rounded-lg hover:bg-indigo-800 focus:ring-4 focus:outline-none focus:ring-indigo-300 dark:bg-indigo-600 dark:hover:bg-indigo-700 dark:focus:ring-indigo-800';
-	const activeStyle = 'bg-indigo-600';
+		'inline-flex items-center px-2 py-1 text-sm font-medium text-center text-zinc-100 bg-rose-700 rounded-full hover:bg-rose-800 focus:ring-2 focus:outline-none focus:ring-rose-300 dark:bg-rose-600 dark:hover:bg-rose-700 dark:focus:ring-rose-800';
+	const activeStyle = 'bg-rose-600';
 	return (
 		<button
 			{...restProps}
@@ -23,7 +23,7 @@ const Chip = ({
 			className={clsx(baseStyles, { active: activeStyle })}
 		>
 			{text}
-			<span className="inline-flex items-center justify-center w-4 h-4 ms-2 text-xs font-semibold text-indigo-800 bg-indigo-200 rounded-full">
+			<span className="inline-flex items-center justify-center w-4 h-4 ms-2 text-xs font-semibold text-rose-800 bg-rose-200 rounded-full">
 				{count}
 			</span>
 		</button>

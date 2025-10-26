@@ -9,6 +9,7 @@ export interface IPost extends Document {
 	ert: number; // estimated reading time
 	tags: string[];
 	claps: number;
+	author: string;
 	comments: Types.ObjectId[];
 	createdAt?: Date;
 	updatedAt?: Date;
@@ -48,6 +49,10 @@ const PostSchema = new Schema<IPost>(
 				ref: 'Tags',
 			},
 		],
+		author: {
+			type: String,
+			default: 'mrsan',
+		},
 		comments: [
 			{
 				type: Schema.Types.ObjectId,

@@ -35,8 +35,6 @@ const PostForm = ({ onSuccess, post, mode }: TPostForm) => {
 		}
 	}, []);
 
-	console.log(tags);
-
 	useEffect(() => {
 		fetchTags();
 	}, [fetchTags]);
@@ -67,10 +65,6 @@ const PostForm = ({ onSuccess, post, mode }: TPostForm) => {
 	) => {
 		setForm({ ...form, [e.target.name]: e.target.value });
 	};
-
-	useEffect(() => {
-		console.log('form updated:', form);
-	}, [form]);
 
 	return (
 		<form className="flex flex-col p-2" onSubmit={handleSubmit}>
@@ -120,10 +114,8 @@ const PostForm = ({ onSuccess, post, mode }: TPostForm) => {
 			</div>
 			<div className="my-5">
 				<Editor
-					content={JSON.stringify(form.content)}
-					onChange={(content) =>
-						setForm({ ...form, content: JSON.stringify(content) })
-					}
+					content={form.content}
+					onChange={(content) => setForm({ ...form, content })}
 				/>
 			</div>
 			<div className="flex justify-end">

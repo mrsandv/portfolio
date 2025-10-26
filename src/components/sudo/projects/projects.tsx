@@ -73,7 +73,7 @@ const ProjectsWrapper = () => {
 								<Button
 									onClick={() => setModal({ type: 'edit', project: project })}
 								>
-									<FaEdit className="text-indigo-500 text-lg cursor-pointer" />
+									<FaEdit className="text-rose-500 text-lg cursor-pointer" />
 								</Button>
 								<Button onClick={() => setModal({ type: 'delete', project })}>
 									<FaTrash className="text-red-500 cursor-pointer text-lg" />

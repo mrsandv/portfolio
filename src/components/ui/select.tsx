@@ -1,9 +1,9 @@
 'use client';
 import clsx from 'clsx';
 import type {
-	SelectHTMLAttributes,
 	OptionHTMLAttributes,
 	ReactNode,
+	SelectHTMLAttributes,
 } from 'react';
 
 type Variant = 'success' | 'accent' | 'danger';
@@ -21,15 +21,15 @@ const baseStyles =
 const variants = {
 	select: {
 		accent:
-			'bg-indigo-50 border border-indigo-500 text-indigo-900 placeholder-indigo-700 focus:ring-indigo-500 focus:border-indigo-500',
+			'bg-rose-50 border border-rose-500 text-rose-900 placeholder-rose-700 focus:ring-rose-500 focus:border-rose-500',
 		danger:
-			'text-rose-900 bg-rose-50 border border-rose-500 focus:ring-rose-300 focus:border-rose-500',
+			'text-red-900 bg-red-50 border border-red-500 focus:ring-red-300 focus:border-red-500',
 		success:
 			'text-emerald-900 bg-emerald-50 border border-emerald-500 focus:ring-emerald-300 focus:border-emerald-500',
 	},
 	label: {
-		accent: 'text-indigo-700',
-		danger: 'text-rose-700',
+		accent: 'text-rose-700',
+		danger: 'text-red-700',
 		success: 'text-emerald-700',
 	},
 };
@@ -82,9 +82,7 @@ function Wrapper({
 			</select>
 
 			{message && (
-				<p className="mt-2 text-sm text-rose-500 dark:text-rose-400">
-					{message}
-				</p>
+				<p className="mt-2 text-sm text-red-500 dark:text-red-400">{message}</p>
 			)}
 		</div>
 	);
@@ -101,9 +99,9 @@ function Option({ children, className, variant, ...rest }: SelectOptionProps) {
 			{...rest}
 			className={clsx(
 				'text-sm',
-				variant === 'danger' && 'text-rose-600',
+				variant === 'danger' && 'text-red-600',
 				variant === 'success' && 'text-emerald-600',
-				variant === 'accent' && 'text-indigo-600',
+				variant === 'accent' && 'text-rose-600',
 				className
 			)}
 		>

@@ -63,15 +63,15 @@ const ImageLibrary = ({ selected, onChange }: TImageLibrary) => {
 	}, [fetchImages]);
 
 	return (
-		<div className="flex flex-col w-full gap-2 items-center justify-center bg-red-500">
+		<div className="flex flex-col w-full gap-2 items-center justify-center">
 			{selectedImage ? (
-				<div className="relative w-full">
+				<div className="relative w-full flex justify-center">
 					<Image
 						src={selectedImage.url}
 						alt="Selected image"
-						width={200}
+						width={100}
 						height={100}
-						className="rounded-xl border"
+						className="rounded-lg border"
 					/>
 					<button
 						type="button"
@@ -96,7 +96,7 @@ const ImageLibrary = ({ selected, onChange }: TImageLibrary) => {
 			</Button>
 
 			<Modal
-				size="full"
+				size="auto"
 				title="Image Library"
 				onClose={() => setModalStatus(false)}
 				isOpen={modalStatus}
@@ -111,13 +111,13 @@ const ImageLibrary = ({ selected, onChange }: TImageLibrary) => {
 					</div>
 				) : (
 					<>
-						<div className="grid grid-cols-3 gap-2 p-4">
+						<div className="flex flex-wrap gap-4 p-4 max-h-[400px] overflow-y-auto">
 							{images.map((image) => (
 								<button
 									type="button"
 									key={image._id}
 									className={`rounded-xl relative p-2 border-2 transition-all duration-200 
-									${selectedImage?.id === image._id ? 'border-indigo-500 shadow-md scale-105' : 'border-transparent'}`}
+									${selectedImage?.id === image._id ? 'border-rose-500 shadow-md scale-105' : 'border-transparent'}`}
 									onClick={() =>
 										handleChange({ id: image._id, url: image.url })
 									}
@@ -125,7 +125,7 @@ const ImageLibrary = ({ selected, onChange }: TImageLibrary) => {
 									<Image
 										src={image.url}
 										alt={image.title}
-										width={200}
+										width={100}
 										height={100}
 										className="rounded-lg"
 									/>
@@ -133,7 +133,7 @@ const ImageLibrary = ({ selected, onChange }: TImageLibrary) => {
 							))}
 						</div>
 						<div className="flex justify-end p-4">
-							<Button variant="success" type="button" onClick={handleSelect}>
+							<Button type="button" onClick={handleSelect}>
 								Select
 							</Button>
 						</div>

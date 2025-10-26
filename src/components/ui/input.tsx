@@ -13,16 +13,16 @@ const baseStyles =
 const variants = {
 	input: {
 		accent:
-			'bg-indigo-50 border border-indigo-500 text-indigo-900 placeholder-indigo-700 text-sm rounded-lg focus:ring-indigo-500 dark:bg-gray-700 focus:border-indigo-500 block w-full p-2.5 dark:text-indigo-500 dark:placeholder-indigo-500 dark:border-indigo-500',
-		danger:
 			'bg-rose-50 border border-rose-500 text-rose-900 placeholder-rose-700 text-sm rounded-lg focus:ring-rose-500 dark:bg-gray-700 focus:border-rose-500 block w-full p-2.5 dark:text-rose-500 dark:placeholder-rose-500 dark:border-rose-500',
+		danger:
+			'bg-red-50 border border-red-500 text-red-900 placeholder-red-700 text-sm rounded-lg focus:ring-red-500 dark:bg-gray-700 focus:border-red-500 block w-full p-2.5 dark:text-red-500 dark:placeholder-red-500 dark:border-red-500',
 		success:
 			'bg-teal-50 border border-teal-500 text-teal-900 placeholder-teal-700 text-sm rounded-lg focus:ring-teal-500 dark:bg-gray-700 focus:border-teal-500 block w-full p-2.5 dark:text-teal-500 dark:placeholder-teal-500 dark:border-teal-500',
 	},
 	label: {
-		accent: 'text-indigo-700 focus:ring-indigo-300 dark:focus:ring-indigo-800',
+		accent: 'text-rose-700 focus:ring-rose-300 dark:focus:ring-rose-800',
 		success: 'text-teal-700 focus:ring-teal-300 dark:focus:ring-teal-800',
-		danger: 'text-rose-700 focus:ring-rose-300 dark:focus:ring-rose-800',
+		danger: 'text-red-700 focus:ring-red-300 dark:focus:ring-red-800',
 	},
 };
 
@@ -55,9 +55,7 @@ const Input = ({
 				})}
 			/>
 			{message && (
-				<p className="mt-2 text-sm text-rose-500 dark:text-rose-400">
-					{message}
-				</p>
+				<p className="mt-2 text-sm text-red-500 dark:text-red-400">{message}</p>
 			)}
 		</div>
 	);

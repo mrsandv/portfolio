@@ -17,7 +17,7 @@ const sizes = {
 	sm: 'max-w-sm',
 	md: 'max-w-md',
 	lg: 'max-w-lg',
-	full: 'w-[90vw]',
+	full: 'w-[90vw] max-h-[90vh] ',
 };
 
 export default function Modal({
@@ -81,7 +81,7 @@ export default function Modal({
 						<FaTimesCircle className="w-6 h-6" />
 					</button>
 				</header>
-				<main className="mt-2">{children}</main>
+				<main className="mt-2 overflow-y-scroll max-h-[80vh]">{children}</main>
 			</div>
 		</div>,
 		document.body

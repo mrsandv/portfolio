@@ -4,6 +4,7 @@ import { type FormEvent, useRef, useState } from 'react';
 import { FaUpload } from 'react-icons/fa';
 import { toast } from 'react-toastify';
 import Button from './button';
+import Image from 'next/image';
 
 type TUploadImage = {
 	onSuccess: () => void;
@@ -63,7 +64,7 @@ export default function UploadImage({ onSuccess }: TUploadImage) {
 		<div className="flex flex-col items-center">
 			<form
 				onSubmit={handleUpload}
-				className="border-2 border-dashed border-indigo-900 rounded-md p-4 flex flex-col items-center gap-4"
+				className="border-2 border-dashed border-rose-900 rounded-md p-4 flex flex-col items-center gap-4"
 			>
 				{/* Input oculto */}
 				<input
@@ -73,29 +74,32 @@ export default function UploadImage({ onSuccess }: TUploadImage) {
 					onChange={handleFileChange}
 					className="hidden"
 				/>
-				<div
+				<button
+					type="button"
 					onClick={handleSelectFile}
-					className="cursor-pointer flex flex-col items-center justify-center p-6 rounded-md hover:bg-indigo-50 transition"
+					className="cursor-pointer flex flex-col items-center justify-center p-6 rounded-md hover:bg-rose-50 transition"
 				>
 					{preview ? (
-						<img
+						<Image
 							src={preview}
 							alt="Preview"
-							className="w-40 h-40 object-cover rounded-md border border-indigo-200"
+							width={100}
+							height={100}
+							className="w-40 h-40 object-cover rounded-md border border-rose-200"
 						/>
 					) : (
 						<>
-							<FaUpload className="text-indigo-900 text-3xl mb-2" />
-							<p className="text-sm text-indigo-900 font-medium">
+							<FaUpload className="text-rose-900 text-3xl mb-2" />
+							<p className="text-sm text-rose-900 font-medium">
 								Selecciona una imagen
 							</p>
 						</>
 					)}
-				</div>
+				</button>
 				<Button
 					type="submit"
 					disabled={isUploading}
-					className={`bg-indigo-900 text-zinc-100 py-2 px-4 rounded-2xl hover:bg-indigo-800 transition ${
+					className={`bg-rose-900 text-zinc-100 py-2 px-4 rounded-2xl hover:bg-rose-800 transition ${
 						isUploading ? 'opacity-60 cursor-not-allowed' : ''
 					}`}
 				>

@@ -19,7 +19,7 @@ const HomePage = () => {
 					<p className="animate-pulse text-black dark:text-zinc-100 text-3xl sm:text-5xl mb-5">
 						Marco Sandoval
 					</p>
-					<p className="text-md text-black dark:text-zinc-100">
+					<p className="text-md text-zinc-600 dark:text-zinc-100">
 						Software Developer
 					</p>
 				</Widget>
@@ -27,42 +27,42 @@ const HomePage = () => {
 					<p className="animate-pulse text-black dark:text-zinc-100 text-2xl sm:text-4xl">
 						Explore, learn, and build through code.
 					</p>
-					<p className="text-sm text-black dark:text-zinc-100 my-5">
+					<p className="text-sm text-zinc-600 dark:text-zinc-100 my-5">
 						Find me online or support my projects ☕️
 					</p>
 					<div className="flex gap-4">
 						<Link
 							href="https://github.com/mrsandv"
 							target="_blank"
-							className="text-lg text-indigo-800 hover:opacity-90 dark:text-zinc-200"
+							className="text-lg text-rose-700 hover:opacity-90 dark:text-zinc-200"
 						>
 							<FaGithub />
 						</Link>
 						<Link
 							href="https://linkedin.com/in/mrsan"
 							target="_blank"
-							className="text-lg text-indigo-800 hover:opacity-90 dark:text-zinc-200"
+							className="text-lg text-rose-700 hover:opacity-90 dark:text-zinc-200"
 						>
 							<FaLinkedinIn />
 						</Link>
 						<Link
 							href="https://exercism.org/profiles/mrsandv"
 							target="_blank"
-							className="text-lg text-indigo-800 hover:opacity-90 dark:text-zinc-200"
+							className="text-lg text-rose-700 hover:opacity-90 dark:text-zinc-200"
 						>
 							<FaCode />
 						</Link>
 						<Link
 							href="https://hackerrank.com/profile/mrsan"
 							target="_blank"
-							className="text-lg text-indigo-800 hover:opacity-90 dark:text-zinc-200"
+							className="text-lg text-rose-700 hover:opacity-90 dark:text-zinc-200"
 						>
 							<FaHackerrank />
 						</Link>
 						<Link
 							href="https://buymeacoffee.com/mrsan"
 							target="_blank"
-							className="text-lg text-indigo-800 hover:opacity-90 dark:text-zinc-200"
+							className="text-lg text-rose-700 hover:opacity-90 dark:text-zinc-200"
 						>
 							<FaCoffee />
 						</Link>
@@ -76,19 +76,25 @@ const HomePage = () => {
 						<FaLaptopCode className="text-xl animate-pulse mr-2" />
 						Projects
 					</p>
-					<p className="text-md">Discover my creations</p>
+					<p className="text-md text-zinc-600 dark:text-zinc-300">
+						Discover my creations
+					</p>
 				</Widget>
 				<Widget link="/blog">
 					<p className="my-2  text-black dark:text-zinc-100 text-2xl sm:text-3xl flex items-center">
 						<FaSith className="text-xl animate-pulse mr-2" /> Blog
 					</p>
-					<p className="my-2 text-md">Sometimes I write about tech stuff</p>
+					<p className="my-2 text-md text-zinc-600 dark:text-zinc-300">
+						Sometimes I write about tech stuff
+					</p>
 				</Widget>
 				<Widget link="/resume">
 					<p className="my-2  text-black dark:text-zinc-100 text-2xl sm:text-3xl flex items-center">
 						<FaRegFileCode className="text-xl animate-pulse mr-2" /> Resume
 					</p>
-					<p className="my-2 text-md">Check out my experience and skills</p>
+					<p className="my-2 text-md text-zinc-600 dark:text-zinc-300">
+						Check out my experience and skills
+					</p>
 				</Widget>
 			</div>
 		</div>

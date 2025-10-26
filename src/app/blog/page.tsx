@@ -28,14 +28,17 @@ export default function BlogPage() {
 	return (
 		<div className="flex flex-1 flex-col md:flex-row gap-4">
 			<div className="flex w-full sm:w-1/2 lg:w-1/3 flex-col flex-1 gap-4">
+				<div className="flex h-1/4">
+					<Widget>
+						<Popular />
+					</Widget>
+				</div>
 				<Widget>
-					<Popular />
-				</Widget>
-				<Widget>
-					<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-4 ">
+					<div className="w-full grid grid-cols-1 h-full sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4 p-4">
 						{posts.map((post) => (
 							<Link key={post._id} href={`/blog/${post._id}`}>
 								<Card
+									mini
 									title={post.title}
 									description={post.subtitle}
 									img={post.image}
