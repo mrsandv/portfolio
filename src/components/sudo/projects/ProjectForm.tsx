@@ -2,6 +2,7 @@ import { Button, ImageLibrary, Input, Select, TextArea } from 'components/ui/';
 import { type ChangeEvent, type FormEvent, useState } from 'react';
 import { toast } from 'react-toastify';
 import type { TProject } from 'types/projects';
+import { fetchAPI } from 'utils/http';
 
 type TProjectForm = {
 	onSuccess: () => void;
@@ -28,19 +29,18 @@ const ProjectForm = ({ onSuccess, project, mode }: TProjectForm) => {
 			mode === 'create' ? '/api/projects' : `/api/projects/${project?._id}`;
 		const method = mode === 'create' ? 'POST' : 'PATCH';
 
-		const res = await fetch(endpoint, {
+		const { success, message, res } = await fetchAPI({
+			endpoint,
 			method,
 			body: JSON.stringify(form),
-			headers: { 'Content-Type': 'application/json' },
 		});
 
-		const { success, message } = await res.json();
-		if (success) {
-			toast.success(message);
-			onSuccess();
-		} else {
+		if (!res.ok || !success) {
 			toast.error(message);
+			return;
 		}
+		toast.success(message);
+		onSuccess();
 	};
 
 	const handleChange = (

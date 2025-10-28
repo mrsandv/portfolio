@@ -1,22 +1,34 @@
 'use client';
+import { Button, Input } from 'components/ui';
+import { useStore } from 'context';
+import { useRouter } from 'next/navigation';
 import { type ChangeEvent, type FormEvent, useState } from 'react';
+import { toast } from 'react-toastify';
+import { fetchAPI } from 'utils/http';
 
 export default function LoginPage() {
+	const { login } = useStore();
 	const [credentials, setCredentials] = useState<{
-		user: string;
+		email: string;
 		password: string;
-	}>({ user: '', password: '' });
-
+	}>({ email: '', password: '' });
+	const router = useRouter();
 	const signIn = async (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-		const { user, password } = credentials;
-		fetch('/api/login', {
+		const { email, password } = credentials;
+		const { success, message, data, res } = await fetchAPI({
+			endpoint: '/api/login',
+			body: JSON.stringify({ email: email, password }),
 			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json',
-			},
-			body: JSON.stringify({ email: user, password }),
 		});
+
+		if (!res.ok || !success) {
+			toast.error(message);
+		}
+		if (success) {
+			login({ name: data.name, rol: data.rol });
+			router.push('/sudo');
+		}
 	};
 
 	const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -28,34 +40,29 @@ export default function LoginPage() {
 	return (
 		<div className="flex justify-center items-center min-h-[75vh]">
 			<form
-				className="flex flex-col h-[20vh] justify-between w-1/3 rounded-2xl bg-slate-400 p-5"
+				className="flex flex-col p-5 w-1/6 h-fit gap-2 bg-stone-100 border border-gray-200 rounded-lg shadow-sm shadow-stone-500/40 hover:shadow-rose-800/30 dark:bg-zinc-800 dark:border-gray-700"
 				onSubmit={signIn}
 				autoComplete="off"
 			>
-				<input
-					autoComplete="username"
-					className="h-10 rounded-sm p-2 bg-slate-300 text-black"
+				<Input
+					label="Email"
+					autoComplete="email"
 					type="text"
-					name="user"
-					value={credentials.user}
-					placeholder="Username"
+					name="email"
+					value={credentials.email}
+					placeholder="Email"
 					onChange={handleChange}
 				/>
-				<input
+				<Input
+					label="Password"
 					autoComplete="current-password"
-					className="h-10 rounded-sm p-2 bg-slate-300 text-black"
 					type="password"
 					name="password"
 					value={credentials.password}
 					placeholder="Password"
 					onChange={handleChange}
 				/>
-				<button
-					className="h-10 bg-slate-800 text-zinc-100 rounded-sm p-2 "
-					type="submit"
-				>
-					Login
-				</button>
+				<Button type="submit">Login</Button>
 			</form>
 		</div>
 	);

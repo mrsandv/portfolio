@@ -5,6 +5,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { FaTimesCircle } from 'react-icons/fa';
 import { toast } from 'react-toastify';
 import type { TImage } from 'types/images';
+import { fetchAPI } from 'utils/http';
 
 type TImageLibrary = {
 	selected?: string;
@@ -24,13 +25,15 @@ const ImageLibrary = ({ selected, onChange }: TImageLibrary) => {
 
 	const fetchImages = useCallback(async () => {
 		setLoading(true);
-		const res = await fetch('/api/images');
-		const { data, success, message } = await res.json();
-		if (res.ok && success) {
-			setImages(data);
-		} else {
+		const { data, success, message, res } = await fetchAPI({
+			endpoint: '/api/images',
+		});
+
+		if (!res.ok || !success) {
 			toast.error(message || 'Error al cargar imágenes');
+			return;
 		}
+		setImages(data);
 		setLoading(false);
 	}, []);
 

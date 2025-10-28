@@ -5,6 +5,7 @@ import { FaEdit, FaTrash } from 'react-icons/fa';
 import { toast } from 'react-toastify';
 import type { TPost } from 'types/posts';
 import PostForm from './PostForm';
+import { fetchAPI } from 'utils/http';
 
 type TModalState =
 	| { type: 'none' }
@@ -17,15 +18,14 @@ const BlogWrapper = () => {
 	const [modal, setModal] = useState<TModalState>({ type: 'none' });
 
 	const fetchPosts = useCallback(async () => {
-		const res = await fetch('/api/blog');
-		if (res.ok) {
-			const { data, success, message } = await res.json();
-			if (success) {
-				setPosts(data);
-			} else {
-				console.error(message);
-			}
+		const { data, success, message, res } = await fetchAPI({
+			endpoint: '/api/blog',
+		});
+		if (!res.ok || !success) {
+			toast.error(message);
+			return;
 		}
+		setPosts(data);
 	}, []);
 
 	useEffect(() => {
@@ -35,10 +35,10 @@ const BlogWrapper = () => {
 	const handleDelete = async () => {
 		if (modal.type !== 'delete') return;
 
-		const res = await fetch(`/api/blog/${modal.post._id}`, {
+		const { success, message, res } = await fetchAPI({
+			endpoint: `/api/blog/${modal.post._id}`,
 			method: 'DELETE',
 		});
-		const { success, message } = await res.json();
 
 		if (!success || !res.ok) {
 			toast.error(message || 'Something went wrong');

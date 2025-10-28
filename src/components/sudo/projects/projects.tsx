@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { FaEdit, FaTrash } from 'react-icons/fa';
 import { toast } from 'react-toastify';
 import type { TProject } from 'types/projects';
+import { fetchAPI } from 'utils/http';
 import ProjectForm from './ProjectForm';
 
 type TModalState =
@@ -17,14 +18,13 @@ const ProjectsWrapper = () => {
 	const [modal, setModal] = useState<TModalState>({ type: 'none' });
 
 	const fetchProjects = useCallback(async () => {
-		const res = await fetch('/api/projects');
-		if (res.ok) {
-			const { data, success, message } = await res.json();
-			if (success) {
-				setProjects(data);
-			} else {
-				console.error(message);
-			}
+		const { res, data, success, message } = await fetchAPI({
+			endpoint: '/api/projects',
+		});
+		if (!res.ok || !success) {
+			toast.error(message);
+		} else {
+			setProjects(data);
 		}
 	}, []);
 
@@ -35,10 +35,10 @@ const ProjectsWrapper = () => {
 	const handleDelete = async () => {
 		if (modal.type !== 'delete') return;
 
-		const res = await fetch(`/api/projects/${modal.project._id}`, {
+		const { res, message, success } = await fetchAPI({
+			endpoint: `/api/projects/${modal.project._id}`,
 			method: 'DELETE',
 		});
-		const { success, message } = await res.json();
 
 		if (!success || !res.ok) {
 			toast.error(message || 'Something went wrong');

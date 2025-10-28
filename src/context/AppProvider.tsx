@@ -2,7 +2,7 @@
 import { Menu } from 'components';
 import HomerMode from 'components/homer';
 import { Breadcrumb } from 'components/ui';
-import { ThemeProvider } from 'context/';
+import { AppStoreProvider } from 'context/';
 import { usePathname } from 'next/navigation';
 import { type ReactNode, useState } from 'react';
 import { ToastContainer } from 'react-toastify';
@@ -20,7 +20,7 @@ const AppProvider = ({ children }: { children: ReactNode }) => {
 	const isHome = pathname === '/';
 
 	return (
-		<ThemeProvider>
+		<AppStoreProvider>
 			<ToastContainer />
 			{mode === 'fun' ? (
 				<HomerMode toggleMode={toggleMode} />
@@ -33,7 +33,7 @@ const AppProvider = ({ children }: { children: ReactNode }) => {
 					</main>
 				</>
 			)}
-		</ThemeProvider>
+		</AppStoreProvider>
 	);
 };
 

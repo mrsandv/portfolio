@@ -14,6 +14,7 @@ import {
 } from 'react';
 import { toast } from 'react-toastify';
 import type { TPost, TTag } from 'types/posts';
+import { fetchAPI } from 'utils/http';
 
 type TPostForm = {
 	onSuccess: () => void;
@@ -26,13 +27,14 @@ const PostForm = ({ onSuccess, post, mode }: TPostForm) => {
 	const [tags, setTags] = useState<TTag[]>([]);
 
 	const fetchTags = useCallback(async () => {
-		const res = await fetch('/api/blog/tags');
-		const { success, message, data } = await res.json();
-		if (success) {
-			setTags(data);
-		} else {
+		const { success, message, data, res } = await fetchAPI({
+			endpoint: '/api/blog/tags',
+		});
+
+		if (!res.ok || !success) {
 			toast.error(message);
 		}
+		setTags(data);
 	}, []);
 
 	useEffect(() => {
@@ -45,19 +47,18 @@ const PostForm = ({ onSuccess, post, mode }: TPostForm) => {
 		const endpoint = mode === 'create' ? '/api/blog' : `/api/blog/${post?._id}`;
 		const method = mode === 'create' ? 'POST' : 'PATCH';
 
-		const res = await fetch(endpoint, {
+		const { success, message, res } = await fetchAPI({
+			endpoint,
 			method,
 			body: JSON.stringify(form),
-			headers: { 'Content-Type': 'application/json' },
 		});
 
-		const { success, message } = await res.json();
-		if (success) {
-			toast.success(message);
-			onSuccess();
-		} else {
+		if (!res.ok || !success) {
 			toast.error(message);
+			return;
 		}
+		toast.success(message);
+		onSuccess();
 	};
 
 	const handleChange = (

@@ -4,7 +4,7 @@ import { useEffect, useMemo, useState } from 'react';
 import '@blocknote/core/fonts/inter.css';
 import { BlockNoteView } from '@blocknote/mantine';
 import '@blocknote/mantine/style.css';
-import { useTheme } from 'context';
+import { useStore } from 'context';
 
 type TEditor = {
 	onChange?: (content: string) => void;
@@ -35,7 +35,7 @@ const Editor = ({
 	editable = true,
 	autosaveInterval = 3000,
 }: TEditor) => {
-	const { theme } = useTheme();
+	const { theme } = useStore();
 	const editor = useCreateBlockNote();
 	const [isContentReady, setIsContentReady] = useState(false);
 	const [localContent, setLocalContent] = useState<string | undefined>(content);

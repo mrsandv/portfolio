@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useCallback, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import type { TPost, TTag } from 'types/posts';
+import { fetchAPI } from 'utils/http';
 
 export default function BlogPage() {
 	const [posts, setPosts] = useState<TPost[]>([]);
@@ -12,8 +13,10 @@ export default function BlogPage() {
 
 	const getPosts = useCallback(async (tag?: string) => {
 		const query = tag ? `?tag=${tag}` : '';
-		const res = await fetch(`/api/blog/${query}`);
-		const { success, data, message } = await res.json();
+		const { success, data, message, res } = await fetchAPI({
+			endpoint: `/api/blog/${query}`,
+		});
+
 		if (!success || !res.ok) {
 			toast.error(message);
 		} else {

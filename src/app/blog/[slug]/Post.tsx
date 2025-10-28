@@ -5,6 +5,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { FaHandsClapping, FaRegComment } from 'react-icons/fa6';
 import { toast } from 'react-toastify';
 import type { TPost } from 'types/posts';
+import { fetchAPI } from 'utils/http';
 import { humanFormatDate } from 'utils/misc';
 
 type TPostProps = {
@@ -15,9 +16,9 @@ const Post = ({ slug }: TPostProps) => {
 	const [post, setPost] = useState<TPost | null>(null);
 
 	const fetchPost = useCallback(async () => {
-		const res = await fetch(`/api/blog/${slug}`);
-
-		const { success, message, data } = await res.json();
+		const { res, success, message, data } = await fetchAPI({
+			endpoint: `/api/blog/${slug}`,
+		});
 
 		if (!success || !res.ok) {
 			toast.error(message);

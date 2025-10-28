@@ -2,6 +2,7 @@ import { Chip } from 'components/ui';
 import { memo, useCallback, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import type { TTag } from 'types/posts';
+import { fetchAPI } from 'utils/http';
 
 type TagProps = {
 	selected?: string;
@@ -13,13 +14,15 @@ const Tags = ({ handleFilterByTag, selected }: TagProps) => {
 	const [activeTag, setActiveTag] = useState<string | null>(null);
 
 	const fetchTags = useCallback(async () => {
-		const res = await fetch('/api/blog/tags');
-		const { success, message, data } = await res.json();
-		if (success) {
-			setTags(data);
-		} else {
+		const { success, message, data, res } = await fetchAPI({
+			endpoint: '/api/blog/tags',
+		});
+
+		if (!res.ok || !success) {
 			toast.error(message);
+			return;
 		}
+		setTags(data);
 	}, []);
 
 	useEffect(() => {

@@ -5,6 +5,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { FaTrash } from 'react-icons/fa';
 import { toast } from 'react-toastify';
 import type { TImage } from 'types/images';
+import { fetchAPI } from 'utils/http';
 
 type TModalState =
 	| { type: 'none' }
@@ -18,10 +19,11 @@ const ImagesWrapper = () => {
 
 	const handleDelete = async () => {
 		if (modal.type !== 'delete') return;
-		const res = await fetch(`/api/images/${modal.image._id}`, {
+		const { res, success, message } = await fetchAPI({
+			endpoint: `/api/images/${modal.image._id}`,
 			method: 'DELETE',
 		});
-		const { success, message } = await res.json();
+
 		if (!success || !res.ok) {
 			toast.error(message || 'Something went wrong');
 			return;
@@ -32,13 +34,15 @@ const ImagesWrapper = () => {
 	};
 
 	const fetchImages = useCallback(async () => {
-		const res = await fetch('/api/images');
-		const { data, success, message } = await res.json();
-		if (success) {
-			setImages(data);
-		} else {
+		const { data, success, message, res } = await fetchAPI({
+			endpoint: '/api/images',
+		});
+
+		if (!res.ok || !success) {
 			toast.error(message);
+			return;
 		}
+		setImages(data);
 	}, []);
 
 	useEffect(() => {

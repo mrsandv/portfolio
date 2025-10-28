@@ -1,6 +1,8 @@
 'use client';
 import { useCallback, useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 import type { TProject } from 'types/projects';
+import { fetchAPI } from 'utils/http';
 
 type TClientView = {
 	id: string;
@@ -10,11 +12,14 @@ const ProjectPreview = ({ id }: TClientView) => {
 	const [project, setProject] = useState<TProject | null>(null);
 
 	const fetchProject = useCallback(async () => {
-		const res = await fetch(`/api/projects/${id}`);
-		if (res.ok) {
-			const { data } = await res.json();
-			setProject(data);
+		const { res, data, message, success } = await fetchAPI({
+			endpoint: `/api/projects/${id}`,
+		});
+		if (!res.ok || !success) {
+			toast.error(message);
+			return;
 		}
+		setProject(data);
 	}, [id]);
 
 	useEffect(() => {

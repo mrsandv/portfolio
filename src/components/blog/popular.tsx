@@ -3,19 +3,21 @@ import Link from 'next/link';
 import { useCallback, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import type { TPost } from 'types/posts';
+import { fetchAPI } from 'utils/http';
 
 const Popular = () => {
 	const [posts, setPosts] = useState<TPost[]>([]);
 
 	const fetchPupular = useCallback(async () => {
-		const res = await fetch('api/blog/?popular=true');
-		const { success, data, message } = await res.json();
+		const { success, data, message, res } = await fetchAPI({
+			endpoint: 'api/blog/?popular=true',
+		});
 
-		if (success) {
-			setPosts(data);
-		} else {
+		if (!res.ok || !success) {
 			toast.error(message);
+			return;
 		}
+		setPosts(data);
 	}, []);
 
 	useEffect(() => {

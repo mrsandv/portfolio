@@ -1,9 +1,10 @@
 'use client';
 import { HomerIcon } from 'assets/icons';
-import { useTheme } from 'context';
+import { useStore } from 'context';
 import Image from 'next/image';
 import Link from 'next/link';
-import { FaMoon, FaSun } from 'react-icons/fa';
+import { usePathname } from 'next/navigation';
+import { FaMoon, FaSignInAlt, FaSignOutAlt, FaSun } from 'react-icons/fa';
 
 export const menuItems = [
 	{ href: '/blog', key: 'blog' },
@@ -17,8 +18,8 @@ type TMenuProps = {
 };
 
 const Menu = ({ toggleMode }: TMenuProps) => {
-	const { theme, toggleTheme } = useTheme();
-
+	const { theme, toggleTheme, currentUser, logout } = useStore();
+	const pathName = usePathname();
 	return (
 		<nav className="bg-zinc-950 dark:bg-zinc-950 text-zinc-100 flex items-center justify-between sm:p-2 p-4 h-[10vh] w-full">
 			<Link href="/">
@@ -32,6 +33,26 @@ const Menu = ({ toggleMode }: TMenuProps) => {
 				>
 					{theme === 'light' ? <FaMoon /> : <FaSun />}
 				</button>
+				{!currentUser ? (
+					pathName !== '/login' && (
+						<Link
+							href="/sudo"
+							className="cursor-pointer mx-5 flex items-center"
+						>
+							<FaSignInAlt className="w-5 h-5 text-teal-600" />
+						</Link>
+					)
+				) : (
+					<button
+						type="button"
+						className="cursor-pointer mx-5"
+						onClick={() => {
+							logout();
+						}}
+					>
+						<FaSignOutAlt className="w-5 h-5 text-rose-600" />
+					</button>
+				)}
 				<button
 					disabled
 					type="button"

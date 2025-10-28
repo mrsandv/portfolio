@@ -3,17 +3,22 @@ import { Card } from 'components/ui';
 import Link from 'next/link';
 import { useCallback, useEffect, useState } from 'react';
 import { FaGithub, FaPlay } from 'react-icons/fa';
+import { toast } from 'react-toastify';
 import type { TProject } from 'types/projects';
+import { fetchAPI } from 'utils/http';
 
 export default function ProjectsPage() {
 	const [projects, setProjects] = useState<TProject[]>([]);
 
 	const getProjects = useCallback(async () => {
-		const res = await fetch('/api/projects');
-		if (res.ok) {
-			const { data } = await res.json();
-			setProjects(data);
+		const { res, success, data, message } = await fetchAPI({
+			endpoint: '/api/projects',
+		});
+		if (!res.ok || !success) {
+			toast.error(message);
+			return;
 		}
+		setProjects(data);
 	}, []);
 
 	useEffect(() => {

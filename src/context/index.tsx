@@ -1,4 +1,5 @@
 'use client';
+import { useRouter } from 'next/navigation';
 import {
 	createContext,
 	type ReactNode,
@@ -6,16 +7,37 @@ import {
 	useEffect,
 	useState,
 } from 'react';
+import { logoutSession } from 'utils/misc';
 
 type TTheme = 'dark' | 'light';
 
-type TContext = { theme: TTheme; toggleTheme: () => void };
+type TUser = {
+	rol: string;
+	name: string;
+};
 
-const ThemeContext = createContext<TContext | null>(null);
+type TContext = {
+	theme: TTheme;
+	toggleTheme: () => void;
+	currentUser: TUser | null;
+	login: (user: TUser) => void;
+	logout: () => void;
+};
 
-export const ThemeProvider = ({ children }: { children: ReactNode }) => {
+const AppContext = createContext<TContext | null>(null);
+
+export const AppStoreProvider = ({ children }: { children: ReactNode }) => {
+	const router = useRouter();
 	const [theme, setTheme] = useState<TTheme>('light');
+	const [currentUser, setCurrentUser] = useState<TUser | null>(null);
+
 	const toggleTheme = () => setTheme((t) => (t === 'light' ? 'dark' : 'light'));
+	const login = (user: TUser) => setCurrentUser(user);
+	const logout = async () => {
+		await logoutSession();
+		setCurrentUser(null);
+		router.push('/login');
+	};
 
 	useEffect(() => {
 		const root = document.documentElement;
@@ -25,16 +47,18 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
 	}, [theme]);
 
 	return (
-		<ThemeContext.Provider value={{ theme, toggleTheme }}>
+		<AppContext.Provider
+			value={{ theme, toggleTheme, currentUser, login, logout }}
+		>
 			{children}
-		</ThemeContext.Provider>
+		</AppContext.Provider>
 	);
 };
 
-export const useTheme = () => {
-	const ctx = useContext(ThemeContext);
+export const useStore = () => {
+	const ctx = useContext(AppContext);
 	if (!ctx) {
-		throw new Error('useTheme must be used within ThemeProvider');
+		throw new Error('useStore must be used within AppProvider');
 	}
 	return ctx;
 };
