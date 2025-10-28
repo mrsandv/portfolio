@@ -50,7 +50,7 @@ export async function PATCH(
 			return new Response(
 				JSON.stringify({
 					success: false,
-					message: 'Image not found',
+					message: 'Post not found',
 				}),
 				{ status: 404 }
 			);
@@ -58,7 +58,7 @@ export async function PATCH(
 		return new Response(
 			JSON.stringify({
 				success: true,
-				message: 'The ',
+				message: 'Success on post update',
 			})
 		);
 	} catch (err) {

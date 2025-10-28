@@ -17,7 +17,7 @@ export default function SudoPage() {
 
 	return (
 		<div>
-			<div className="w-full h-10">
+			<div className="w-full h-10 flex justify-end">
 				{tabs.map(({ id, label }) => (
 					<button
 						type="button"

@@ -68,9 +68,9 @@ const Dialog = ({
 					type="button"
 					aria-label="Close modal"
 					onClick={onClose}
-					className="text-gray-600 hover:text-rose-800 cursor-pointer absolute top-4 right-4"
+					className="text-zinc-700 dark:text-rose-700 hover:text-rose-600 transition-colors cursor-pointer absolute top-4 right-4"
 				>
-					<FaTimesCircle className="w-6 h-6" />
+					<FaTimesCircle className="w-5 h-5" />
 				</button>
 
 				{variant === 'success' ? (

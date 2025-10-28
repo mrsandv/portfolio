@@ -8,21 +8,24 @@ type TInput = {
 };
 
 const baseStyles =
-	'block w-full rounded-lg text-sm p-2.5 border focus:ring-2 transition-all duration-200';
+	'block w-full rounded-lg text-sm p-2.5 border focus:ring-1 transition-all duration-200 outline-none';
 
 const variants = {
 	input: {
 		accent:
-			'bg-rose-50 border border-rose-500 text-rose-900 placeholder-rose-700 text-sm rounded-lg focus:ring-rose-500 dark:bg-gray-700 focus:border-rose-500 block w-full p-2.5 dark:text-rose-500 dark:placeholder-rose-500 dark:border-rose-500',
+			'border-zinc-500 text-zinc-900 dark:text-zinc-300 placeholder-zinc-500 text-sm focus:ring-rose-500 dark:bg-gray-700 focus:border-rose-500',
 		danger:
-			'bg-red-50 border border-red-500 text-red-900 placeholder-red-700 text-sm rounded-lg focus:ring-red-500 dark:bg-gray-700 focus:border-red-500 block w-full p-2.5 dark:text-red-500 dark:placeholder-red-500 dark:border-red-500',
+			'bg-red-50 border-red-500 text-red-900 placeholder-red-700 text-sm focus:ring-red-500 dark:bg-gray-700 focus:border-red-500 dark:text-red-500 dark:border-red-500',
 		success:
-			'bg-teal-50 border border-teal-500 text-teal-900 placeholder-teal-700 text-sm rounded-lg focus:ring-teal-500 dark:bg-gray-700 focus:border-teal-500 block w-full p-2.5 dark:text-teal-500 dark:placeholder-teal-500 dark:border-teal-500',
+			'bg-teal-50 border-teal-500 text-teal-900 placeholder-teal-700 text-sm focus:ring-teal-500 dark:bg-gray-700 focus:border-teal-500 dark:text-teal-500 dark:border-teal-500',
 	},
 	label: {
-		accent: 'text-rose-700 focus:ring-rose-300 dark:focus:ring-rose-800',
-		success: 'text-teal-700 focus:ring-teal-300 dark:focus:ring-teal-800',
-		danger: 'text-red-700 focus:ring-red-300 dark:focus:ring-red-800',
+		accent:
+			'text-zinc-700 dark:text-zinc-300 focus:ring-rose-300 dark:focus:ring-rose-800',
+		success:
+			'text-teal-700 dark:text-teal-300 focus:ring-teal-300 dark:focus:ring-teal-800',
+		danger:
+			'text-red-700 dark:text-red-300 focus:ring-red-300 dark:focus:ring-red-800',
 	},
 };
 
@@ -55,7 +58,7 @@ const Input = ({
 				})}
 			/>
 			{message && (
-				<p className="mt-2 text-sm text-red-500 dark:text-red-400">{message}</p>
+				<p className="mt-2 text-xs text-red-500 dark:text-red-400">{message}</p>
 			)}
 		</div>
 	);

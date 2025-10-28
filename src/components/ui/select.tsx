@@ -110,7 +110,6 @@ function Option({ children, className, variant, ...rest }: SelectOptionProps) {
 	);
 }
 
-// 🧠 Namespace pattern
 const Select = {
 	Wrapper,
 	Option,

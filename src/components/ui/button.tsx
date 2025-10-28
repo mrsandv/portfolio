@@ -10,7 +10,7 @@ const baseStyles =
 
 const variants = {
 	accent:
-		'bg-rose-700 hover:bg-rose-800  focus:ring-rose-300 dark:bg-rose-600 dark:hover:bg-rose-700 dark:focus:ring-rose-800',
+		'bg-zinc-700 hover:bg-zinc-800  focus:ring-zinc-300 dark:bg-zinc-600 dark:hover:bg-zinc-700 dark:focus:ring-zinc-800',
 	danger:
 		'bg-red-700 hover:bg-red-800  focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800',
 	success:

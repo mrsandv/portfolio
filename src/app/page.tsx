@@ -34,35 +34,35 @@ const HomePage = () => {
 						<Link
 							href="https://github.com/mrsandv"
 							target="_blank"
-							className="text-lg text-rose-700 hover:opacity-90 dark:text-zinc-200"
+							className="text-lg text-zinc-700 hover:opacity-90 dark:text-zinc-200"
 						>
 							<FaGithub />
 						</Link>
 						<Link
 							href="https://linkedin.com/in/mrsan"
 							target="_blank"
-							className="text-lg text-rose-700 hover:opacity-90 dark:text-zinc-200"
+							className="text-lg text-zinc-700 hover:opacity-90 dark:text-zinc-200"
 						>
 							<FaLinkedinIn />
 						</Link>
 						<Link
 							href="https://exercism.org/profiles/mrsandv"
 							target="_blank"
-							className="text-lg text-rose-700 hover:opacity-90 dark:text-zinc-200"
+							className="text-lg text-zinc-700 hover:opacity-90 dark:text-zinc-200"
 						>
 							<FaCode />
 						</Link>
 						<Link
 							href="https://hackerrank.com/profile/mrsan"
 							target="_blank"
-							className="text-lg text-rose-700 hover:opacity-90 dark:text-zinc-200"
+							className="text-lg text-zinc-700 hover:opacity-90 dark:text-zinc-200"
 						>
 							<FaHackerrank />
 						</Link>
 						<Link
 							href="https://buymeacoffee.com/mrsan"
 							target="_blank"
-							className="text-lg text-rose-700 hover:opacity-90 dark:text-zinc-200"
+							className="text-lg text-zinc-700 hover:opacity-90 dark:text-zinc-200"
 						>
 							<FaCoffee />
 						</Link>

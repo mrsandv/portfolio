@@ -11,65 +11,72 @@ type TEditor = {
 	content: string | undefined;
 	className?: string;
 	editable?: boolean;
+	autosaveInterval?: number;
 };
 
-const SkeletonEditor = ({ className = '' }: { className?: string }) => {
-	return (
-		<div
-			className={
-				'rounded-md border border-dashed p-6 animate-pulse selection-none ' +
-				className
-			}
-		>
-			<div className="h-6 w-3/4 bg-gray-200 mb-4 rounded" />
-			<div className="h-4 w-full bg-gray-200 mb-2 rounded" />
-			<div className="h-4 w-5/6 bg-gray-200 mb-2 rounded" />
-			<div className="h-4 w-2/3 bg-gray-200 rounded" />
-		</div>
-	);
-};
+const SkeletonEditor = ({ className = '' }: { className?: string }) => (
+	<div
+		className={
+			'rounded-md border border-dashed p-6 animate-pulse selection-none ' +
+			className
+		}
+	>
+		<div className="h-6 w-3/4 bg-gray-200 mb-4 rounded" />
+		<div className="h-4 w-full bg-gray-200 mb-2 rounded" />
+		<div className="h-4 w-5/6 bg-gray-200 mb-2 rounded" />
+		<div className="h-4 w-2/3 bg-gray-200 rounded" />
+	</div>
+);
 
 const Editor = ({
 	content,
 	onChange,
-	className = '',
+	className = 'w-full',
 	editable = true,
+	autosaveInterval = 3000,
 }: TEditor) => {
 	const { theme } = useTheme();
 	const editor = useCreateBlockNote();
-
 	const [isContentReady, setIsContentReady] = useState(false);
+	const [localContent, setLocalContent] = useState<string | undefined>(content);
 
 	const parsedContent = useMemo(() => {
 		if (!content) return null;
-		return JSON.parse(content);
+		try {
+			return JSON.parse(content);
+		} catch {
+			return null;
+		}
 	}, [content]);
 
 	useEffect(() => {
 		if (!editor) return;
-		if (!parsedContent) {
-			setIsContentReady(false);
-			return;
-		}
-
 		try {
-			editor.replaceBlocks(editor.document, parsedContent);
+			if (parsedContent) editor.replaceBlocks(editor.document, parsedContent);
 			setIsContentReady(true);
 		} catch (e) {
-			console.error('Failed to set initial content on BlockNote editor:', e);
-			setIsContentReady(false);
+			console.error('Failed to set content on BlockNote editor:', e);
+			setIsContentReady(true);
 		}
 	}, [editor, parsedContent]);
 
 	const handleChange = () => {
 		if (!editor) return;
 		try {
-			const json = editor.document;
-			onChange?.(JSON.stringify(json));
+			const json = JSON.stringify(editor.document);
+			setLocalContent(json);
 		} catch (e) {
 			console.error('onChange failed:', e);
 		}
 	};
+
+	useEffect(() => {
+		if (!onChange || !autosaveInterval) return;
+		const interval = setInterval(() => {
+			if (localContent) onChange(localContent);
+		}, autosaveInterval);
+		return () => clearInterval(interval);
+	}, [localContent, onChange, autosaveInterval]);
 
 	return (
 		<div className={className}>

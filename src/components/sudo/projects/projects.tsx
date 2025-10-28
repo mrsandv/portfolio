@@ -51,8 +51,8 @@ const ProjectsWrapper = () => {
 	};
 
 	return (
-		<div className="w-full">
-			<div className="flex justify-end items-center w-full">
+		<div className="w-full ">
+			<div className="flex justify-end items-center w-full my-2">
 				<Button
 					variant="accent"
 					onClick={() => {
@@ -73,10 +73,13 @@ const ProjectsWrapper = () => {
 								<Button
 									onClick={() => setModal({ type: 'edit', project: project })}
 								>
-									<FaEdit className="text-rose-500 text-lg cursor-pointer" />
+									<FaEdit className="w-4 h-4" />
 								</Button>
-								<Button onClick={() => setModal({ type: 'delete', project })}>
-									<FaTrash className="text-red-500 cursor-pointer text-lg" />
+								<Button
+									variant="danger"
+									onClick={() => setModal({ type: 'delete', project })}
+								>
+									<FaTrash className="w-4 h-4" />
 								</Button>
 							</div>
 						}
@@ -88,21 +91,35 @@ const ProjectsWrapper = () => {
 				<Modal
 					title="New Project"
 					isOpen
-					onClose={() => setModal({ type: 'none' })}
+					size="sm"
+					onClose={() => {
+						fetchProjects();
+						setModal({ type: 'none' });
+					}}
 				>
-					<ProjectForm mode="create" onSuccess={fetchProjects} />
+					<ProjectForm
+						mode="create"
+						onSuccess={() => {
+							fetchProjects();
+							setModal({ type: 'none' });
+						}}
+					/>
 				</Modal>
 			)}
 			{modal.type === 'edit' && (
 				<Modal
 					title={`Edit: ${modal.project.title}`}
 					isOpen
+					size="lg"
 					onClose={() => setModal({ type: 'none' })}
 				>
 					<ProjectForm
 						project={modal.project}
 						mode="edit"
-						onSuccess={fetchProjects}
+						onSuccess={() => {
+							fetchProjects();
+							setModal({ type: 'none' });
+						}}
 					/>
 				</Modal>
 			)}

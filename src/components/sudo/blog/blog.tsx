@@ -108,7 +108,14 @@ const BlogWrapper = () => {
 					isOpen
 					onClose={() => setModal({ type: 'none' })}
 				>
-					<PostForm post={modal.post} mode="edit" onSuccess={fetchPosts} />
+					<PostForm
+						post={modal.post}
+						mode="edit"
+						onSuccess={() => {
+							fetchPosts();
+							setModal({ type: 'none' });
+						}}
+					/>
 				</Modal>
 			)}
 			{modal.type === 'delete' && (

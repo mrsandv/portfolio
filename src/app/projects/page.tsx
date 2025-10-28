@@ -21,7 +21,7 @@ export default function ProjectsPage() {
 	}, [getProjects]);
 
 	return (
-		<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 p-4">
+		<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-4 p-4">
 			{projects.map((project) => (
 				<Card
 					key={project._id}
@@ -34,16 +34,16 @@ export default function ProjectsPage() {
 								href={project.repoUrl}
 								target="_blank"
 								rel="noopener noreferrer"
-								className="text-zinc-700 dark:text-zinc-100 text-2xl"
+								className="text-zinc-700 dark:text-zinc-100 cursor-pointer hover:opacity-40"
 							>
-								<FaGithub />
+								<FaGithub className="w-5 h-5" />
 							</Link>
 							{project.liveUrl && (
 								<Link
-									className="text-zinc-700 dark:text-zinc-100 text-2xl"
+									className="text-zinc-700 dark:text-zinc-100 cursor-pointer hover:opacity-40"
 									href={`/projects/${project._id}`}
 								>
-									<FaPlay />
+									<FaPlay className="w-5 h-5" />
 								</Link>
 							)}
 						</div>

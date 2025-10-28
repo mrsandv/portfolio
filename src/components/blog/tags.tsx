@@ -5,7 +5,7 @@ import type { TTag } from 'types/posts';
 
 type TagProps = {
 	selected?: string;
-	handleFilterByTag: (tag: string) => void;
+	handleFilterByTag: (tag: TTag) => void;
 };
 
 const Tags = ({ handleFilterByTag, selected }: TagProps) => {
@@ -35,11 +35,11 @@ const Tags = ({ handleFilterByTag, selected }: TagProps) => {
 	}, [selected]);
 
 	return (
-		<div className=" flex gap-4 flex-wrap">
+		<div className="flex flex-col h-full w-full gap-2">
 			{tags.map((tag) => (
 				<Chip
 					active={activeTag === tag._id}
-					onClick={() => handleFilterByTag(tag._id)}
+					onClick={() => handleFilterByTag(tag)}
 					text={tag.displayName}
 					count={tag.count}
 					key={tag._id}

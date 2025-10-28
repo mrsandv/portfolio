@@ -13,10 +13,10 @@ type TModal = {
 };
 
 const sizes = {
-	auto: 'max-w-auto',
-	sm: 'max-w-sm',
-	md: 'max-w-md',
-	lg: 'max-w-lg',
+	auto: 'w-fit',
+	sm: 'w-[40vw]',
+	md: 'w-[60vw]',
+	lg: 'w-[75vw]',
 	full: 'w-[90vw] max-h-[90vh] ',
 };
 
@@ -24,7 +24,7 @@ export default function Modal({
 	title,
 	isOpen,
 	onClose,
-	size = 'md',
+	size = 'auto',
 	children,
 }: TModal) {
 	const labelId = useId();
@@ -64,7 +64,7 @@ export default function Modal({
 				aria-labelledby={labelId}
 				tabIndex={-1}
 				className={clsx(
-					'relative bg-zinc-100 dark:bg-zinc-600 p-4 rounded shadow-md z-30 ',
+					'relative bg-white dark:bg-zinc-600 p-4 rounded-xl shadow-md z-30',
 					sizes[size]
 				)}
 			>
@@ -76,12 +76,12 @@ export default function Modal({
 						type="button"
 						aria-label="Close modal"
 						onClick={onClose}
-						className="text-gray-600 hover:text-rose-800"
+						className="text-zinc-700 dark:text-rose-700 hover:text-rose-600 transition-colors cursor-pointer"
 					>
-						<FaTimesCircle className="w-6 h-6" />
+						<FaTimesCircle className="w-5 h-5" />
 					</button>
 				</header>
-				<main className="mt-2 overflow-y-scroll max-h-[80vh]">{children}</main>
+				<main className="mt-2 overflow-y-auto max-h-[80vh]">{children}</main>
 			</div>
 		</div>,
 		document.body

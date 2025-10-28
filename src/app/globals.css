@@ -15,6 +15,6 @@ body {
   --cooper-font: "Cooper-Black";
 }
 
-* {
-  /* outline: papayawhip 1px dashed; */
+.bn-editor {
+  padding: 0;
 }

@@ -66,7 +66,6 @@ export default function UploadImage({ onSuccess }: TUploadImage) {
 				onSubmit={handleUpload}
 				className="border-2 border-dashed border-rose-900 rounded-md p-4 flex flex-col items-center gap-4"
 			>
-				{/* Input oculto */}
 				<input
 					ref={inputFileRef}
 					type="file"

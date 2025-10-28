@@ -27,7 +27,7 @@ export async function PATCH(
 		return new Response(
 			JSON.stringify({
 				success: true,
-				message: 'The ',
+				message: 'Success on image update',
 			})
 		);
 	} catch (err) {

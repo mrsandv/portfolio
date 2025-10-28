@@ -1,4 +1,4 @@
-import { Button, ImageLibrary, Input, TextArea } from 'components/ui/';
+import { Button, ImageLibrary, Input, Select, TextArea } from 'components/ui/';
 import { type ChangeEvent, type FormEvent, useState } from 'react';
 import { toast } from 'react-toastify';
 import type { TProject } from 'types/projects';
@@ -50,38 +50,69 @@ const ProjectForm = ({ onSuccess, project, mode }: TProjectForm) => {
 	};
 
 	return (
-		<form className="grid grid-cols-2 gap-2" onSubmit={handleSubmit}>
-			<Input
-				label="Título"
-				type="text"
-				name="title"
-				placeholder="Título"
-				value={form.title}
-				message="some"
-				onChange={handleChange}
-			/>
-
-			<ImageLibrary
-				selected={form.image}
-				onChange={(url) => setForm({ ...form, image: url ?? '' })}
-			/>
-
-			<TextArea
-				label="Descripción"
-				name="description"
-				placeholder="Descripción"
-				value={form.description}
-				onChange={handleChange}
-			/>
-
-			<select name="type" value={form.type} onChange={handleChange}>
-				<option value="front">Frontend</option>
-				<option value="back">Backend</option>
-				<option value="full">Fullstack</option>
-				<option value="ia">IA</option>
-			</select>
-
-			<Button>{mode === 'create' ? 'Guardar' : 'Actualizar'}</Button>
+		<form className="flex flex-col p-2" onSubmit={handleSubmit}>
+			<div className="flex w-full gap-4">
+				<div className="flex flex-col w-2/3 gap-2">
+					<Input
+						required
+						label="Título"
+						type="text"
+						name="title"
+						placeholder="Título"
+						value={form.title}
+						onChange={handleChange}
+					/>
+					<TextArea
+						required
+						label="Descripción"
+						name="description"
+						placeholder="Descripción"
+						value={form.description}
+						onChange={handleChange}
+					/>
+					<Select.Wrapper
+						name="type"
+						required
+						value={form.type}
+						onChange={handleChange}
+					>
+						<Select.Option value="">Select an option</Select.Option>
+						<Select.Option value="front">Frontend</Select.Option>
+						<Select.Option value="back">Backend</Select.Option>
+						<Select.Option value="full">Fullstack</Select.Option>
+						<Select.Option value="ia">IA</Select.Option>
+					</Select.Wrapper>
+				</div>
+				<div className="flex justify-center items-center flex-1">
+					<ImageLibrary
+						selected={form.image}
+						onChange={(url) => setForm({ ...form, image: url ?? '' })}
+					/>
+				</div>
+			</div>
+			<div className="grid grid-cols-2 gap-4 my-2">
+				<Input
+					required
+					label="Demo URL"
+					type="text"
+					name="liveUrl"
+					placeholder="Demo URL"
+					value={form.liveUrl}
+					onChange={handleChange}
+				/>
+				<Input
+					required
+					label="Repo URL"
+					type="text"
+					name="repoUrl"
+					placeholder="Repo URL"
+					value={form.repoUrl}
+					onChange={handleChange}
+				/>
+			</div>
+			<div className="flex justify-end">
+				<Button>{mode === 'create' ? 'Guardar' : 'Actualizar'}</Button>
+			</div>
 		</form>
 	);
 };
