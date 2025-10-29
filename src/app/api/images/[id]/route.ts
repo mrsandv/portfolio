@@ -60,7 +60,9 @@ export async function DELETE(
 				{ status: 404 }
 			);
 		}
-		await del(data.url, { token: process.env.BLOB_READ_WRITE_TOKEN });
+		await del(data.url, {
+			token: process.env.BLOB_READ_WRITE_TOKEN_READ_WRITE_TOKEN,
+		});
 		await ImageModel.findByIdAndDelete({ _id: id });
 
 		return new Response(
