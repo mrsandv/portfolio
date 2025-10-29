@@ -26,7 +26,7 @@ export default function ProjectsPage() {
 	}, [getProjects]);
 
 	return (
-		<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-4 p-4">
+		<div className="flex flex-wrap gap-4 p-4">
 			{projects.map((project) => (
 				<Card
 					key={project._id}

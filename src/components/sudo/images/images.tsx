@@ -76,9 +76,12 @@ const ImagesWrapper = () => {
 					</Modal>
 				)}
 			</div>
-			<div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
+			<div className="flex gap-4 flex-wrap">
 				{images.map((image) => (
-					<div key={image._id} className="rounded-2xl h-[200px] relative z-0">
+					<div
+						key={image._id}
+						className="rounded-2xl h-[200px] w-[320px] relative z-0"
+					>
 						<button
 							type="button"
 							className="absolute bottom-2 right-2 z-10 bg-zinc-800/90 rounded-full p-2 cursor-pointer hover:scale-105"
@@ -86,7 +89,7 @@ const ImagesWrapper = () => {
 						>
 							<FaTrash className="text-red-600 w-4 h-4" />
 						</button>
-						<span className="absolute bottom-2 left-2 z-10 rounded-lg text-sm px-2 py-1 text-zinc-100 bg-zinc-950/60">
+						<span className="absolute bottom-2 w-2/3 left-2 z-10 rounded-lg text-sm px-2 py-1 text-zinc-100 bg-zinc-950/60 whitespace-nowrap overflow-ellipsis overflow-hidden">
 							{image.alt}
 						</span>
 						<Image

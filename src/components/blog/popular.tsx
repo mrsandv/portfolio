@@ -27,7 +27,7 @@ const Popular = () => {
 	return (
 		<div className="flex flex-col h-full justify-between">
 			<h1 className="font-bold text-sm dark:text-zinc-100">Top 5</h1>
-			<div className="w-full grid grid-cols- h-full sm:grid-cols-5 gap-4 p-4">
+			<div className="w-full flex h-full gap-4 p-4">
 				{posts.map((post) => (
 					<Link key={post._id} href={`/blog/${post._id}`}>
 						<Card

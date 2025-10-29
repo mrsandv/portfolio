@@ -40,6 +40,7 @@ export default function UploadImage({ onSuccess }: TUploadImage) {
 			const res = await fetch(`/api/images/upload?filename=${file.name}`, {
 				method: 'POST',
 				body: file,
+				headers: { 'x-api-key': process.env.NEXT_PUBLIC_API_KEY as string },
 			});
 
 			const { success, message } = await res.json();

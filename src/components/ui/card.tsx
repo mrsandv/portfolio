@@ -33,7 +33,7 @@ const Card = ({ title, description, img, content, mini = false }: TCard) => {
 		);
 
 	return (
-		<div className="flex max-w-sm min-h-56  bg-stone-100 border border-gray-200 rounded-lg shadow-sm shadow-stone-500/40 hover:shadow-rose-800/30 dark:bg-zinc-800 dark:border-gray-700">
+		<div className="flex w-[350px]  min-h-56  bg-stone-100 border border-gray-200 rounded-lg shadow-sm shadow-stone-500/40 hover:shadow-rose-800/30 dark:bg-zinc-800 dark:border-gray-700">
 			{img && (
 				<div className="relative w-1/2 overflow-hidden rounded-l-lg">
 					<Image
