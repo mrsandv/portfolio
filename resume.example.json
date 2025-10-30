@@ -1,0 +1,123 @@
+{
+  "version": 1.0,
+  "name": "Your name",
+  "lastName": "lastname",
+  "contactInfo": {
+    "phone": {
+      "text": "+52(55)22-22-22-22 // Visual representation",
+      "value": "tel:+525522222222"
+    },
+    "email": {
+      "text": "your@mail.com",
+      "value": "mailto:your@mail.com"
+    },
+    "linkedIn": {
+      "text": "linkedin.com/in/your-link-in-user",
+      "value": "ttps://www.linkedin.com/in/your-link-in-user"
+    },
+    "city": {
+      "text": "your City",
+      "value": "#"
+    }
+  },
+  "locales": {
+    "es": {
+      "link": {
+        "url": "/cv.pdf",
+        "name": "PDF"
+      },
+      "headers": {
+        "skills": "Habilidades técnicas",
+        "education": "Educación",
+        "experience": "Experiencia",
+        "interests": "Intereses",
+        "languages": "Lenguajes"
+      },
+      "skills": {
+        "langs": {
+          "name": "Lenguajes de programación",
+          "options": [
+            "Javascript",
+            "...add any that you want"
+          ]
+        },
+        "frameworks": {
+          "name": "Frameworks",
+          "options": [
+            "ReactJS",
+            "...add any that you want"
+          ]
+        },
+        "front": {
+          "name": "Frontend",
+          "options": [
+            "HTML",
+            "CSS",
+            "...add any that you want"
+          ]
+        },
+        "db": {
+          "name": "Bases de datos",
+          "options": [
+            "MongoDB",
+            "...add any that you want"
+          ]
+        },
+        "cloud": {
+          "name": "Servicios en la nube",
+          "options": [
+            "AWS",
+            "Digital Ocean",
+            "...add any that you want"
+          ]
+        },
+        "tools": {
+          "name": "Herramientas",
+          "options": [
+            "Markdown",
+            "Git",
+            "...add any that you want"
+          ]
+        }
+      },
+      "experience": {
+        "name-of-the-company": {
+          "title": "Job role",
+          "company": "company name",
+          "startDate": "month year",
+          "endDate": "month year",
+          "responsibilities": [
+            {
+              "id": 0,
+              "text": "Text description of your job responsibilities"
+            },
+            {
+              "...": "Same of es key, its an Array of responsabilities, check types"
+            }
+          ]
+        }
+      },
+      "education": {
+        "school-name": {
+          "degree": "..",
+          "institution": "school name",
+          "startDate": "month year",
+          "endDate": "month year"
+        }
+      },
+      "languages": [
+        {
+          "name": "Inglés",
+          "level": "C1"
+        }
+      ],
+      "interests": [
+        "Ciencias de la computación",
+        "...add any that you want"
+      ]
+    },
+    "en": {
+      "...": "Same of es key, its a Map of Languages, check types"
+    }
+  }
+}

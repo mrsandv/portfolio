@@ -1,10 +1,11 @@
 'use client';
 
+import Image from 'next/image';
 import { type FormEvent, useRef, useState } from 'react';
 import { FaUpload } from 'react-icons/fa';
 import { toast } from 'react-toastify';
+
 import Button from './button';
-import Image from 'next/image';
 
 type TUploadImage = {
 	onSuccess: () => void;

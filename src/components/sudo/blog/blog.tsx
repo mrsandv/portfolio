@@ -4,8 +4,8 @@ import { useCallback, useEffect, useState } from 'react';
 import { FaEdit, FaTrash } from 'react-icons/fa';
 import { toast } from 'react-toastify';
 import type { TPost } from 'types/posts';
-import PostForm from './PostForm';
 import { fetchAPI } from 'utils/http';
+import PostForm from './PostForm';
 
 type TModalState =
 	| { type: 'none' }

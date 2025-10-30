@@ -1,12 +1,46 @@
 'use client';
-import { resume } from 'constants/resume';
-import { useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
+import type { TResume } from 'types/resume';
+import { fetchAPI } from 'utils/http';
 
 type TLangs = 'en' | 'es';
 
 const ResumePage = () => {
 	const [lang, setLang] = useState<TLangs>('en');
+	const [resume, setResume] = useState<TResume | null>(null);
+
+	const fetchResume = useCallback(async () => {
+		const { success, res, message, data } = await fetchAPI({
+			endpoint: '/api/resume',
+		});
+		if (!res.ok || !success) {
+			toast.error(message);
+			return;
+		}
+		setResume(data);
+	}, []);
+
+	useEffect(() => {
+		fetchResume();
+	}, [fetchResume]);
+
+	if (!resume) {
+		return (
+			<div className="flex justify-center items-center h-[80vh]">
+				<div className="w-1/2 bg-zinc-200 p-5 rounded-xl flex items-center">
+					<p>
+						There is not resume loaded, try the api/resume with a JSON, search
+						for:
+						<code>resume.example.json</code> on the root folder
+					</p>
+				</div>
+			</div>
+		);
+	}
+
 	const { name, lastName, contactInfo, locales } = resume;
+
 	const t = locales[lang];
 
 	return (
@@ -75,8 +109,8 @@ const ResumePage = () => {
 				<h2 className="text-xl font-semibold mb-4">{t.headers.education}</h2>
 				{Object.entries(t.education).map(([key, edu]) => (
 					<p className="text-sm" key={key}>
-						<strong>{edu.degree}</strong> — {edu.institution} ({edu.startYear}–
-						{edu.endYear})
+						<strong>{edu.degree}</strong> — {edu.institution} ({edu.startDate}–
+						{edu.endDate})
 					</p>
 				))}
 			</section>

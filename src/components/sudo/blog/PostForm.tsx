@@ -96,6 +96,7 @@ const PostForm = ({ onSuccess, post, mode }: TPostForm) => {
 						value={form.ert}
 						onChange={handleChange}
 					/>
+
 					<MultiSelect
 						options={tags.map((tag) => ({
 							label: tag.displayName,

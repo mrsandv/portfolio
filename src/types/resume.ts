@@ -10,7 +10,7 @@ type TSkillCategory = {
 	options: string[];
 };
 
-type Responsibility = {
+type TResponsability = {
 	id: number;
 	text: string;
 };
@@ -19,15 +19,15 @@ type TExperienceItem = {
 	title: string;
 	company: string;
 	startDate: string;
-	endDate: string;
-	responsibilities: Responsibility[];
+	endDate?: string;
+	responsibilities: TResponsability[];
 };
 
 type TEducationItem = {
 	degree: string;
 	institution: string;
-	startYear: string;
-	endYear: string | 'present';
+	startDate: string;
+	endDate?: string;
 };
 
 type TLanguage = {
@@ -40,14 +40,16 @@ type TLink = {
 	name: string;
 };
 
+type TLocaleHeaders = {
+	skills: string;
+	experience: string;
+	education: string;
+	languages: string;
+	interests: string;
+};
+
 type TLocaleContent = {
-	headers: {
-		skills: string;
-		experience: string;
-		education: string;
-		languages: string;
-		interests: string;
-	};
+	headers: TLocaleHeaders;
 	skills: Record<string, TSkillCategory>;
 	experience: Record<string, TExperienceItem>;
 	education: Record<string, TEducationItem>;
@@ -56,9 +58,18 @@ type TLocaleContent = {
 	link: TLink;
 };
 
+type TLocales = {
+	en: TLocaleContent;
+	es: TLocaleContent;
+	[key: string]: TLocaleContent;
+};
+
 export type TResume = {
 	name: string;
 	lastName: string;
 	contactInfo: TContactInfo;
-	locales: Record<string, TLocaleContent>;
+	locales: TLocales;
+	updatedAt?: string;
+	createdAt?: string;
+	version: number;
 };
