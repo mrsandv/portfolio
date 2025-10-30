@@ -23,8 +23,8 @@
   "locales": {
     "es": {
       "link": {
-        "url": "/cv.pdf",
-        "name": "PDF"
+        "url": "path-of-your-pdf-resume-to-download",
+        "name": "Download PDF"
       },
       "headers": {
         "skills": "Habilidades técnicas",

@@ -56,6 +56,7 @@ const ResumePage = () => {
 			<div className="flex justify-end mb-4 gap-4">
 				<a
 					download
+					target="_blank"
 					className="px-3 py-1 border rounded-md hover:bg-gray-100 dark:hover:text-black cursor-pointer"
 					href={t.link.url}
 				>
