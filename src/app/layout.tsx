@@ -1,6 +1,7 @@
 import AppProvider from 'context/AppProvider';
 import type { ReactNode } from 'react';
 import './globals.css';
+import { Analytics } from '@vercel/analytics/next';
 import type { Metadata } from 'next';
 import { IBM_Plex_Mono } from 'next/font/google';
 
@@ -26,6 +27,7 @@ export default function RootLayout({
 				className={`${ibmMono.variable} flex flex-col min-h-screen bg-white dark:bg-zinc-800`}
 			>
 				<AppProvider>{children}</AppProvider>
+				<Analytics />
 			</body>
 		</html>
 	);
