@@ -6,6 +6,7 @@ export { default as Dialog } from './dialog';
 export { default as Editor } from './editor';
 export { default as ImageLibrary } from './image-library';
 export { default as Input } from './input';
+export { default as Loader } from './loader';
 export { default as Modal } from './modal';
 export { default as MultiSelect } from './multi-select';
 export { default as Select } from './select';

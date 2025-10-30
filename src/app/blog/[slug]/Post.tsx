@@ -1,8 +1,8 @@
 'use client';
 
-import { Editor } from 'components/ui';
+import { Editor, Loader } from 'components/ui';
 import { useCallback, useEffect, useState } from 'react';
-import { FaHandsClapping, FaRegComment } from 'react-icons/fa6';
+// import { FaHandsClapping, FaRegComment } from 'react-icons/fa6';
 import { toast } from 'react-toastify';
 import type { TPost } from 'types/posts';
 import { fetchAPI } from 'utils/http';
@@ -14,8 +14,10 @@ type TPostProps = {
 
 const Post = ({ slug }: TPostProps) => {
 	const [post, setPost] = useState<TPost | null>(null);
+	const [isLoading, setIsloading] = useState<boolean>(false);
 
 	const fetchPost = useCallback(async () => {
+		setIsloading(true);
 		const { res, success, message, data } = await fetchAPI({
 			endpoint: `/api/blog/${slug}`,
 		});
@@ -25,11 +27,16 @@ const Post = ({ slug }: TPostProps) => {
 			return;
 		}
 		setPost(data);
+		setIsloading(false);
 	}, [slug]);
 
 	useEffect(() => {
 		fetchPost();
 	}, [fetchPost]);
+
+	if (isLoading) {
+		return <Loader />;
+	}
 
 	if (!post) return <div>Hubo un error al cargar el post</div>;
 
@@ -52,7 +59,7 @@ const Post = ({ slug }: TPostProps) => {
 					{humanFormatDate(post.createdAt)}
 				</span>
 			</div>
-			<div className="border-t border-b border-zinc-200 gap-2 flex my-5 py-3 px-2 md:px-5 justify-between items-center">
+			{/* <div className="border-t border-b border-zinc-200 gap-2 flex my-5 py-3 px-2 md:px-5 justify-between items-center">
 				<span className="flex gap-1 items-center text-zinc-600 dark:text-zinc-400 text-sm">
 					<FaHandsClapping
 						onClick={() => {}}
@@ -63,7 +70,7 @@ const Post = ({ slug }: TPostProps) => {
 				<a href={`#comments-${slug}`}>
 					<FaRegComment className="text-zinc-600 hover:opacity-60 hover:scale-105 cursor-pointer  w-5 h-5" />
 				</a>
-			</div>
+			</div> */}
 			<Editor editable={false} content={post.content} />
 			<div id={`comments-${slug}`}>
 				{post.comments.map((comment) => (

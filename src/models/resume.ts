@@ -73,8 +73,8 @@ const ResumeSchema = new Schema<IResume>(
 					of: new Schema({
 						degree: String,
 						institution: String,
-						startYear: String,
-						endYear: String,
+						startDate: String,
+						endDate: String,
 					}),
 				},
 				languages: [
@@ -93,4 +93,4 @@ const ResumeSchema = new Schema<IResume>(
 );
 
 // This is a singleton;
-export const ResumeModel = getModel<IResume>('Resume', ResumeSchema);
+export const ResumeModel = getModel<IResume>('Resume', ResumeSchema, 'resume');

@@ -1,5 +1,5 @@
 'use client';
-import { Button, Card, Dialog, Modal } from 'components/ui';
+import { Button, Card, Dialog, Loader, Modal } from 'components/ui';
 import { useCallback, useEffect, useState } from 'react';
 import { FaEdit, FaTrash } from 'react-icons/fa';
 import { toast } from 'react-toastify';
@@ -16,8 +16,10 @@ type TModalState =
 const ProjectsWrapper = () => {
 	const [projects, setProjects] = useState<TProject[]>([]);
 	const [modal, setModal] = useState<TModalState>({ type: 'none' });
+	const [isLoading, setIsloading] = useState<boolean>(false);
 
 	const fetchProjects = useCallback(async () => {
+		setIsloading(true);
 		const { res, data, success, message } = await fetchAPI({
 			endpoint: '/api/projects',
 		});
@@ -26,6 +28,7 @@ const ProjectsWrapper = () => {
 		} else {
 			setProjects(data);
 		}
+		setIsloading(false);
 	}, []);
 
 	useEffect(() => {
@@ -49,6 +52,10 @@ const ProjectsWrapper = () => {
 		fetchProjects();
 		setModal({ type: 'none' });
 	};
+
+	if (isLoading) {
+		return <Loader />;
+	}
 
 	return (
 		<div className="w-full ">

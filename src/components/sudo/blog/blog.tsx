@@ -1,5 +1,5 @@
 'use client';
-import { Button, Card, Dialog, Modal } from 'components/ui';
+import { Button, Card, Dialog, Loader, Modal } from 'components/ui';
 import { useCallback, useEffect, useState } from 'react';
 import { FaEdit, FaTrash } from 'react-icons/fa';
 import { toast } from 'react-toastify';
@@ -16,8 +16,10 @@ type TModalState =
 const BlogWrapper = () => {
 	const [posts, setPosts] = useState<TPost[]>([]);
 	const [modal, setModal] = useState<TModalState>({ type: 'none' });
+	const [isLoading, setIsloading] = useState<boolean>(false);
 
 	const fetchPosts = useCallback(async () => {
+		setIsloading(true);
 		const { data, success, message, res } = await fetchAPI({
 			endpoint: '/api/blog',
 		});
@@ -26,6 +28,7 @@ const BlogWrapper = () => {
 			return;
 		}
 		setPosts(data);
+		setIsloading(false);
 	}, []);
 
 	useEffect(() => {
@@ -49,6 +52,10 @@ const BlogWrapper = () => {
 		fetchPosts();
 		setModal({ type: 'none' });
 	};
+
+	if (isLoading) {
+		return <Loader />;
+	}
 
 	return (
 		<div className="w-full">

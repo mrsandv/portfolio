@@ -1,4 +1,5 @@
 'use client';
+import { Loader } from 'components/ui';
 import { useCallback, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import type { TResume } from 'types/resume';
@@ -9,8 +10,10 @@ type TLangs = 'en' | 'es';
 const ResumePage = () => {
 	const [lang, setLang] = useState<TLangs>('en');
 	const [resume, setResume] = useState<TResume | null>(null);
+	const [isLoading, setIsloading] = useState<boolean>(false);
 
 	const fetchResume = useCallback(async () => {
+		setIsloading(true);
 		const { success, res, message, data } = await fetchAPI({
 			endpoint: '/api/resume',
 		});
@@ -19,11 +22,16 @@ const ResumePage = () => {
 			return;
 		}
 		setResume(data);
+		setIsloading(false);
 	}, []);
 
 	useEffect(() => {
 		fetchResume();
 	}, [fetchResume]);
+
+	if (isLoading) {
+		return <Loader />;
+	}
 
 	if (!resume) {
 		return (
@@ -109,8 +117,10 @@ const ResumePage = () => {
 				<h2 className="text-xl font-semibold mb-4">{t.headers.education}</h2>
 				{Object.entries(t.education).map(([key, edu]) => (
 					<p className="text-sm" key={key}>
-						<strong>{edu.degree}</strong> — {edu.institution} ({edu.startDate}–
-						{edu.endDate})
+						<strong>{edu.degree}</strong>
+						{` — ${edu.institution} (${edu.startDate} –
+						${edu.endDate})
+					`}
 					</p>
 				))}
 			</section>

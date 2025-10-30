@@ -1,5 +1,5 @@
 'use client';
-import { Button, Dialog, Modal, UploadImage } from 'components/ui/';
+import { Button, Dialog, Loader, Modal, UploadImage } from 'components/ui/';
 import Image from 'next/image';
 import { useCallback, useEffect, useState } from 'react';
 import { FaTrash } from 'react-icons/fa';
@@ -16,6 +16,7 @@ type TModalState =
 const ImagesWrapper = () => {
 	const [images, setImages] = useState<TImage[]>([]);
 	const [modal, setModal] = useState<TModalState>({ type: 'none' });
+	const [isLoading, setIsloading] = useState<boolean>(false);
 
 	const handleDelete = async () => {
 		if (modal.type !== 'delete') return;
@@ -34,6 +35,7 @@ const ImagesWrapper = () => {
 	};
 
 	const fetchImages = useCallback(async () => {
+		setIsloading(true);
 		const { data, success, message, res } = await fetchAPI({
 			endpoint: '/api/images',
 		});
@@ -43,11 +45,16 @@ const ImagesWrapper = () => {
 			return;
 		}
 		setImages(data);
+		setIsloading(false);
 	}, []);
 
 	useEffect(() => {
 		fetchImages();
 	}, [fetchImages]);
+
+	if (isLoading) {
+		return <Loader />;
+	}
 
 	return (
 		<div className="w-full">

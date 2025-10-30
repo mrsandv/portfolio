@@ -1,6 +1,6 @@
 'use client';
 import { Popular, Tags } from 'components/blog/';
-import { Card, Widget } from 'components/ui';
+import { Card, Loader, Widget } from 'components/ui';
 import Link from 'next/link';
 import { useCallback, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
@@ -10,8 +10,10 @@ import { fetchAPI } from 'utils/http';
 export default function BlogPage() {
 	const [posts, setPosts] = useState<TPost[]>([]);
 	const [tag, setTag] = useState<string>('');
+	const [isLoading, setIsLoading] = useState<boolean>(false);
 
 	const getPosts = useCallback(async (tag?: string) => {
+		setIsLoading(true);
 		const query = tag ? `?tag=${tag}` : '';
 		const { success, data, message, res } = await fetchAPI({
 			endpoint: `/api/blog/${query}`,
@@ -22,6 +24,7 @@ export default function BlogPage() {
 		} else {
 			setPosts(data);
 		}
+		setIsLoading(false);
 	}, []);
 
 	useEffect(() => {
@@ -32,6 +35,10 @@ export default function BlogPage() {
 		setTag(tagId.displayName);
 		getPosts(tagId._id);
 	};
+
+	if (isLoading) {
+		return <Loader />;
+	}
 
 	return (
 		<div className="flex flex-1 flex-col-reverse md:flex-row gap-4 p-2">

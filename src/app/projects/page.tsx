@@ -1,5 +1,5 @@
 'use client';
-import { Card } from 'components/ui';
+import { Card, Loader } from 'components/ui';
 import Link from 'next/link';
 import { useCallback, useEffect, useState } from 'react';
 import { FaGithub, FaPlay } from 'react-icons/fa';
@@ -9,8 +9,10 @@ import { fetchAPI } from 'utils/http';
 
 export default function ProjectsPage() {
 	const [projects, setProjects] = useState<TProject[]>([]);
+	const [isLoading, setIsLoading] = useState<boolean>(false);
 
 	const getProjects = useCallback(async () => {
+		setIsLoading(true);
 		const { res, success, data, message } = await fetchAPI({
 			endpoint: '/api/projects',
 		});
@@ -19,11 +21,16 @@ export default function ProjectsPage() {
 			return;
 		}
 		setProjects(data);
+		setIsLoading(false);
 	}, []);
 
 	useEffect(() => {
 		getProjects();
 	}, [getProjects]);
+
+	if (isLoading) {
+		return <Loader />;
+	}
 
 	return (
 		<div className="flex flex-wrap gap-4 p-4">
