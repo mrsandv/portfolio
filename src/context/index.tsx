@@ -28,7 +28,7 @@ const AppContext = createContext<TContext | null>(null);
 
 export const AppStoreProvider = ({ children }: { children: ReactNode }) => {
 	const router = useRouter();
-	const [theme, setTheme] = useState<TTheme>('light');
+	const [theme, setTheme] = useState<TTheme>('dark');
 	const [currentUser, setCurrentUser] = useState<TUser | null>(null);
 
 	const toggleTheme = () => setTheme((t) => (t === 'light' ? 'dark' : 'light'));
