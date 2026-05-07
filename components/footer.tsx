@@ -1,41 +1,42 @@
-import { Github, Linkedin, Terminal } from "lucide-react";
+"use client";
 
-const socials = [
-  { label: "GitHub", href: "https://github.com/mrsandv", icon: Github },
-  {
-    label: "LinkedIn",
-    href: "https://linkedin.com/in/mrsan/?locale=en-US",
-    icon: Linkedin,
-  },
-];
+import { ArrowUp, Terminal } from "lucide-react";
 
 export function Footer() {
+  const currentYear = new Date().getFullYear();
+
   return (
-    <footer className="border-t border-border px-6 py-6">
-      <div className="mx-auto flex max-w-6xl flex-col items-center gap-6 md:flex-row md:justify-between">
-        <div className="flex items-center gap-2 text-foreground">
-          <Terminal className="h-4 w-4 text-primary" />
-          <span className="font-mono text-sm text-muted-foreground">
-            {"Spacehole Tech"}
-          </span>
-        </div>
+    <footer className="border-t border-border px-6 py-12">
+      <div className="mx-auto max-w-7xl">
+        <div className="flex flex-col items-start justify-between gap-8 md:flex-row md:items-center">
+          <div className="space-y-4">
+            <div className="flex items-center gap-2">
+              <div className="rounded-lg bg-primary/10 p-2 text-primary">
+                <Terminal className="h-4 w-4" />
+              </div>
+              <span className="font-mono text-sm font-bold tracking-tight text-foreground">
+                MRSAN · {currentYear}
+              </span>
+            </div>
+            <p className="max-w-xs text-xs leading-relaxed text-muted-foreground">
+              [42] Built with Next.js, React, Tailwind, and Framer Motion. 
+              Deployed on Vercel. Typeface: Geist.
+            </p>
+          </div>
 
-        <div className="flex items-center gap-4">
-          {socials.map((s) => (
-            <a
-              key={s.label}
-              href={s.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-muted-foreground transition-colors hover:text-foreground"
-              aria-label={s.label}
+          <div className="flex flex-col items-start gap-4 md:items-end">
+            <button
+              onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+              className="group flex items-center gap-2 font-mono text-xs uppercase tracking-wider text-muted-foreground transition-colors hover:text-foreground"
             >
-              <s.icon className="h-5 w-5" />
-            </a>
-          ))}
+              <span>Back to top</span>
+              <ArrowUp className="h-3 w-3 transition-transform group-hover:-translate-y-1" />
+            </button>
+            <p className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground/50">
+              © {currentYear} · Todos los derechos reservados
+            </p>
+          </div>
         </div>
-
-        <p className="text-xs text-muted-foreground">{`Built with 💜`}</p>
       </div>
     </footer>
   );

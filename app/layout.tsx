@@ -14,25 +14,12 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Spacehole Tech | Mrsan - Portfolio and Info",
+  title: "Marco Sandoval | Software Engineer",
   description:
-    "Full-stack developer portfolio and micro-learning platform. Explore projects, browse code snippets, and learn modern web development.",
+    "Software engineer with 7+ years of experience shipping production code. Full-stack with a bias for clarity over cleverness.",
   icons: {
-    icon: [
-      {
-        url: "/icon-light-32x32.png",
-        media: "(prefers-color-scheme: light)",
-      },
-      {
-        url: "/icon-dark-32x32.png",
-        media: "(prefers-color-scheme: dark)",
-      },
-      {
-        url: "/icon.svg",
-        type: "image/svg+xml",
-      },
-    ],
-    apple: "/apple-icon.png",
+    icon: "/favicon-32x32.png",
+    apple: "/apple-touch-icon.png",
   },
 };
 
