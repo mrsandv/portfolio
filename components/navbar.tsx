@@ -4,17 +4,21 @@ import { Menu, Moon, Sun, X } from "lucide-react";
 import Image from "next/image";
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
+import { motion } from "motion/react";
+import { LanguageToggle } from "./language-toggle";
 
-const navLinks = [
-  { label: "Work", href: "#projects" },
-  { label: "Talk", href: "#contact" },
-];
+import { useLanguageStore } from "@/hooks/use-language";
+import { translations } from "@/lib/translations";
 
 export function Navbar({
   staticLinks,
 }: {
   staticLinks: Record<string, string>;
 }) {
+  const { language } = useLanguageStore();
+  const t = translations[language].nav;
+  const common = translations[language].common;
+
   const [mobileOpen, setMobileOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
   const { theme, setTheme } = useTheme();
@@ -26,100 +30,132 @@ export function Navbar({
   const toggleTheme = () => setTheme(theme === "dark" ? "light" : "dark");
   const isDark = mounted && theme === "dark";
 
+  const navLinks = [
+    { label: t.work, href: "#work" },
+    { label: t.contact, href: "#contact" },
+  ];
+
   return (
-    <header className="fixed top-0 right-0 left-0 z-50 border-b border-border bg-background/80 backdrop-blur-md">
-      <nav className="mx-auto flex max-w-7xl items-center justify-between px-6 py-3">
-        {/* [01] Logo */}
-        <a href="/" className="flex items-center gap-2 text-foreground">
-          <Image
-            width={32}
-            height={32}
-            src="/logo.webp"
-            alt="Spacehole tech logo"
-          />
-          <span className="font-mono text-sm font-semibold tracking-tight">
-            spacehole.tech
-          </span>
-        </a>
-
-        {/* [02] Nav links */}
-        <div className="hidden items-center gap-8 md:flex">
-          {navLinks.map((link) => (
-            <a
-              key={link.href}
-              href={link.href}
-              className="font-mono text-xs uppercase tracking-wider text-muted-foreground transition-colors hover:text-foreground"
-            >
-              {link.label}
-            </a>
-          ))}
-        </div>
-
-        {/* [03] Util — theme toggle + Hire me */}
-        <div className="flex items-center gap-2">
-          <button
-            type="button"
-            onClick={toggleTheme}
-            aria-label="Toggle theme"
-            className="flex h-9 w-9 items-center justify-center rounded-lg border border-border bg-card text-foreground transition hover:bg-secondary"
-          >
-            {mounted ? (
-              isDark ? (
-                <Sun className="h-4 w-4" />
-              ) : (
-                <Moon className="h-4 w-4" />
-              )
-            ) : (
-              <span className="h-4 w-4" />
-            )}
-          </button>
-
-          <a
-            href={staticLinks.linkedIn}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hidden rounded-lg bg-accent px-4 py-2 text-sm font-bold text-accent-foreground transition hover:bg-accent/90 md:inline-block"
-          >
-            Hire me
+    <header className="fixed inset-x-0 top-4 z-50 flex justify-center px-4 md:top-6">
+      <nav className="w-full max-w-7xl rounded-2xl border border-border bg-card/80 p-2 shadow-sm backdrop-blur-md md:p-3">
+        <div className="flex items-center justify-between px-2 md:px-4">
+          {/* [01] Logo Block — Larger & Prominent */}
+          <a href="/" className="group flex items-center gap-3 text-foreground">
+            <div className="flex h-12 w-12 items-center justify-center transition-transform group-hover:scale-110 md:h-14 md:w-14">
+              <Image
+                width={56}
+                height={56}
+                src="/logo.webp"
+                alt="Spacehole tech logo"
+                className="h-full w-full object-contain"
+              />
+            </div>
+            <div className="flex flex-col leading-none">
+              <span className="font-mono text-sm font-black tracking-tighter md:text-base">
+                spacehole.tech
+              </span>
+              <div className="flex items-center gap-1.5 mt-0.5">
+                <span className="relative flex h-1.5 w-1.5">
+                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent opacity-75" />
+                  <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-accent" />
+                </span>
+                <span className="font-mono text-[9px] uppercase tracking-wider text-muted-foreground md:text-[10px]">
+                  {common.systemActive} · v0.1.0
+                </span>
+              </div>
+            </div>
           </a>
 
-          <button
-            type="button"
-            onClick={() => setMobileOpen(!mobileOpen)}
-            className="text-foreground md:hidden"
-            aria-label="Toggle navigation menu"
-          >
-            {mobileOpen ? (
-              <X className="h-5 w-5" />
-            ) : (
-              <Menu className="h-5 w-5" />
-            )}
-          </button>
+          {/* [02] Nav & Controls — Compact Pill Style */}
+          <div className="flex items-center gap-1.5 md:gap-3">
+            {/* Desktop Nav Pill */}
+            <div className="hidden items-center gap-1 rounded-full border border-border bg-secondary/30 p-1 md:flex">
+              {navLinks.map((link) => (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  className="rounded-full px-4 py-1.5 font-mono text-[10px] font-bold uppercase tracking-wider text-muted-foreground transition-all hover:bg-card hover:text-foreground"
+                >
+                  {link.label}
+                </a>
+              ))}
+            </div>
+
+            <div className="flex items-center gap-1.5">
+              <LanguageToggle />
+              <button
+                type="button"
+                onClick={toggleTheme}
+                aria-label="Toggle theme"
+                className="flex h-9 w-9 items-center justify-center rounded-xl border border-border bg-card text-foreground transition hover:bg-secondary md:h-10 md:w-10"
+              >
+                {mounted ? (
+                  isDark ? (
+                    <Sun className="h-4 w-4" />
+                  ) : (
+                    <Moon className="h-4 w-4" />
+                  )
+                ) : (
+                  <div className="h-4 w-4" />
+                )}
+              </button>
+
+              <a
+                href={staticLinks.linkedIn}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hidden rounded-xl bg-accent px-4 py-2.5 text-xs font-bold text-accent-foreground transition hover:bg-accent/90 md:inline-block"
+              >
+                {t.hire}
+              </a>
+
+              <button
+                type="button"
+                onClick={() => setMobileOpen(!mobileOpen)}
+                className="flex h-9 w-9 items-center justify-center rounded-xl border border-border bg-card text-foreground md:hidden"
+                aria-label="Toggle navigation menu"
+              >
+                {mobileOpen ? (
+                  <X className="h-5 w-5" />
+                ) : (
+                  <Menu className="h-5 w-5" />
+                )}
+              </button>
+            </div>
+          </div>
         </div>
+
+        {/* Mobile Menu Expansion */}
+        {mobileOpen && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={{ opacity: 0, height: 0 }}
+            className="mt-3 overflow-hidden border-t border-border px-2 pt-2 md:hidden"
+          >
+            <div className="flex flex-col gap-1 pb-2">
+              {navLinks.map((link) => (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  onClick={() => setMobileOpen(false)}
+                  className="rounded-lg px-4 py-3 font-mono text-xs font-bold uppercase tracking-wider text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
+                >
+                  {link.label}
+                </a>
+              ))}
+              <a
+                href={staticLinks.linkedIn}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-2 block rounded-lg bg-accent px-4 py-3 text-center text-sm font-bold text-accent-foreground transition hover:bg-accent/90"
+              >
+                {t.hire}
+              </a>
+            </div>
+          </motion.div>
+        )}
       </nav>
-
-      {mobileOpen && (
-        <div className="border-t border-border bg-background px-6 pb-4 md:hidden">
-          {navLinks.map((link) => (
-            <a
-              key={link.href}
-              href={link.href}
-              onClick={() => setMobileOpen(false)}
-              className="block py-3 font-mono text-xs uppercase tracking-wider text-muted-foreground transition-colors hover:text-foreground"
-            >
-              {link.label}
-            </a>
-          ))}
-          <a
-            href={staticLinks.linkedIn}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="mt-2 block rounded-lg bg-accent px-4 py-3 text-center text-sm font-bold text-accent-foreground transition hover:bg-accent/90"
-          >
-            Hire me
-          </a>
-        </div>
-      )}
     </header>
   );
 }

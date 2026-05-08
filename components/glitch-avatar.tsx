@@ -36,7 +36,7 @@ export function GlitchAvatar() {
         </div>
       </div>
 
-      {/* Red ghost layer */}
+      {/* Copper ghost layer */}
       <motion.div
         aria-hidden
         animate={{
@@ -50,10 +50,10 @@ export function GlitchAvatar() {
           ease: "linear",
         }}
         className="pointer-events-none absolute inset-0 mix-blend-screen"
-        style={{ background: "oklch(0.6 0.18 32 / 0.4)" }}
+        style={{ background: "oklch(0.57 0.06 65 / 0.4)" }}
       />
 
-      {/* Cyan ghost layer */}
+      {/* Charcoal ghost layer */}
       <motion.div
         aria-hidden
         animate={{
@@ -67,7 +67,7 @@ export function GlitchAvatar() {
           ease: "linear",
         }}
         className="pointer-events-none absolute inset-0 mix-blend-multiply"
-        style={{ background: "oklch(0.7 0.13 200 / 0.4)" }}
+        style={{ background: "oklch(0.38 0.015 215 / 0.4)" }}
       />
 
       {/* Scanlines */}

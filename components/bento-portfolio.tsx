@@ -4,6 +4,8 @@ import { useState } from "react";
 import { ExternalLink, Globe, Layers, Terminal, Filter } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import { Badge } from "@/components/ui/badge";
+import { useLanguageStore } from "@/hooks/use-language";
+import { translations } from "@/lib/translations";
 
 const cellEntrance = (delay: number) => ({
   initial: { opacity: 0, y: 16 },
@@ -19,6 +21,16 @@ const projectVariants = {
 };
 
 const projects = [
+  {
+    id: "next-gen-ai",
+    title: "Project Alpha",
+    description: "An upcoming AI-powered orchestration engine for complex workflows. Built for high-performance teams.",
+    tags: ["Rust", "WASM", "Next.js"],
+    type: "Web",
+    size: "medium",
+    status: "WIP",
+    isComingSoon: true,
+  },
   {
     id: "14",
     title: "Antojo",
@@ -66,76 +78,45 @@ const projects = [
 const filters = ["All", "Web", "Mobile", "Tool"];
 
 export function BentoPortfolio() {
+  const { language } = useLanguageStore();
+  const t = translations[language].portfolio;
+  const common = translations[language].common;
   const [activeFilter, setActiveFilter] = useState("All");
 
   const filteredProjects = projects.filter(
-    (p) => activeFilter === "All" || p.type === activeFilter
+    (p) => activeFilter === "All" || p.type === activeFilter,
   );
-
-  const shippedCount = projects.filter((p) => p.status === "Shipped").length;
-  const wipCount = projects.filter((p) => p.status === "WIP").length;
 
   return (
     <section id="work" className="px-6 py-24">
       <div className="mx-auto max-w-7xl">
         <div className="grid grid-cols-1 gap-3 md:grid-cols-4">
-          {/* [11] Header */}
+          {/* [11] Header - Now 4 columns since metrics is gone */}
           <motion.div
             {...cellEntrance(0)}
-            className="flex items-center gap-4 rounded-2xl border border-border bg-card p-8 shadow-sm md:col-span-3"
+            className="flex items-center gap-4 rounded-2xl border border-border bg-card p-8 shadow-sm md:col-span-4"
           >
             <div className="rounded-xl bg-primary/10 p-3 text-primary">
               <Layers className="h-6 w-6" />
             </div>
             <div>
               <h2 className="text-3xl font-black tracking-tight text-foreground">
-                Selected Work
+                {t.title}
               </h2>
               <p className="text-muted-foreground">
-                Projects that went from zero to production.
+                {t.description}
               </p>
-            </div>
-          </motion.div>
-
-          {/* [13] Counter */}
-          <motion.div
-            {...cellEntrance(0.05)}
-            className="flex flex-col justify-center rounded-2xl border border-border bg-card p-6 shadow-sm"
-          >
-            <div className="flex items-center justify-between">
-              <span className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground">
-                Metrics
-              </span>
-              <span className="h-2 w-2 rounded-full bg-accent" />
-            </div>
-            <div className="mt-4 space-y-2">
-              <div className="flex items-end justify-between">
-                <span className="text-sm font-medium text-muted-foreground">
-                  Shipped
-                </span>
-                <span className="text-2xl font-black leading-none text-foreground">
-                  {shippedCount}
-                </span>
-              </div>
-              <div className="flex items-end justify-between">
-                <span className="text-sm font-medium text-muted-foreground">
-                  WIP
-                </span>
-                <span className="text-2xl font-black leading-none text-foreground">
-                  {wipCount}
-                </span>
-              </div>
             </div>
           </motion.div>
 
           {/* [12] Filters */}
           <motion.div
-            {...cellEntrance(0.1)}
+            {...cellEntrance(0.05)}
             className="flex flex-wrap items-center gap-2 rounded-2xl border border-border bg-card p-4 shadow-sm md:col-span-4"
           >
             <div className="mr-2 flex items-center gap-2 px-2 font-mono text-[10px] uppercase tracking-wider text-muted-foreground">
               <Filter className="h-3 w-3" />
-              <span>Filter by</span>
+              <span>{t.filterBy}</span>
             </div>
             {filters.map((filter) => (
               <button
@@ -155,7 +136,7 @@ export function BentoPortfolio() {
           {/* Projects Grid */}
           <AnimatePresence mode="popLayout">
             {filteredProjects.map((project, index) => {
-              const baseDelay = 0.15 + index * 0.05;
+              const baseDelay = 0.1 + index * 0.05;
               const isLarge = project.size === "large";
               const isMedium = project.size === "medium";
 
@@ -172,8 +153,8 @@ export function BentoPortfolio() {
                     isLarge
                       ? "md:col-span-2 md:row-span-2"
                       : isMedium
-                      ? "md:col-span-2"
-                      : "md:col-span-1"
+                        ? "md:col-span-2"
+                        : "md:col-span-1"
                   }`}
                 >
                   {/* Project Image Placeholder */}
@@ -199,7 +180,10 @@ export function BentoPortfolio() {
                         {project.title}
                       </h3>
                       {!isLarge && (
-                        <Badge variant="secondary" className="font-mono text-[10px]">
+                        <Badge
+                          variant="secondary"
+                          className="font-mono text-[10px]"
+                        >
                           {project.status}
                         </Badge>
                       )}
@@ -220,28 +204,40 @@ export function BentoPortfolio() {
                     </div>
 
                     <div className="mt-auto flex items-center gap-4">
-                      {project.live && (
-                        <a
-                          href={project.live}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="flex items-center gap-1.5 text-sm font-bold text-accent transition-colors hover:text-accent/80"
-                        >
-                          <Globe className="h-4 w-4" />
-                          <span>Live</span>
-                          <ExternalLink className="h-3 w-3" />
-                        </a>
-                      )}
-                      {project.github && (
-                        <a
-                          href={project.github}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="flex items-center gap-1.5 text-sm font-bold text-muted-foreground transition-colors hover:text-foreground"
-                        >
-                          <Terminal className="h-4 w-4" />
-                          <span>Source</span>
-                        </a>
+                      {"isComingSoon" in project && project.isComingSoon ? (
+                        <div className="flex items-center gap-2 text-sm font-bold text-accent">
+                          <span className="relative flex h-2 w-2">
+                            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent opacity-75" />
+                            <span className="relative inline-flex h-2 w-2 rounded-full bg-accent" />
+                          </span>
+                          <span>{t.comingSoon}</span>
+                        </div>
+                      ) : (
+                        <>
+                          {project.live && (
+                            <a
+                              href={project.live}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="flex items-center gap-1.5 text-sm font-bold text-accent transition-colors hover:text-accent/80"
+                            >
+                              <Globe className="h-4 w-4" />
+                              <span>{common.live}</span>
+                              <ExternalLink className="h-3 w-3" />
+                            </a>
+                          )}
+                          {project.github && (
+                            <a
+                              href={project.github}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="flex items-center gap-1.5 text-sm font-bold text-muted-foreground transition-colors hover:text-foreground"
+                            >
+                              <Terminal className="h-4 w-4" />
+                              <span>{common.source}</span>
+                            </a>
+                          )}
+                        </>
                       )}
                     </div>
                   </div>

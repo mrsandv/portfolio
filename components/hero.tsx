@@ -16,11 +16,17 @@ const ctaInteractions = {
   transition: { type: "spring" as const, stiffness: 400, damping: 22 },
 };
 
+import { useLanguageStore } from "@/hooks/use-language";
+import { translations } from "@/lib/translations";
+
 export function Hero({
   staticLinks,
 }: {
   staticLinks: Record<string, string>;
 }) {
+  const { language } = useLanguageStore();
+  const t = translations[language].hero;
+
   return (
     <section className="relative px-6 pt-28 pb-12 md:pt-32">
       <div className="mx-auto grid max-w-7xl auto-rows-[minmax(140px,auto)] grid-cols-1 gap-3 md:grid-cols-4">
@@ -30,15 +36,14 @@ export function Hero({
           className="rounded-2xl border border-border bg-card p-8 shadow-sm md:col-start-1 md:col-end-4 md:row-start-1 md:row-end-3 md:p-12"
         >
           <h1 className="text-balance text-4xl font-black leading-[0.95] tracking-tight text-foreground md:text-6xl lg:text-7xl">
-            I build digital products{" "}
-            <span className="text-accent">that ship.</span>
+            {t.title}
+            <span className="text-accent">{t.titleAccent}</span>
           </h1>
           <p className="mt-6 max-w-xl text-pretty text-base leading-relaxed text-muted-foreground md:text-lg">
-            Software engineer. 7+ years shipping production code. Full-stack
-            with a bias for clarity over cleverness.
+            {t.description}
           </p>
           <p className="mt-6 font-mono text-xs uppercase tracking-wider text-muted-foreground">
-            [ value for biz · simple for users ]
+            {t.tagline}
           </p>
         </motion.div>
 
@@ -61,12 +66,13 @@ export function Hero({
               <span className="relative inline-flex h-2 w-2 rounded-full bg-accent" />
             </span>
             <span className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground">
-              Open to
+              {t.status}
             </span>
           </div>
           <ul className="space-y-1 text-sm font-semibold text-foreground">
-            <li>Full-time roles</li>
-            <li>Freelance projects</li>
+            {t.statusRoles.map((role) => (
+              <li key={role}>{role}</li>
+            ))}
           </ul>
           <p className="mt-3 font-mono text-[10px] text-muted-foreground">
             [ upd. 2026-05 ]
@@ -79,7 +85,7 @@ export function Hero({
           className="rounded-2xl border border-border bg-card p-5 shadow-sm md:col-start-2 md:col-end-4 md:row-start-3"
         >
           <p className="mb-3 font-mono text-[10px] uppercase tracking-wider text-muted-foreground">
-            Stack
+            {t.stack}
           </p>
           <div className="flex flex-wrap gap-2">
             {[
@@ -102,51 +108,33 @@ export function Hero({
           </div>
         </motion.div>
 
-        {/* [08] Featured project */}
+        {/* [10] CTA dual — Subtle Bento Style */}
         <motion.div
           {...cellEntrance(0.2)}
-          className="rounded-2xl border border-border bg-card p-5 shadow-sm md:col-start-1 md:row-start-4"
+          className="flex flex-col justify-center gap-4 rounded-2xl border border-border bg-card p-6 shadow-sm md:col-start-1 md:col-end-4 md:row-start-4 lg:p-8"
         >
-          <div className="mb-3 flex aspect-video items-center justify-center rounded-lg bg-secondary">
-            <span className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground">
-              [ screenshot ]
-            </span>
+          <div className="flex flex-col gap-3 md:flex-row md:items-center">
+            <motion.a
+              href={staticLinks.linkedIn}
+              target="_blank"
+              rel="noopener noreferrer"
+              {...ctaInteractions}
+              className="group flex flex-1 items-center justify-between rounded-xl bg-accent px-6 py-4 text-base font-bold text-accent-foreground shadow-sm transition-all hover:shadow-md"
+            >
+              <span>{t.ctaHire}</span>
+              <ArrowRight className="h-5 w-5 transition group-hover:translate-x-1" />
+            </motion.a>
+            <motion.a
+              href="#contact"
+              {...ctaInteractions}
+              className="group flex flex-1 items-center justify-between rounded-xl border border-border bg-secondary px-6 py-4 text-base font-bold text-foreground transition-all hover:bg-secondary/80"
+            >
+              <span>{t.ctaTalk}</span>
+              <ArrowRight className="h-5 w-5 transition group-hover:translate-x-1" />
+            </motion.a>
           </div>
-          <h3 className="text-lg font-bold text-foreground">Antojo</h3>
-          <p className="mb-3 text-sm text-muted-foreground">
-            Group decisions, faster.
-          </p>
-          <div className="flex gap-3 font-mono text-xs text-muted-foreground">
-            <span>[ live ]</span>
-            <span>[ source ]</span>
-          </div>
-        </motion.div>
-
-        {/* [10] CTA dual */}
-        <motion.div
-          {...cellEntrance(0.25)}
-          className="flex flex-col justify-center gap-3 rounded-2xl bg-primary p-6 text-primary-foreground shadow-sm md:col-start-2 md:col-end-4 md:row-start-4"
-        >
-          <motion.a
-            href={staticLinks.linkedIn}
-            target="_blank"
-            rel="noopener noreferrer"
-            {...ctaInteractions}
-            className="group flex items-center justify-between rounded-xl bg-accent px-6 py-4 text-base font-bold text-accent-foreground"
-          >
-            <span>Hire me · Full-time</span>
-            <ArrowRight className="h-5 w-5 transition group-hover:translate-x-1" />
-          </motion.a>
-          <motion.a
-            href="#contact"
-            {...ctaInteractions}
-            className="group flex items-center justify-between rounded-xl border-2 border-primary-foreground/30 px-6 py-4 text-base font-bold text-primary-foreground hover:border-primary-foreground hover:bg-primary-foreground/10"
-          >
-            <span>Hablemos · Proyecto</span>
-            <ArrowRight className="h-5 w-5 transition group-hover:translate-x-1" />
-          </motion.a>
-          <p className="mt-1 font-mono text-[10px] uppercase tracking-wider text-primary-foreground/70">
-            linkedin · email · cal
+          <p className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground/70">
+            {t.ctaLinks}
           </p>
         </motion.div>
       </div>
