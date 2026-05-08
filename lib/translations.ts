@@ -1,9 +1,9 @@
 export const translations = {
   es: {
     nav: {
-      work: "Proyectos",
+      works: "Trabajos",
       contact: "Contacto",
-      hire: "Contrátame",
+      hire: "Conectemos",
     },
     hero: {
       title: "Diseño software ",
@@ -14,8 +14,10 @@ export const translations = {
       status: "Disponible para",
       statusRoles: ["Roles full-time", "Proyectos freelance"],
       stack: "Stack",
-      ctaHire: "Contrátame · Full-time",
-      ctaTalk: "Hablemos · Proyecto",
+      ctaConnect: "Conectemos",
+      ctaEmail: "Envíame un mensaje",
+      ctaCV: "Ver CV",
+      cvLabel: "PDF · 2026",
       ctaLinks: "linkedin · email · cal",
     },
     portfolio: {
@@ -33,9 +35,9 @@ export const translations = {
   },
   en: {
     nav: {
-      work: "Work",
+      works: "Works",
       contact: "Contact",
-      hire: "Hire me",
+      hire: "Let's connect",
     },
     hero: {
       title: "I engineer software ",
@@ -46,8 +48,10 @@ export const translations = {
       status: "Open to",
       statusRoles: ["Full-time roles", "Freelance projects"],
       stack: "Stack",
-      ctaHire: "Hire me · Full-time",
-      ctaTalk: "Let's Talk · Project",
+      ctaConnect: "Let's connect",
+      ctaEmail: "Send a message",
+      ctaCV: "View CV",
+      cvLabel: "PDF · 2026",
       ctaLinks: "linkedin · email · cal",
     },
     portfolio: {

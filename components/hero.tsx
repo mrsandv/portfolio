@@ -1,7 +1,16 @@
 "use client";
 
-import { ArrowRight } from "lucide-react";
-import { motion } from "motion/react";
+import { useState } from "react";
+import { 
+  ArrowRight, 
+  FileText, 
+  Instagram, 
+  Linkedin, 
+  Twitter, 
+  Send,
+  ExternalLink
+} from "lucide-react";
+import { motion, AnimatePresence } from "motion/react";
 import { GlitchAvatar } from "@/components/glitch-avatar";
 
 const cellEntrance = (delay: number) => ({
@@ -26,6 +35,14 @@ export function Hero({
 }) {
   const { language } = useLanguageStore();
   const t = translations[language].hero;
+  const [isSocialOpen, setIsSocialOpen] = useState(false);
+
+  const socialLinks = [
+    { name: "LinkedIn", icon: Linkedin, href: staticLinks.linkedIn },
+    { name: "Instagram", icon: Instagram, href: "#" },
+    { name: "X (Twitter)", icon: Twitter, href: "#" },
+    { name: "Telegram", icon: Send, href: "#" },
+  ];
 
   return (
     <section className="relative px-6 pt-28 pb-12 md:pt-32">
@@ -33,7 +50,7 @@ export function Hero({
         {/* [04] Manifesto */}
         <motion.div
           {...cellEntrance(0)}
-          className="rounded-2xl border border-border bg-card p-8 shadow-sm md:col-start-1 md:col-end-4 md:row-start-1 md:row-end-3 md:p-12"
+          className="rounded-2xl border border-border bg-card p-8 shadow-sm md:col-start-1 md:col-end-4 md:row-start-1 md:row-end-4 md:p-12"
         >
           <h1 className="text-balance text-4xl font-black leading-[0.95] tracking-tight text-foreground md:text-6xl lg:text-7xl">
             {t.title}
@@ -47,10 +64,10 @@ export function Hero({
           </p>
         </motion.div>
 
-        {/* [05] Glitch avatar — TODO: foto real */}
+        {/* [05] Glitch avatar */}
         <motion.div
           {...cellEntrance(0.05)}
-          className="overflow-hidden rounded-2xl border border-border bg-secondary shadow-sm md:col-start-4 md:row-start-1 md:row-end-5"
+          className="overflow-hidden rounded-2xl border border-border bg-secondary shadow-sm md:col-start-4 md:row-start-1 md:row-end-4"
         >
           <GlitchAvatar />
         </motion.div>
@@ -58,85 +75,102 @@ export function Hero({
         {/* [06] Status */}
         <motion.div
           {...cellEntrance(0.1)}
-          className="rounded-2xl border border-border bg-card p-5 shadow-sm md:col-start-1 md:row-start-3"
+          className="flex flex-col justify-center rounded-2xl border border-border bg-card p-4 shadow-sm md:col-start-1 md:row-start-4"
         >
-          <div className="mb-3 flex items-center gap-2">
+          <div className="mb-2 flex items-center gap-2">
             <span className="relative flex h-2 w-2">
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent opacity-75" />
               <span className="relative inline-flex h-2 w-2 rounded-full bg-accent" />
             </span>
-            <span className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground">
+            <span className="font-mono text-[9px] uppercase tracking-wider text-muted-foreground">
               {t.status}
             </span>
           </div>
-          <ul className="space-y-1 text-sm font-semibold text-foreground">
+          <ul className="space-y-1 text-xs font-bold text-foreground">
             {t.statusRoles.map((role) => (
-              <li key={role}>{role}</li>
+              <li key={role} className="flex items-center gap-1.5">
+                <span className="h-1 w-1 rounded-full bg-accent" />
+                {role}
+              </li>
             ))}
           </ul>
-          <p className="mt-3 font-mono text-[10px] text-muted-foreground">
-            [ upd. 2026-05 ]
-          </p>
         </motion.div>
 
-        {/* [07] Stack chips */}
+        {/* [10] CTA Connect — Now expanded since Email is in footer */}
         <motion.div
           {...cellEntrance(0.15)}
-          className="rounded-2xl border border-border bg-card p-5 shadow-sm md:col-start-2 md:col-end-4 md:row-start-3"
+          className="flex flex-col justify-center rounded-2xl border border-border bg-card p-4 shadow-sm md:col-start-2 md:col-end-4 md:row-start-4"
         >
-          <p className="mb-3 font-mono text-[10px] uppercase tracking-wider text-muted-foreground">
-            {t.stack}
-          </p>
-          <div className="flex flex-wrap gap-2">
-            {[
-              "Go",
-              "TypeScript",
-              "React",
-              "Next.js",
-              "Node",
-              "Postgres",
-              "AWS",
-              "Docker",
-            ].map((tag) => (
-              <span
-                key={tag}
-                className="rounded-full bg-secondary px-3 py-1 text-sm font-medium text-secondary-foreground"
-              >
-                {tag}
-              </span>
-            ))}
+          {/* Let's Connect Dropdown Container */}
+          <div className="relative w-full">
+            <motion.button
+              onClick={() => setIsSocialOpen(!isSocialOpen)}
+              {...ctaInteractions}
+              className="group flex w-full items-center justify-between rounded-xl bg-accent px-6 py-4 text-sm font-bold text-accent-foreground shadow-sm transition-all hover:shadow-md"
+            >
+              <span>{t.ctaConnect}</span>
+              <ArrowRight className={`h-5 w-5 transition-transform ${isSocialOpen ? "rotate-90" : "group-hover:translate-x-1"}`} />
+            </motion.button>
+
+            <AnimatePresence>
+              {isSocialOpen && (
+                <>
+                  {/* Backdrop to close */}
+                  <div 
+                    className="fixed inset-0 z-10" 
+                    onClick={() => setIsSocialOpen(false)}
+                  />
+                  <motion.div
+                    initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                    animate={{ opacity: 1, y: -8, scale: 1 }}
+                    exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                    className="absolute bottom-full left-0 z-20 mb-2 w-full min-w-[200px] overflow-hidden rounded-xl border border-border bg-card p-1 shadow-xl"
+                  >
+                    <div className="grid grid-cols-1 gap-0.5">
+                      {socialLinks.map((link) => (
+                        <a
+                          key={link.name}
+                          href={link.href}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex items-center justify-between rounded-lg px-4 py-3 text-xs font-medium text-foreground transition-colors hover:bg-secondary"
+                          onClick={() => setIsSocialOpen(false)}
+                        >
+                          <div className="flex items-center gap-3">
+                            <link.icon className="h-4 w-4 text-accent" />
+                            {link.name}
+                          </div>
+                          <ExternalLink className="h-3 w-3 opacity-30" />
+                        </a>
+                      ))}
+                    </div>
+                  </motion.div>
+                </>
+              )}
+            </AnimatePresence>
           </div>
         </motion.div>
 
-        {/* [10] CTA dual — Subtle Bento Style */}
-        <motion.div
+        {/* [11] CV Download */}
+        <motion.a
+          href="/cv.pdf"
+          target="_blank"
+          rel="noopener noreferrer"
           {...cellEntrance(0.2)}
-          className="flex flex-col justify-center gap-4 rounded-2xl border border-border bg-card p-6 shadow-sm md:col-start-1 md:col-end-4 md:row-start-4 lg:p-8"
+          whileHover={{ scale: 1.02, backgroundColor: "var(--secondary)" }}
+          whileTap={{ scale: 0.98 }}
+          className="flex flex-col items-center justify-center gap-2 rounded-2xl border border-border bg-card p-4 shadow-sm transition-colors md:col-start-4 md:row-start-4"
         >
-          <div className="flex flex-col gap-3 md:flex-row md:items-center">
-            <motion.a
-              href={staticLinks.linkedIn}
-              target="_blank"
-              rel="noopener noreferrer"
-              {...ctaInteractions}
-              className="group flex flex-1 items-center justify-between rounded-xl bg-accent px-6 py-4 text-base font-bold text-accent-foreground shadow-sm transition-all hover:shadow-md"
-            >
-              <span>{t.ctaHire}</span>
-              <ArrowRight className="h-5 w-5 transition group-hover:translate-x-1" />
-            </motion.a>
-            <motion.a
-              href="#contact"
-              {...ctaInteractions}
-              className="group flex flex-1 items-center justify-between rounded-xl border border-border bg-secondary px-6 py-4 text-base font-bold text-foreground transition-all hover:bg-secondary/80"
-            >
-              <span>{t.ctaTalk}</span>
-              <ArrowRight className="h-5 w-5 transition group-hover:translate-x-1" />
-            </motion.a>
+          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-secondary text-accent">
+            <FileText className="h-4 w-4" />
           </div>
-          <p className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground/70">
-            {t.ctaLinks}
-          </p>
-        </motion.div>
+          <div className="text-center">
+            <p className="text-xs font-bold text-foreground">{t.ctaCV}</p>
+            <p className="font-mono text-[8px] uppercase tracking-wider text-muted-foreground">
+              {t.cvLabel}
+            </p>
+          </div>
+        </motion.a>
       </div>
     </section>
   );

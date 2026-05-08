@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { motion } from "motion/react";
 import { useState } from "react";
 
@@ -20,20 +21,17 @@ export function GlitchAvatar() {
         repeatDelay: hovered ? 0.2 : 5.5,
         ease: "linear",
       }}
-      className="relative h-full w-full overflow-hidden"
+      className="group relative h-full w-full overflow-hidden"
     >
-      {/* Base layer — replace with <Image src="..." /> when real photo arrives */}
-      <div className="flex h-full min-h-[260px] items-center justify-center">
-        <div className="flex flex-col items-center gap-3 px-4 text-center">
-          <div className="relative flex h-32 w-32 items-center justify-center rounded-full bg-muted">
-            <span className="font-mono text-xs uppercase tracking-wider text-muted-foreground">
-              photo
-            </span>
-          </div>
-          <span className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground">
-            [ placeholder · sprint 2 ]
-          </span>
-        </div>
+      {/* Base layer */}
+      <div className="relative h-full min-h-[300px] w-full">
+        <Image
+          src="/hero-photo.jpg"
+          alt="Hero"
+          fill
+          className="object-cover object-right-top grayscale transition-all duration-700 group-hover:grayscale-0"
+          priority
+        />
       </div>
 
       {/* Copper ghost layer */}

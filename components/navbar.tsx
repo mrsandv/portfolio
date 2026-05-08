@@ -31,7 +31,7 @@ export function Navbar({
   const isDark = mounted && theme === "dark";
 
   const navLinks = [
-    { label: t.work, href: "#work" },
+    { label: t.works, href: "#work" },
     { label: t.contact, href: "#contact" },
   ];
 
@@ -101,9 +101,7 @@ export function Navbar({
               </button>
 
               <a
-                href={staticLinks.linkedIn}
-                target="_blank"
-                rel="noopener noreferrer"
+                href="#contact"
                 className="hidden rounded-xl bg-accent px-4 py-2.5 text-xs font-bold text-accent-foreground transition hover:bg-accent/90 md:inline-block"
               >
                 {t.hire}
@@ -145,9 +143,8 @@ export function Navbar({
                 </a>
               ))}
               <a
-                href={staticLinks.linkedIn}
-                target="_blank"
-                rel="noopener noreferrer"
+                href="#contact"
+                onClick={() => setMobileOpen(false)}
                 className="mt-2 block rounded-lg bg-accent px-4 py-3 text-center text-sm font-bold text-accent-foreground transition hover:bg-accent/90"
               >
                 {t.hire}
