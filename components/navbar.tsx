@@ -39,7 +39,6 @@ export function Navbar({
     <header className="fixed inset-x-0 top-4 z-50 flex justify-center px-4 md:top-6">
       <nav className="w-full max-w-7xl rounded-2xl border border-border bg-card/80 p-2 shadow-sm backdrop-blur-md md:p-3">
         <div className="flex items-center justify-between px-2 md:px-4">
-          {/* [01] Logo Block — Larger & Prominent */}
           <a href="/" className="group flex items-center gap-3 text-foreground">
             <div className="flex h-12 w-12 items-center justify-center transition-transform group-hover:scale-110 md:h-14 md:w-14">
               <Image
@@ -66,9 +65,7 @@ export function Navbar({
             </div>
           </a>
 
-          {/* [02] Nav & Controls — Compact Pill Style */}
           <div className="flex items-center gap-1.5 md:gap-3">
-            {/* Desktop Nav Pill */}
             <div className="hidden items-center gap-1 rounded-full border border-border bg-secondary/30 p-1 md:flex">
               {navLinks.map((link) => (
                 <a
@@ -123,7 +120,6 @@ export function Navbar({
           </div>
         </div>
 
-        {/* Mobile Menu Expansion */}
         {mobileOpen && (
           <motion.div
             initial={{ opacity: 0, height: 0 }}

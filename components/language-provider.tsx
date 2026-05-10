@@ -8,17 +8,10 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
   const [hasHydrated, setHasHydrated] = useState(false);
 
   useEffect(() => {
-    // Check if we have a saved preference
     const saved = localStorage.getItem("language-storage");
-    
     if (!saved) {
-      // No preference, detect browser language
       const browserLang = navigator.language.split("-")[0];
-      if (browserLang === "en") {
-        setLanguage("en");
-      } else {
-        setLanguage("es");
-      }
+      setLanguage(browserLang === "en" ? "en" : "es");
     }
     setHasHydrated(true);
   }, [setLanguage]);

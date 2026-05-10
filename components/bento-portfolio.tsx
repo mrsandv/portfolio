@@ -1,11 +1,14 @@
 "use client";
 
 import { useState } from "react";
-import { ExternalLink, Globe, Layers, Terminal, Filter } from "lucide-react";
+import Image from "next/image";
+import { ExternalLink, Globe, Layers, Terminal, Filter, Lock, Github } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import { Badge } from "@/components/ui/badge";
 import { useLanguageStore } from "@/hooks/use-language";
 import { translations } from "@/lib/translations";
+import type { HighlightedProject } from "@/lib/highlight";
+import type { ProjectKind } from "@/lib/projects";
 
 const cellEntrance = (delay: number) => ({
   initial: { opacity: 0, y: 16 },
@@ -17,81 +20,25 @@ const projectVariants = {
   initial: { opacity: 0, scale: 0.95 },
   animate: { opacity: 1, scale: 1 },
   exit: { opacity: 0, scale: 0.95 },
-  transition: { duration: 0.3, ease: "easeOut" },
+  transition: { duration: 0.3, ease: "easeOut" as const },
 };
 
-const projects = [
-  {
-    id: "next-gen-ai",
-    title: "Project Alpha",
-    description: "An upcoming AI-powered orchestration engine for complex workflows. Built for high-performance teams.",
-    tags: ["Rust", "WASM", "Next.js"],
-    type: "Web",
-    size: "medium",
-    status: "WIP",
-    isComingSoon: true,
-  },
-  {
-    id: "14",
-    title: "Antojo",
-    description:
-      "Say goodbye to group decision fatigue. An app to prioritize restaurants based on your friends' genuine enthusiasm.",
-    tags: ["React", "Tailwind", "Go", "Sockets"],
-    type: "Web",
-    size: "large",
-    github: "https://github.com",
-    live: "https://antojo.app",
-    status: "WIP",
-  },
-  {
-    id: "15",
-    title: "Luna de Miel salon SPA",
-    description:
-      "Kawaii experience at your fingertips. Management system for a local beauty business.",
-    tags: ["React", "Tailwind", "MongoDB"],
-    type: "Web",
-    size: "medium",
-    status: "Shipped",
-  },
-  {
-    id: "16",
-    title: "Pal' chesco",
-    description:
-      "A way to contribute to Mexican projects and help each other out among creators.",
-    tags: ["Go", "HTMX"],
-    type: "Tool",
-    size: "small",
-    status: "Shipped",
-  },
-  {
-    id: "18",
-    title: "Fleet Monitoring",
-    description:
-      "Internal dashboard for real-time monitoring of distributed IoT devices.",
-    tags: ["Rust", "Postgres", "AWS"],
-    type: "Web",
-    size: "medium",
-    status: "Shipped",
-  },
-];
+const KIND_FILTERS: ("all" | ProjectKind)[] = ["all", "snippet", "client", "open"];
 
-const filters = ["All", "Web", "Mobile", "Tool"];
-
-export function BentoPortfolio() {
+export function BentoPortfolio({ projects }: { projects: HighlightedProject[] }) {
   const { language } = useLanguageStore();
   const t = translations[language].portfolio;
   const common = translations[language].common;
-  const [activeFilter, setActiveFilter] = useState("All");
+  const [activeKind, setActiveKind] = useState<"all" | ProjectKind>("all");
 
   const filteredProjects = projects.filter(
-    (p) => activeFilter === "All" || p.type === activeFilter,
+    (p) => activeKind === "all" || p.kind === activeKind,
   );
 
   return (
-    <section id="work" className="px-6 py-24">
+    <section id="work" className="px-6 py-12">
       <div className="mx-auto max-w-7xl">
         <div className="grid grid-cols-1 gap-3 md:grid-cols-4">
-          {/* [11] Header - Now 4 columns since metrics is gone */}
           <motion.div
             {...cellEntrance(0)}
             className="flex items-center gap-4 rounded-2xl border border-border bg-card p-8 shadow-sm md:col-span-4"
@@ -103,37 +50,24 @@ export function BentoPortfolio() {
               <h2 className="text-3xl font-black tracking-tight text-foreground">
                 {t.title}
               </h2>
-              <p className="text-muted-foreground">
-                {t.description}
-              </p>
+              <p className="text-muted-foreground">{t.description}</p>
             </div>
           </motion.div>
 
-          {/* [12] Filters */}
           <motion.div
             {...cellEntrance(0.05)}
-            className="flex flex-wrap items-center gap-2 rounded-2xl border border-border bg-card p-4 shadow-sm md:col-span-4"
+            className="rounded-2xl border border-border bg-card p-4 shadow-sm md:col-span-4"
           >
-            <div className="mr-2 flex items-center gap-2 px-2 font-mono text-[10px] uppercase tracking-wider text-muted-foreground">
-              <Filter className="h-3 w-3" />
-              <span>{t.filterBy}</span>
-            </div>
-            {filters.map((filter) => (
-              <button
-                key={filter}
-                onClick={() => setActiveFilter(filter)}
-                className={`rounded-full px-4 py-1.5 text-sm font-medium transition-all ${
-                  activeFilter === filter
-                    ? "bg-primary text-primary-foreground shadow-sm"
-                    : "bg-secondary text-muted-foreground hover:bg-secondary/80 hover:text-foreground"
-                }`}
-              >
-                {filter}
-              </button>
-            ))}
+            <FilterRow
+              icon={<Filter className="h-3 w-3" />}
+              label={t.filterByKind}
+              options={KIND_FILTERS}
+              active={activeKind}
+              onSelect={setActiveKind}
+              renderLabel={(kind) => t.kinds[kind as keyof typeof t.kinds]}
+            />
           </motion.div>
 
-          {/* Projects Grid */}
           <AnimatePresence mode="popLayout">
             {filteredProjects.map((project, index) => {
               const baseDelay = 0.1 + index * 0.05;
@@ -145,10 +79,7 @@ export function BentoPortfolio() {
                   key={project.id}
                   layout
                   {...projectVariants}
-                  transition={{
-                    ...projectVariants.transition,
-                    delay: baseDelay,
-                  }}
+                  transition={{ ...projectVariants.transition, delay: baseDelay }}
                   className={`group relative flex flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-sm transition-all hover:border-primary/40 ${
                     isLarge
                       ? "md:col-span-2 md:row-span-2"
@@ -157,36 +88,16 @@ export function BentoPortfolio() {
                         : "md:col-span-1"
                   }`}
                 >
-                  {/* Project Image Placeholder */}
-                  {isLarge && (
-                    <div className="relative aspect-video w-full bg-secondary md:aspect-auto md:grow">
-                      <div className="absolute inset-0 flex items-center justify-center opacity-20">
-                        <Terminal className="h-20 w-20" />
-                      </div>
-                      <div className="absolute top-4 left-4">
-                        <Badge
-                          variant="secondary"
-                          className="bg-background/80 backdrop-blur-sm"
-                        >
-                          {project.status}
-                        </Badge>
-                      </div>
-                    </div>
-                  )}
+                  <ProjectMedia project={project} t={t} />
 
-                  <div className="p-6">
-                    <div className="mb-2 flex items-start justify-between">
+                  <div className="flex flex-1 flex-col p-6">
+                    <div className="mb-2 flex items-start justify-between gap-3">
                       <h3 className="text-xl font-bold text-foreground">
                         {project.title}
                       </h3>
-                      {!isLarge && (
-                        <Badge
-                          variant="secondary"
-                          className="font-mono text-[10px]"
-                        >
-                          {project.status}
-                        </Badge>
-                      )}
+                      <Badge variant="secondary" className="font-mono text-[10px] shrink-0">
+                        {project.status}
+                      </Badge>
                     </div>
                     <p className="mb-4 text-sm leading-relaxed text-muted-foreground">
                       {project.description}
@@ -203,42 +114,8 @@ export function BentoPortfolio() {
                       ))}
                     </div>
 
-                    <div className="mt-auto flex items-center gap-4">
-                      {"isComingSoon" in project && project.isComingSoon ? (
-                        <div className="flex items-center gap-2 text-sm font-bold text-accent">
-                          <span className="relative flex h-2 w-2">
-                            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent opacity-75" />
-                            <span className="relative inline-flex h-2 w-2 rounded-full bg-accent" />
-                          </span>
-                          <span>{t.comingSoon}</span>
-                        </div>
-                      ) : (
-                        <>
-                          {project.live && (
-                            <a
-                              href={project.live}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="flex items-center gap-1.5 text-sm font-bold text-accent transition-colors hover:text-accent/80"
-                            >
-                              <Globe className="h-4 w-4" />
-                              <span>{common.live}</span>
-                              <ExternalLink className="h-3 w-3" />
-                            </a>
-                          )}
-                          {project.github && (
-                            <a
-                              href={project.github}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="flex items-center gap-1.5 text-sm font-bold text-muted-foreground transition-colors hover:text-foreground"
-                            >
-                              <Terminal className="h-4 w-4" />
-                              <span>{common.source}</span>
-                            </a>
-                          )}
-                        </>
-                      )}
+                    <div className="mt-auto">
+                      <ProjectActions project={project} t={t} common={common} />
                     </div>
                   </div>
                 </motion.div>
@@ -248,5 +125,195 @@ export function BentoPortfolio() {
         </div>
       </div>
     </section>
+  );
+}
+
+function FilterRow<T extends string>({
+  icon,
+  label,
+  options,
+  active,
+  onSelect,
+  renderLabel,
+}: {
+  icon: React.ReactNode;
+  label: string;
+  options: readonly T[];
+  active: T;
+  onSelect: (value: T) => void;
+  renderLabel: (value: T) => string;
+}) {
+  return (
+    <div className="flex flex-wrap items-center gap-2">
+      <div className="mr-1 flex items-center gap-2 px-2 font-mono text-[10px] uppercase tracking-wider text-muted-foreground">
+        {icon}
+        <span>{label}</span>
+      </div>
+      {options.map((option) => (
+        <button
+          key={option}
+          onClick={() => onSelect(option)}
+          className={`rounded-full px-3 py-1 text-xs font-medium transition-all ${
+            active === option
+              ? "bg-primary text-primary-foreground shadow-sm"
+              : "bg-secondary text-muted-foreground hover:bg-secondary/80 hover:text-foreground"
+          }`}
+        >
+          {renderLabel(option)}
+        </button>
+      ))}
+    </div>
+  );
+}
+
+function ProjectMedia({
+  project,
+  t,
+}: {
+  project: HighlightedProject;
+  t: typeof translations.es.portfolio;
+}) {
+  if (project.kind === "snippet") {
+    return (
+      <div className="bg-[#22272e] overflow-hidden">
+        <div className="flex items-center justify-between border-b border-white/5 px-4 py-2 font-mono text-[10px] uppercase tracking-wider text-white/50">
+          <span>{project.language}</span>
+          <span>// snippet</span>
+        </div>
+        <div
+          className="overflow-x-auto p-4 text-[12px] leading-relaxed [&_pre]:!bg-transparent [&_pre]:!p-0"
+          dangerouslySetInnerHTML={{ __html: project.codeHtml }}
+        />
+        {project.output && (
+          <div className="border-t border-white/5 bg-black/20 px-4 py-2 font-mono text-[11px] text-emerald-300">
+            <span className="text-white/40">▶ {t.labels.output}: </span>
+            {project.output}
+          </div>
+        )}
+      </div>
+    );
+  }
+
+  if (project.kind === "client") {
+    return (
+      <div className="relative aspect-video w-full bg-secondary">
+        <Image
+          src={project.screenshot}
+          alt={project.title}
+          fill
+          className="object-cover"
+          sizes="(max-width: 768px) 100vw, 50vw"
+        />
+        <div className="absolute top-3 left-3">
+          <Badge variant="secondary" className="bg-background/80 backdrop-blur-sm text-[10px]">
+            <Lock className="mr-1 h-3 w-3" />
+            {t.labels.privateRepo}
+          </Badge>
+        </div>
+      </div>
+    );
+  }
+
+  if (project.kind === "open") {
+    if (project.screenshot) {
+      return (
+        <div className="relative aspect-video w-full bg-secondary">
+          <Image
+            src={project.screenshot}
+            alt={project.title}
+            fill
+            className="object-cover"
+            sizes="(max-width: 768px) 100vw, 50vw"
+          />
+        </div>
+      );
+    }
+    if (project.cliHtml) {
+      return (
+        <div className="bg-[#22272e] overflow-hidden">
+          <div className="flex items-center gap-2 border-b border-white/5 px-4 py-2 font-mono text-[10px] uppercase tracking-wider text-white/50">
+            <Terminal className="h-3 w-3" />
+            <span>{t.labels.install}</span>
+          </div>
+          <div
+            className="overflow-x-auto p-4 text-[12px] leading-relaxed [&_pre]:!bg-transparent [&_pre]:!p-0"
+            dangerouslySetInnerHTML={{ __html: project.cliHtml }}
+          />
+        </div>
+      );
+    }
+  }
+
+  return null;
+}
+
+function ProjectActions({
+  project,
+  t,
+  common,
+}: {
+  project: HighlightedProject;
+  t: typeof translations.es.portfolio;
+  common: typeof translations.es.common;
+}) {
+  if (project.isComingSoon) {
+    return (
+      <div className="flex items-center gap-2 text-sm font-bold text-accent">
+        <span className="relative flex h-2 w-2">
+          <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent opacity-75" />
+          <span className="relative inline-flex h-2 w-2 rounded-full bg-accent" />
+        </span>
+        <span>{t.comingSoon}</span>
+      </div>
+    );
+  }
+
+  if (project.kind === "client") {
+    return (
+      <a
+        href={project.liveUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="flex items-center gap-1.5 text-sm font-bold text-accent transition-colors hover:text-accent/80"
+      >
+        <Globe className="h-4 w-4" />
+        <span>{t.labels.viewLive}</span>
+        <ExternalLink className="h-3 w-3" />
+      </a>
+    );
+  }
+
+  if (project.kind === "open") {
+    return (
+      <div className="flex flex-wrap items-center gap-4">
+        {project.demoUrl && (
+          <a
+            href={project.demoUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-1.5 text-sm font-bold text-accent transition-colors hover:text-accent/80"
+          >
+            <Globe className="h-4 w-4" />
+            <span>{t.labels.viewDemo}</span>
+            <ExternalLink className="h-3 w-3" />
+          </a>
+        )}
+        <a
+          href={project.repoUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex items-center gap-1.5 text-sm font-bold text-muted-foreground transition-colors hover:text-foreground"
+        >
+          <Github className="h-4 w-4" />
+          <span>{t.labels.viewRepo}</span>
+        </a>
+      </div>
+    );
+  }
+
+  return (
+    <span className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground">
+      {common.source}
+    </span>
   );
 }

@@ -5,17 +5,14 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { motion, AnimatePresence } from "motion/react";
-import { 
-  Send, 
-  MessageSquare, 
-  HelpCircle, 
-  Plus, 
-  Minus, 
-  CheckCircle2, 
+import {
+  MessageSquare,
+  HelpCircle,
+  Plus,
+  Minus,
   AlertCircle,
   Loader2,
-  Mail,
-  SendHorizontal
+  SendHorizontal,
 } from "lucide-react";
 import { toast } from "sonner";
 
@@ -86,10 +83,9 @@ export function ContactFAQ() {
   };
 
   return (
-    <section id="contact" className="px-6 py-24">
+    <section id="contact" className="px-6 py-12">
       <div className="mx-auto max-w-7xl">
         <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
-          {/* [32] Contact Form */}
           <motion.div
             {...cellEntrance(0)}
             className="rounded-2xl border border-border bg-card p-8 shadow-sm md:p-12"
@@ -176,95 +172,58 @@ export function ContactFAQ() {
                 )}
               </button>
             </form>
-
-            <div className="mt-8 flex items-center gap-4 border-t border-border pt-8">
-              <span className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground">
-                Alternative
-              </span>
-              <a
-                href="https://t.me/yourusername"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-2 text-sm font-semibold text-foreground hover:text-primary"
-              >
-                <Send className="h-4 w-4" />
-                <span>Telegram</span>
-              </a>
-            </div>
           </motion.div>
 
-          {/* [33] FAQ */}
-          <div className="space-y-3">
-            <motion.div
-              {...cellEntrance(0.1)}
-              className="rounded-2xl border border-border bg-card p-8 shadow-sm"
-            >
-              <div className="mb-6 flex items-center gap-3">
-                <div className="rounded-xl bg-accent/10 p-3 text-accent">
-                  <HelpCircle className="h-6 w-6" />
-                </div>
-                <h2 className="text-2xl font-black tracking-tight text-foreground">
-                  FAQ
-                </h2>
+          <motion.div
+            {...cellEntrance(0.1)}
+            className="rounded-2xl border border-border bg-card p-8 shadow-sm"
+          >
+            <div className="mb-6 flex items-center gap-3">
+              <div className="rounded-xl bg-accent/10 p-3 text-accent">
+                <HelpCircle className="h-6 w-6" />
               </div>
+              <h2 className="text-2xl font-black tracking-tight text-foreground">
+                FAQ
+              </h2>
+            </div>
 
-              <div className="space-y-3">
-                {faqs.map((faq, index) => (
-                  <div
-                    key={index}
-                    className="overflow-hidden rounded-xl border border-border bg-secondary/30 transition-all"
+            <div className="space-y-3">
+              {faqs.map((faq, index) => (
+                <div
+                  key={index}
+                  className="overflow-hidden rounded-xl border border-border bg-secondary/30 transition-all"
+                >
+                  <button
+                    onClick={() => setOpenFaq(openFaq === index ? null : index)}
+                    className="flex w-full items-center justify-between p-4 text-left"
                   >
-                    <button
-                      onClick={() => setOpenFaq(openFaq === index ? null : index)}
-                      className="flex w-full items-center justify-between p-4 text-left"
-                    >
-                      <span className="text-sm font-bold text-foreground">
-                        {faq.question}
-                      </span>
-                      {openFaq === index ? (
-                        <Minus className="h-4 w-4 text-muted-foreground" />
-                      ) : (
-                        <Plus className="h-4 w-4 text-muted-foreground" />
-                      )}
-                    </button>
-                    <AnimatePresence>
-                      {openFaq === index && (
-                        <motion.div
-                          initial={{ height: 0, opacity: 0 }}
-                          animate={{ height: "auto", opacity: 1 }}
-                          exit={{ height: 0, opacity: 0 }}
-                          transition={{ duration: 0.3, ease: "easeInOut" }}
-                        >
-                          <div className="border-t border-border/50 p-4 pt-0 text-sm leading-relaxed text-muted-foreground">
-                            {faq.answer}
-                          </div>
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
-                  </div>
-                ))}
-              </div>
-            </motion.div>
-
-            {/* Quick Links */}
-            <motion.div
-              {...cellEntrance(0.2)}
-              className="flex items-center justify-between rounded-2xl border border-border bg-primary p-6 text-primary-foreground shadow-sm"
-            >
-              <div className="flex flex-col">
-                <span className="font-mono text-[10px] uppercase tracking-wider text-primary-foreground/70">
-                  Direct Email
-                </span>
-                <span className="font-bold">hello@mrsan.dev</span>
-              </div>
-              <a
-                href="mailto:hello@mrsan.dev"
-                className="rounded-full bg-primary-foreground/10 p-3 transition-colors hover:bg-primary-foreground/20"
-              >
-                <Mail className="h-5 w-5" />
-              </a>
-            </motion.div>
-          </div>
+                    <span className="text-sm font-bold text-foreground">
+                      {faq.question}
+                    </span>
+                    {openFaq === index ? (
+                      <Minus className="h-4 w-4 text-muted-foreground" />
+                    ) : (
+                      <Plus className="h-4 w-4 text-muted-foreground" />
+                    )}
+                  </button>
+                  <AnimatePresence>
+                    {openFaq === index && (
+                      <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: "auto", opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.3, ease: "easeInOut" }}
+                      >
+                        <div className="border-t border-border/50 p-4 pt-0 text-sm leading-relaxed text-muted-foreground">
+                          {faq.answer}
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              ))}
+            </div>
+          </motion.div>
         </div>
       </div>
     </section>

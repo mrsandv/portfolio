@@ -23,7 +23,6 @@ export function GlitchAvatar() {
       }}
       className="group relative h-full w-full overflow-hidden"
     >
-      {/* Base layer */}
       <div className="relative h-full min-h-[300px] w-full">
         <Image
           src="/hero-photo.jpg"
@@ -34,7 +33,6 @@ export function GlitchAvatar() {
         />
       </div>
 
-      {/* Copper ghost layer */}
       <motion.div
         aria-hidden
         animate={{
@@ -51,7 +49,6 @@ export function GlitchAvatar() {
         style={{ background: "oklch(0.57 0.06 65 / 0.4)" }}
       />
 
-      {/* Charcoal ghost layer */}
       <motion.div
         aria-hidden
         animate={{
@@ -68,7 +65,6 @@ export function GlitchAvatar() {
         style={{ background: "oklch(0.38 0.015 215 / 0.4)" }}
       />
 
-      {/* Scanlines */}
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0 opacity-[0.07]"
@@ -78,7 +74,6 @@ export function GlitchAvatar() {
         }}
       />
 
-      {/* Brief flicker overlay */}
       <motion.div
         aria-hidden
         animate={{ opacity: [0, 0.18, 0, 0.1, 0, 0, 0] }}
