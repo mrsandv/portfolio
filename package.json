@@ -6,22 +6,32 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "payload": "PAYLOAD_CONFIG_PATH=payload.config.ts payload",
+    "generate:types": "pnpm payload generate:types",
+    "generate:importmap": "pnpm payload generate:importmap"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
+    "@marsidev/react-turnstile": "^1.5.2",
+    "@payloadcms/db-mongodb": "^3.84.1",
+    "@payloadcms/next": "^3.84.1",
+    "@payloadcms/richtext-lexical": "^3.84.1",
     "@radix-ui/react-slot": "1.2.4",
     "autoprefixer": "^10.4.20",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "graphql": "^16.14.0",
     "lucide-react": "^0.564.0",
     "motion": "^12.38.0",
-    "next": "16.1.6",
+    "next": "16.2.6",
     "next-themes": "^0.4.6",
+    "payload": "^3.84.1",
     "react": "19.2.4",
     "react-dom": "19.2.4",
     "react-hook-form": "^7.75.0",
     "resend": "^6.12.3",
+    "sharp": "^0.34.5",
     "shiki": "^4.0.2",
     "simple-icons": "^16.18.1",
     "sonner": "^1.7.1",
@@ -41,6 +51,7 @@
   },
   "pnpm": {
     "onlyBuiltDependencies": [
+      "esbuild",
       "sharp"
     ]
   }

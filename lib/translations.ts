@@ -69,6 +69,56 @@ export const translations = {
         },
       },
     },
+    contact: {
+      title: "Hablemos",
+      subtitle: "Suelo responder en 24-48 horas.",
+      labels: {
+        name: "Nombre",
+        email: "Email",
+        message: "Mensaje",
+      },
+      placeholders: {
+        name: "Tu nombre",
+        email: "tu@email.com",
+        message: "Cuéntame sobre tu proyecto...",
+      },
+      submit: "Enviar mensaje",
+      toasts: {
+        verifyFirst: "Por favor completa la verificación primero.",
+        success: "¡Mensaje enviado! Te respondo pronto.",
+        error: "Algo salió mal. Intenta de nuevo o escríbeme por LinkedIn.",
+      },
+      validation: {
+        nameMin: "El nombre debe tener al menos 2 caracteres",
+        emailInvalid: "Email inválido",
+        messageMin: "El mensaje debe tener al menos 10 caracteres",
+      },
+    },
+    faq: {
+      title: "Preguntas frecuentes",
+      items: [
+        {
+          question: "¿Cuál es tu disponibilidad típica?",
+          answer:
+            "Suelo estar agendado con 2-4 semanas de anticipación. Para fixes urgentes o consultas puntuales, a veces puedo encajar una sesión. La mejor forma de saber es escribirme aquí.",
+        },
+        {
+          question: "¿Trabajas con startups?",
+          answer:
+            "¡Sí! Me encanta el ritmo rápido de las startups. Me especializo en MVPs y en ayudar a fundadores a llevar su producto de cero a uno.",
+        },
+        {
+          question: "¿Tienes preferencia de stack?",
+          answer:
+            "Soy pragmático. Aunque me encanta Go para backends y React para frontends, elijo la herramienta que mejor resuelva el problema. Mis prioridades son la claridad y mantenibilidad.",
+        },
+        {
+          question: "¿Cómo empezamos?",
+          answer:
+            "Llena el formulario con un resumen breve de tu proyecto. Te respondo en 24-48 horas para agendar una llamada de descubrimiento de 15 min.",
+        },
+      ],
+    },
     footer: {
       builtWith: "Hecho con Next.js, React, Tailwind y Framer Motion.",
       backToTop: "Volver arriba",
@@ -149,6 +199,56 @@ export const translations = {
             "Production launch + technical handoff. I stick around to iterate on what we learn.",
         },
       },
+    },
+    contact: {
+      title: "Let's Talk",
+      subtitle: "I usually respond in 24-48 hours.",
+      labels: {
+        name: "Name",
+        email: "Email",
+        message: "Message",
+      },
+      placeholders: {
+        name: "Your name",
+        email: "your@email.com",
+        message: "Tell me about your project...",
+      },
+      submit: "Send Message",
+      toasts: {
+        verifyFirst: "Please complete the verification first.",
+        success: "Message sent! I'll get back to you soon.",
+        error: "Something went wrong. Please try again or reach out via LinkedIn.",
+      },
+      validation: {
+        nameMin: "Name must be at least 2 characters",
+        emailInvalid: "Invalid email address",
+        messageMin: "Message must be at least 10 characters",
+      },
+    },
+    faq: {
+      title: "FAQ",
+      items: [
+        {
+          question: "What's your typical availability?",
+          answer:
+            "I'm usually booked 2-4 weeks in advance. For urgent fixes or consultations, I can sometimes squeeze in a session. Best way to know is to drop a message here.",
+        },
+        {
+          question: "Do you work with startups?",
+          answer:
+            "Yes! I love the fast-paced environment of startups. I specialize in MVP development and helping founders take their product from zero to one.",
+        },
+        {
+          question: "What's your tech stack bias?",
+          answer:
+            "I'm pragmatic. While I love Go for backends and React for frontends, I choose the tool that fits the problem. Clarity and maintainability are my priorities.",
+        },
+        {
+          question: "How do we get started?",
+          answer:
+            "Fill out the form with a brief summary of your project. I'll get back to you within 24-48 hours to schedule a 15-min discovery call.",
+        },
+      ],
     },
     footer: {
       builtWith: "Built with Next.js, React, Tailwind, and Framer Motion.",

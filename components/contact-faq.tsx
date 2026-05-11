@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -15,33 +15,13 @@ import {
   SendHorizontal,
 } from "lucide-react";
 import { toast } from "sonner";
+import { Turnstile, type TurnstileInstance } from "@marsidev/react-turnstile";
+import { useTheme } from "next-themes";
+import { useLanguageStore } from "@/hooks/use-language";
+import { translations } from "@/lib/translations";
 
-const contactSchema = z.object({
-  name: z.string().min(2, "Name must be at least 2 characters"),
-  email: z.string().email("Invalid email address"),
-  message: z.string().min(10, "Message must be at least 10 characters"),
-});
-
-type ContactFormValues = z.infer<typeof contactSchema>;
-
-const faqs = [
-  {
-    question: "What's your typical availability?",
-    answer: "I'm usually booked 2-4 weeks in advance. For urgent fixes or consultations, I can sometimes squeeze in a session. Best way to know is to drop a message here.",
-  },
-  {
-    question: "Do you work with startups?",
-    answer: "Yes! I love the fast-paced environment of startups. I specialize in MVP development and helping founders take their product from zero to one.",
-  },
-  {
-    question: "What's your tech stack bias?",
-    answer: "I'm pragmatic. While I love Go for backends and React for frontends, I choose the tool that fits the problem. Clarity and maintainability are my priorities.",
-  },
-  {
-    question: "How do we get started?",
-    answer: "Fill out the form with a brief summary of your project. I'll get back to you within 24-48 hours to schedule a 15-min discovery call.",
-  },
-];
+const TURNSTILE_SITE_KEY =
+  process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY || "1x00000000000000000000AA";
 
 const cellEntrance = (delay: number) => ({
   initial: { opacity: 0, y: 16 },
@@ -50,8 +30,28 @@ const cellEntrance = (delay: number) => ({
 });
 
 export function ContactFAQ() {
+  const { language } = useLanguageStore();
+  const t = translations[language];
+  const tContact = t.contact;
+  const tFaq = t.faq;
+
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
+  const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
+  const turnstileRef = useRef<TurnstileInstance | null>(null);
+  const { resolvedTheme } = useTheme();
+
+  const contactSchema = useMemo(
+    () =>
+      z.object({
+        name: z.string().min(2, tContact.validation.nameMin),
+        email: z.string().email(tContact.validation.emailInvalid),
+        message: z.string().min(10, tContact.validation.messageMin),
+      }),
+    [tContact.validation],
+  );
+
+  type ContactFormValues = z.infer<typeof contactSchema>;
 
   const {
     register,
@@ -63,21 +63,27 @@ export function ContactFAQ() {
   });
 
   const onSubmit = async (data: ContactFormValues) => {
+    if (!turnstileToken) {
+      toast.error(tContact.toasts.verifyFirst);
+      return;
+    }
     setIsSubmitting(true);
     try {
       const response = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
+        body: JSON.stringify({ ...data, turnstileToken }),
       });
 
       if (!response.ok) throw new Error("Failed to send message");
 
-      toast.success("Message sent! I'll get back to you soon.");
+      toast.success(tContact.toasts.success);
       reset();
     } catch (error) {
-      toast.error("Something went wrong. Please try again or reach out via LinkedIn.");
+      toast.error(tContact.toasts.error);
     } finally {
+      turnstileRef.current?.reset();
+      setTurnstileToken(null);
       setIsSubmitting(false);
     }
   };
@@ -96,23 +102,21 @@ export function ContactFAQ() {
               </div>
               <div>
                 <h2 className="text-3xl font-black tracking-tight text-foreground">
-                  Let's Talk
+                  {tContact.title}
                 </h2>
-                <p className="text-muted-foreground">
-                  I usually respond in 24-48 hours.
-                </p>
+                <p className="text-muted-foreground">{tContact.subtitle}</p>
               </div>
             </div>
 
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
               <div className="space-y-1">
                 <label className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground">
-                  Name
+                  {tContact.labels.name}
                 </label>
                 <input
                   {...register("name")}
                   className="w-full rounded-xl border border-border bg-secondary/50 px-4 py-3 text-foreground transition-all focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
-                  placeholder="Your name"
+                  placeholder={tContact.placeholders.name}
                 />
                 {errors.name && (
                   <p className="flex items-center gap-1.5 text-xs text-destructive">
@@ -124,12 +128,12 @@ export function ContactFAQ() {
 
               <div className="space-y-1">
                 <label className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground">
-                  Email
+                  {tContact.labels.email}
                 </label>
                 <input
                   {...register("email")}
                   className="w-full rounded-xl border border-border bg-secondary/50 px-4 py-3 text-foreground transition-all focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
-                  placeholder="your@email.com"
+                  placeholder={tContact.placeholders.email}
                 />
                 {errors.email && (
                   <p className="flex items-center gap-1.5 text-xs text-destructive">
@@ -141,13 +145,13 @@ export function ContactFAQ() {
 
               <div className="space-y-1">
                 <label className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground">
-                  Message
+                  {tContact.labels.message}
                 </label>
                 <textarea
                   {...register("message")}
                   rows={4}
                   className="w-full resize-none rounded-xl border border-border bg-secondary/50 px-4 py-3 text-foreground transition-all focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
-                  placeholder="Tell me about your project..."
+                  placeholder={tContact.placeholders.message}
                 />
                 {errors.message && (
                   <p className="flex items-center gap-1.5 text-xs text-destructive">
@@ -157,16 +161,27 @@ export function ContactFAQ() {
                 )}
               </div>
 
+              <div className="flex justify-center">
+                <Turnstile
+                  ref={turnstileRef}
+                  siteKey={TURNSTILE_SITE_KEY}
+                  options={{ theme: resolvedTheme === "dark" ? "dark" : "light" }}
+                  onSuccess={setTurnstileToken}
+                  onError={() => setTurnstileToken(null)}
+                  onExpire={() => setTurnstileToken(null)}
+                />
+              </div>
+
               <button
                 type="submit"
-                disabled={isSubmitting}
-                className="group flex w-full items-center justify-center gap-2 rounded-xl bg-primary py-4 font-bold text-primary-foreground transition-all hover:bg-primary/90 disabled:opacity-50"
+                disabled={isSubmitting || !turnstileToken}
+                className="group flex w-full items-center justify-center gap-2 rounded-xl bg-primary py-4 font-bold text-primary-foreground transition-all hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-50"
               >
                 {isSubmitting ? (
                   <Loader2 className="h-5 w-5 animate-spin" />
                 ) : (
                   <>
-                    <span>Send Message</span>
+                    <span>{tContact.submit}</span>
                     <SendHorizontal className="h-5 w-5 transition-transform group-hover:translate-x-1" />
                   </>
                 )}
@@ -183,12 +198,12 @@ export function ContactFAQ() {
                 <HelpCircle className="h-6 w-6" />
               </div>
               <h2 className="text-2xl font-black tracking-tight text-foreground">
-                FAQ
+                {tFaq.title}
               </h2>
             </div>
 
             <div className="space-y-3">
-              {faqs.map((faq, index) => (
+              {tFaq.items.map((faq, index) => (
                 <div
                   key={index}
                   className="overflow-hidden rounded-xl border border-border bg-secondary/30 transition-all"

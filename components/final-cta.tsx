@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "motion/react";
-import { ArrowRight, Github, Linkedin, Mail, Calendar } from "lucide-react";
+import { ArrowRight, Instagram, Linkedin, Send, Twitter } from "lucide-react";
 import { useLanguageStore } from "@/hooks/use-language";
 import { translations } from "@/lib/translations";
 
@@ -13,10 +13,10 @@ const cellEntrance = (delay: number) => ({
 
 const socials = [
   {
-    label: "Email",
-    href: "mailto:hello@mrsan.dev",
-    icon: Mail,
-    color: "hover:text-primary",
+    label: "Instagram",
+    href: "#",
+    icon: Instagram,
+    color: "hover:text-pink-500",
   },
   {
     label: "LinkedIn",
@@ -25,16 +25,16 @@ const socials = [
     color: "hover:text-blue-500",
   },
   {
-    label: "GitHub",
-    href: "https://github.com/mrsandv",
-    icon: Github,
+    label: "X",
+    href: "#",
+    icon: Twitter,
     color: "hover:text-foreground",
   },
   {
-    label: "Cal",
-    href: "https://cal.com",
-    icon: Calendar,
-    color: "hover:text-orange-500",
+    label: "Telegram",
+    href: "#",
+    icon: Send,
+    color: "hover:text-sky-500",
   },
 ];
 
