@@ -1,5 +1,6 @@
 import { mongooseAdapter } from "@payloadcms/db-mongodb";
 import { lexicalEditor } from "@payloadcms/richtext-lexical";
+import { s3Storage } from "@payloadcms/storage-s3";
 import path from "path";
 import { buildConfig } from "payload";
 import { fileURLToPath } from "url";
@@ -29,4 +30,24 @@ export default buildConfig({
     url: process.env.MONGODB_URI || "",
   }),
   sharp,
+  plugins: [
+    s3Storage({
+      collections: {
+        media: {
+          generateFileURL: ({ filename }) => {
+            return `${process.env.R2_PUBLIC_URL}/${filename}`;
+          },
+        },
+      },
+      bucket: process.env.R2_BUCKET || "",
+      config: {
+        endpoint: process.env.R2_ENDPOINT || "",
+        credentials: {
+          accessKeyId: process.env.R2_ACCESS_KEY_ID || "",
+          secretAccessKey: process.env.R2_SECRET_ACCESS_KEY || "",
+        },
+        region: "auto",
+      },
+    }),
+  ],
 });
