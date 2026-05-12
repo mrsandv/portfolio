@@ -4,6 +4,7 @@ import Script from "next/script";
 import type { ReactNode } from "react";
 import { ThemeProvider } from "@/components/theme-provider";
 import { LanguageProvider } from "@/components/language-provider";
+import { fetchSettings } from "@/lib/cms";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -15,92 +16,68 @@ const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
 });
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://spacehole.tech";
-const SITE_NAME = "Marco Sandoval";
-const SITE_TITLE = "Marco Sandoval — Software Engineer";
-const SITE_DESCRIPTION =
-  "Software engineer with 7+ years shipping production code. Full-stack with a bias for clarity over cleverness. Available for full-time roles and freelance projects.";
-const SITE_KEYWORDS = [
-  "Marco Sandoval",
-  "MRSAN",
-  "spacehole.tech",
-  "software engineer",
-  "full-stack developer",
-  "Go developer",
-  "React developer",
-  "Next.js",
-  "freelance developer",
-  "Mexico",
-];
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = "es";
+  const settings = await fetchSettings(locale);
+  const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL;
 
-const UMAMI_WEBSITE_ID = process.env.NEXT_PUBLIC_UMAMI_WEBSITE_ID;
-const UMAMI_SCRIPT_URL =
-  process.env.NEXT_PUBLIC_UMAMI_SCRIPT_URL || "https://cloud.umami.is/script.js";
+  const siteTitle = settings?.siteTitle || "Marco Sandoval — Software Engineer";
+  const siteDescription = settings?.siteDescription || "Software engineer with 7+ years shipping production code.";
+  const siteName = settings?.siteName || "Marco Sandoval";
+  const keywords = settings?.keywords?.map(k => k.keyword) || ["software engineer", "full-stack"];
+  const ogImageUrl = typeof settings?.ogImage === 'object' ? settings.ogImage.url : "/og-image.png";
 
-export const metadata: Metadata = {
-  metadataBase: new URL(SITE_URL),
-  title: {
-    default: SITE_TITLE,
-    template: `%s — ${SITE_NAME}`,
-  },
-  description: SITE_DESCRIPTION,
-  keywords: SITE_KEYWORDS,
-  authors: [{ name: SITE_NAME, url: SITE_URL }],
-  creator: SITE_NAME,
-  publisher: SITE_NAME,
-  applicationName: SITE_NAME,
-  category: "technology",
-  alternates: {
-    canonical: "/",
-    languages: {
-      "es-MX": "/",
-      "en-US": "/",
+  return {
+    metadataBase: SITE_URL ? new URL(SITE_URL) : undefined,
+    title: {
+      default: siteTitle,
+      template: `%s — ${siteName}`,
     },
-  },
-  openGraph: {
-    type: "website",
-    locale: "en_US",
-    alternateLocale: ["es_MX"],
-    url: SITE_URL,
-    siteName: SITE_NAME,
-    title: SITE_TITLE,
-    description: SITE_DESCRIPTION,
-    images: [
-      {
-        url: "/og-image.png",
-        width: 1200,
-        height: 630,
-        alt: SITE_TITLE,
+    description: siteDescription,
+    keywords: keywords,
+    authors: [{ name: siteName }],
+    creator: siteName,
+    publisher: siteName,
+    applicationName: siteName,
+    alternates: {
+      canonical: "/",
+      languages: {
+        "es-MX": "/",
+        "en-US": "/",
       },
-    ],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: SITE_TITLE,
-    description: SITE_DESCRIPTION,
-    images: ["/og-image.png"],
-    creator: "@mrsan",
-  },
-  robots: {
-    index: true,
-    follow: true,
-    googleBot: {
+    },
+    openGraph: {
+      type: "website",
+      locale: "es_MX",
+      url: SITE_URL,
+      siteName: siteName,
+      title: siteTitle,
+      description: siteDescription,
+      images: [
+        {
+          url: ogImageUrl,
+          width: 1200,
+          height: 630,
+          alt: siteTitle,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: siteTitle,
+      description: siteDescription,
+      images: [ogImageUrl],
+    },
+    robots: {
       index: true,
       follow: true,
-      "max-video-preview": -1,
-      "max-image-preview": "large",
-      "max-snippet": -1,
     },
-  },
-  icons: {
-    icon: "/favicon-32x32.png",
-    apple: "/apple-touch-icon.png",
-  },
-  verification: {
-    // Add your verification IDs here when you set them up
-    // google: "google-site-verification-id",
-  },
-};
+    icons: {
+      icon: "/favicon-32x32.png",
+      apple: "/apple-touch-icon.png",
+    },
+  };
+}
 
 export const viewport: Viewport = {
   themeColor: [
@@ -111,43 +88,33 @@ export const viewport: Viewport = {
   initialScale: 1,
 };
 
-const personJsonLd = {
-  "@context": "https://schema.org",
-  "@type": "Person",
-  name: SITE_NAME,
-  alternateName: "MRSAN",
-  url: SITE_URL,
-  jobTitle: "Software Engineer",
-  description: SITE_DESCRIPTION,
-  sameAs: [
-    "https://linkedin.com/in/mrsan",
-    "https://github.com/mrsandv",
-  ],
-  knowsAbout: ["Go", "React", "Next.js", "PostgreSQL", "AWS", "Docker"],
-  address: {
-    "@type": "PostalAddress",
-    addressCountry: "MX",
-  },
-};
-
-const websiteJsonLd = {
-  "@context": "https://schema.org",
-  "@type": "WebSite",
-  name: SITE_NAME,
-  url: SITE_URL,
-  description: SITE_DESCRIPTION,
-  inLanguage: ["en", "es"],
-  author: { "@type": "Person", name: SITE_NAME },
-};
-
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: ReactNode;
 }>) {
+  const locale = "es";
+  const settings = await fetchSettings(locale);
+  const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL;
+  const siteName = settings?.siteName || "Marco Sandoval";
+  const siteDescription = settings?.siteDescription || "";
+
+  const UMAMI_WEBSITE_ID = process.env.NEXT_PUBLIC_UMAMI_WEBSITE_ID;
+  const UMAMI_SCRIPT_URL = process.env.NEXT_PUBLIC_UMAMI_SCRIPT_URL;
+
+  const personJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    name: siteName,
+    url: SITE_URL,
+    jobTitle: "Software Engineer",
+    description: siteDescription,
+    sameAs: settings?.socialLinks?.map(l => l.url) || [],
+  };
+
   return (
     <html
-      lang="en"
+      lang="es"
       suppressHydrationWarning
       className={`${geistSans.variable} ${geistMono.variable}`}
     >
@@ -164,14 +131,8 @@ export default function RootLayout({
         <Script
           id="ld-person"
           type="application/ld+json"
-          strategy="beforeInteractive"
+          strategy="afterInteractive"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }}
-        />
-        <Script
-          id="ld-website"
-          type="application/ld+json"
-          strategy="beforeInteractive"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
         />
 
         {UMAMI_WEBSITE_ID && (

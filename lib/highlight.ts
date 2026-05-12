@@ -113,8 +113,11 @@ async function fetchProjectsFromPayload(): Promise<Project[] | null> {
 }
 
 export async function getHighlightedProjects(): Promise<HighlightedProject[]> {
-  const dynamic = await fetchProjectsFromPayload();
-  const source = dynamic ?? PROJECTS;
+  const source = await fetchProjectsFromPayload();
+
+  if (!source || source.length === 0) {
+    return [];
+  }
 
   return Promise.all(
     source.map(async (project): Promise<HighlightedProject> => {

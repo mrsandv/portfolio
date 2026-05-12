@@ -4,7 +4,7 @@ import Image from "next/image";
 import { motion } from "motion/react";
 import { useState } from "react";
 
-export function GlitchAvatar() {
+export function GlitchAvatar({ src = "/hero-photo.jpg" }: { src?: string }) {
   const [hovered, setHovered] = useState(false);
 
   return (
@@ -25,10 +25,10 @@ export function GlitchAvatar() {
     >
       <div className="relative h-full min-h-[300px] w-full">
         <Image
-          src="/hero-photo.jpg"
-          alt="Hero"
+          src={src}
+          alt="Profile"
           fill
-          className="object-cover object-right-top grayscale transition-all duration-700 group-hover:grayscale-0"
+          className="object-cover object-right-top grayscale transition-all duration-700 group-hover:grayscale-0 group-hover:scale-105"
           priority
         />
       </div>

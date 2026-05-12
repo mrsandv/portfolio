@@ -1,17 +1,15 @@
 import type { MetadataRoute } from "next";
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://spacehole.tech";
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL;
 
 export default function robots(): MetadataRoute.Robots {
   return {
-    rules: [
-      {
-        userAgent: "*",
-        allow: "/",
-        disallow: ["/api/", "/admin/"],
-      },
-    ],
-    sitemap: `${SITE_URL}/sitemap.xml`,
+    rules: {
+      userAgent: "*",
+      allow: "/",
+      disallow: ["/admin", "/api"],
+    },
+    sitemap: SITE_URL ? `${SITE_URL}/sitemap.xml` : undefined,
     host: SITE_URL,
   };
 }

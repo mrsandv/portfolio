@@ -69,58 +69,75 @@ export function BentoPortfolio({ projects }: { projects: HighlightedProject[] })
           </motion.div>
 
           <AnimatePresence mode="popLayout">
-            {filteredProjects.map((project, index) => {
-              const baseDelay = 0.1 + index * 0.05;
-              const isLarge = project.size === "large";
-              const isMedium = project.size === "medium";
+            {filteredProjects.length > 0 ? (
+              filteredProjects.map((project, index) => {
+                const baseDelay = 0.1 + index * 0.05;
+                const isLarge = project.size === "large";
+                const isMedium = project.size === "medium";
 
-              return (
-                <motion.div
-                  key={project.id}
-                  layout
-                  {...projectVariants}
-                  transition={{ ...projectVariants.transition, delay: baseDelay }}
-                  className={`group relative flex flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-sm transition-all hover:border-primary/40 ${
-                    isLarge
-                      ? "md:col-span-2 md:row-span-2"
-                      : isMedium
-                        ? "md:col-span-2"
-                        : "md:col-span-1"
-                  }`}
-                >
-                  <ProjectMedia project={project} t={t} />
+                return (
+                  <motion.div
+                    key={project.id}
+                    layout
+                    {...projectVariants}
+                    transition={{ ...projectVariants.transition, delay: baseDelay }}
+                    className={`group relative flex flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-sm transition-all hover:border-primary/40 ${
+                      isLarge
+                        ? "md:col-span-2 md:row-span-2"
+                        : isMedium
+                          ? "md:col-span-2"
+                          : "md:col-span-1"
+                    }`}
+                  >
+                    <ProjectMedia project={project} t={t} />
 
-                  <div className="flex flex-1 flex-col p-6">
-                    <div className="mb-2 flex items-start justify-between gap-3">
-                      <h3 className="text-xl font-bold text-foreground">
-                        {project.title}
-                      </h3>
-                      <Badge variant="secondary" className="font-mono text-[10px] shrink-0">
-                        {project.status}
-                      </Badge>
+                    <div className="flex flex-1 flex-col p-6">
+                      <div className="mb-2 flex items-start justify-between gap-3">
+                        <h3 className="text-xl font-bold text-foreground">
+                          {project.title}
+                        </h3>
+                        <Badge variant="secondary" className="font-mono text-[10px] shrink-0">
+                          {project.status}
+                        </Badge>
+                      </div>
+                      <p className="mb-4 text-sm leading-relaxed text-muted-foreground">
+                        {project.description}
+                      </p>
+
+                      <div className="mb-6 flex flex-wrap gap-1.5">
+                        {project.tags.map((tag) => (
+                          <span
+                            key={tag}
+                            className="rounded-md bg-secondary/50 px-2 py-0.5 font-mono text-[10px] text-muted-foreground"
+                          >
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
+
+                      <div className="mt-auto">
+                        <ProjectActions project={project} t={t} common={common} />
+                      </div>
                     </div>
-                    <p className="mb-4 text-sm leading-relaxed text-muted-foreground">
-                      {project.description}
-                    </p>
-
-                    <div className="mb-6 flex flex-wrap gap-1.5">
-                      {project.tags.map((tag) => (
-                        <span
-                          key={tag}
-                          className="rounded-md bg-secondary/50 px-2 py-0.5 font-mono text-[10px] text-muted-foreground"
-                        >
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
-
-                    <div className="mt-auto">
-                      <ProjectActions project={project} t={t} common={common} />
-                    </div>
-                  </div>
-                </motion.div>
-              );
-            })}
+                  </motion.div>
+                );
+              })
+            ) : (
+              <motion.div
+                layout
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="md:col-span-4 flex flex-col items-center justify-center py-20 rounded-2xl border border-dashed border-border"
+              >
+                <div className="rounded-full bg-secondary p-4 mb-4">
+                  <Terminal className="h-8 w-8 text-muted-foreground" />
+                </div>
+                <p className="text-muted-foreground font-mono text-sm">
+                  {language === "es" ? "No se encontraron registros" : "No records found"}
+                </p>
+              </motion.div>
+            )}
           </AnimatePresence>
         </div>
       </div>

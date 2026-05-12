@@ -1,8 +1,9 @@
 import type { MetadataRoute } from "next";
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://spacehole.tech";
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL;
 
 export default function sitemap(): MetadataRoute.Sitemap {
+  if (!SITE_URL) return [];
   const lastModified = new Date();
   return [
     {

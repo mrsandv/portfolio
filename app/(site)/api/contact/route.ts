@@ -1,12 +1,11 @@
 import { NextResponse } from "next/server";
 import { Resend } from "resend";
 
-const resend = new Resend(process.env.RESEND_API_KEY || "re_dummy");
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 const TURNSTILE_VERIFY_URL =
   "https://challenges.cloudflare.com/turnstile/v0/siteverify";
-const TURNSTILE_SECRET =
-  process.env.TURNSTILE_SECRET_KEY || "1x0000000000000000000000000000000AA";
+const TURNSTILE_SECRET = process.env.TURNSTILE_SECRET_KEY;
 
 async function verifyTurnstile(token: string, ip: string | null): Promise<boolean> {
   const body = new URLSearchParams();

@@ -1,10 +1,11 @@
 "use client";
 
-import { ArrowRight, FileText } from "lucide-react";
+import { ArrowRight, FileText, ExternalLink } from "lucide-react";
 import { motion } from "motion/react";
 import { GlitchAvatar } from "@/components/glitch-avatar";
 import { useLanguageStore } from "@/hooks/use-language";
 import { translations } from "@/lib/translations";
+import type { SiteSettings } from "@/lib/cms";
 
 const cellEntrance = (delay: number) => ({
   initial: { opacity: 0, y: 16 },
@@ -12,9 +13,25 @@ const cellEntrance = (delay: number) => ({
   transition: { duration: 0.5, delay, ease: "easeOut" as const },
 });
 
-export function Hero() {
+export function Hero({ settings }: { settings: SiteSettings | null }) {
   const { language } = useLanguageStore();
   const t = translations[language].hero;
+
+  const title = settings?.heroTitle || t.title;
+  const titleAccent = settings?.heroTitleAccent || t.titleAccent;
+  const description = settings?.heroDescription || t.description;
+  const tagline = settings?.heroTagline || t.tagline;
+  const availability = settings?.availability?.map(a => a.role) || t.statusRoles;
+
+  // Handle multiple resumes
+  const resumes = settings?.resumes?.map(r => ({
+    label: r.label,
+    url: typeof r.file === 'object' ? r.file.url : r.file
+  })) || [{ label: t.cvLabel, url: "/cv.pdf" }];
+
+  // Profile Picture and Link
+  const profileImg = typeof settings?.profilePicture === 'object' ? settings.profilePicture.url : (settings?.profilePicture || "/hero-photo.jpg");
+  const profileLink = settings?.profileLink;
 
   return (
     <section className="relative px-6 pt-28 pb-12 md:pt-32">
@@ -24,22 +41,31 @@ export function Hero() {
           className="rounded-2xl border border-border bg-card p-8 shadow-sm md:col-start-1 md:col-end-4 md:row-start-1 md:row-end-2 md:p-12"
         >
           <h1 className="text-balance text-4xl font-black leading-[0.95] tracking-tight text-foreground md:text-6xl lg:text-7xl">
-            {t.title}
-            <span className="text-accent">{t.titleAccent}</span>
+            {title}{" "}
+            <span className="text-accent">{titleAccent}</span>
           </h1>
           <p className="mt-6 max-w-3xl text-pretty text-base leading-relaxed text-muted-foreground md:text-lg">
-            {t.description}
+            {description}
           </p>
           <p className="mt-6 font-mono text-xs uppercase tracking-wider text-muted-foreground">
-            {t.tagline}
+            {tagline}
           </p>
         </motion.div>
 
         <motion.div
           {...cellEntrance(0.05)}
-          className="overflow-hidden rounded-2xl border border-border bg-secondary shadow-sm md:col-start-4 md:row-start-1 md:row-end-3"
+          className="group/avatar relative overflow-hidden rounded-2xl border border-border bg-secondary shadow-sm md:col-start-4 md:row-start-1 md:row-end-3"
         >
-          <GlitchAvatar />
+          {profileLink ? (
+            <a href={profileLink} target="_blank" rel="noopener noreferrer" className="block h-full w-full">
+              <GlitchAvatar src={profileImg} />
+              <div className="absolute bottom-4 right-4 z-10 rounded-full bg-background/80 p-2 opacity-0 backdrop-blur-sm transition-opacity group-hover/avatar:opacity-100">
+                <ExternalLink className="h-4 w-4 text-primary" />
+              </div>
+            </a>
+          ) : (
+            <GlitchAvatar src={profileImg} />
+          )}
         </motion.div>
 
         <motion.div
@@ -56,7 +82,7 @@ export function Hero() {
             </span>
           </div>
           <ul className="flex flex-wrap items-center gap-2">
-            {t.statusRoles.map((role) => (
+            {availability.map((role) => (
               <li
                 key={role}
                 className="inline-flex items-center rounded-full border border-border bg-secondary px-3 py-1 text-[11px] font-bold text-foreground"
@@ -83,25 +109,41 @@ export function Hero() {
           </div>
         </motion.a>
 
-        <motion.a
-          href="/cv.pdf"
-          target="_blank"
-          rel="noopener noreferrer"
+        {/* Dynamic Resumes Cell */}
+        <motion.div
           {...cellEntrance(0.2)}
-          whileHover={{ scale: 1.02, backgroundColor: "var(--secondary)" }}
-          whileTap={{ scale: 0.98 }}
-          className="flex flex-col items-center justify-center gap-2 rounded-2xl border border-border bg-card p-4 shadow-sm transition-colors md:col-start-3 md:row-start-2"
+          className="flex flex-col items-center justify-center gap-3 rounded-2xl border border-border bg-card p-4 shadow-sm md:col-start-3 md:row-start-2"
         >
-          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-secondary text-accent">
-            <FileText className="h-4 w-4" />
-          </div>
-          <div className="text-center">
-            <p className="text-xs font-bold text-foreground">{t.ctaCV}</p>
-            <p className="font-mono text-[8px] uppercase tracking-wider text-muted-foreground">
-              {t.cvLabel}
-            </p>
-          </div>
-        </motion.a>
+          {resumes.map((resume, idx) => (
+            <motion.a
+              key={idx}
+              href={resume.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              whileHover={{ scale: 1.05, x: 2 }}
+              className="flex w-full items-center gap-3 rounded-xl bg-secondary/50 p-2.5 transition-colors hover:bg-secondary"
+            >
+              <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-background text-accent shadow-sm">
+                <FileText className="h-4 w-4" />
+              </div>
+              <div className="flex flex-col">
+                <p className="text-[10px] font-bold leading-tight text-foreground uppercase tracking-tight">
+                  {idx === 0 && resumes.length > 1 ? t.ctaCV : (resumes.length === 1 ? t.ctaCV : "Resume")}
+                </p>
+                <p className="font-mono text-[9px] font-medium text-muted-foreground">
+                  {resume.label}
+                </p>
+              </div>
+            </motion.a>
+          ))}
+          {resumes.length === 1 && (
+             <div className="w-full py-4 text-center border-t border-border/10 mt-1">
+                <p className="font-mono text-[7px] uppercase tracking-widest text-muted-foreground/40">
+                   Single Version Active
+                </p>
+             </div>
+          )}
+        </motion.div>
       </div>
     </section>
   );
