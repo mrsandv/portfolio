@@ -2,10 +2,10 @@ import { withPayload } from "@payloadcms/next/withPayload";
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: "standalone",
   typescript: {
     ignoreBuildErrors: true,
   },
+  serverExternalPackages: ["sharp"],
   images: {
     unoptimized: true,
   },

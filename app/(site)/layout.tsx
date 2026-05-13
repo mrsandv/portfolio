@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import Script from "next/script";
 import type { ReactNode } from "react";
+import { Analytics } from "@vercel/analytics/next";
 import { ThemeProvider } from "@/components/theme-provider";
 import { LanguageProvider } from "@/components/language-provider";
 import { fetchSettings } from "@/lib/cms";
@@ -99,9 +100,6 @@ export default async function RootLayout({
   const siteName = settings?.siteName || "Marco Sandoval";
   const siteDescription = settings?.siteDescription || "";
 
-  const UMAMI_WEBSITE_ID = process.env.NEXT_PUBLIC_UMAMI_WEBSITE_ID;
-  const UMAMI_SCRIPT_URL = process.env.NEXT_PUBLIC_UMAMI_SCRIPT_URL;
-
   const personJsonLd = {
     "@context": "https://schema.org",
     "@type": "Person",
@@ -135,14 +133,7 @@ export default async function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }}
         />
 
-        {UMAMI_WEBSITE_ID && (
-          <Script
-            src={UMAMI_SCRIPT_URL}
-            data-website-id={UMAMI_WEBSITE_ID}
-            strategy="afterInteractive"
-            defer
-          />
-        )}
+        <Analytics />
       </body>
     </html>
   );
