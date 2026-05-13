@@ -6,12 +6,6 @@ node_modules/
 dist/
 build/
 
-# Go binaries
-/server
-/apps/api/server
-/apps/api/api
-apps/api/tmp/
-
 # Env
 .env
 .env.local
@@ -25,3 +19,7 @@ Thumbs.db
 .vscode/
 .idea/
 .claude/
+.notes/
+
+# Build artifacts
+tsconfig.tsbuildinfo
