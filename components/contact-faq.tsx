@@ -31,13 +31,14 @@ const cellEntrance = (delay: number) => ({
   transition: { duration: 0.5, delay, ease: "easeOut" as const },
 });
 
-const contactSchema = z.object({
-  name: z.string().min(2, "Name must be at least 2 characters"),
-  email: z.string().email("Invalid email address"),
-  message: z.string().min(10, "Message must be at least 10 characters"),
-});
+const buildContactSchema = (v: { nameMin: string; emailInvalid: string; messageMin: string }) =>
+  z.object({
+    name: z.string().min(2, v.nameMin),
+    email: z.string().email(v.emailInvalid),
+    message: z.string().min(10, v.messageMin),
+  });
 
-type ContactFormValues = z.infer<typeof contactSchema>;
+type ContactFormValues = z.infer<ReturnType<typeof buildContactSchema>>;
 
 export function ContactFAQ({
   faqs = { es: [], en: [] },
@@ -66,7 +67,7 @@ export function ContactFAQ({
     reset,
     formState: { errors },
   } = useForm<ContactFormValues>({
-    resolver: zodResolver(contactSchema),
+    resolver: zodResolver(buildContactSchema(t.validation)),
   });
 
   const currentFaqs = faqs[language] || [];
@@ -215,7 +216,7 @@ export function ContactFAQ({
               ) : (
                 <div className="rounded-2xl border border-dashed border-border p-8 text-center bg-card/50">
                    <p className="text-muted-foreground font-mono text-sm">
-                    {language === "es" ? "// No hay preguntas frecuentes" : "// No FAQs registered"}
+                    {tFaq.empty}
                   </p>
                 </div>
               )}

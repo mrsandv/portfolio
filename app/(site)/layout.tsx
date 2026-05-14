@@ -23,9 +23,9 @@ export async function generateMetadata(): Promise<Metadata> {
   const settings = await fetchSettings(locale);
   const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL;
 
-  const siteTitle = settings?.siteTitle || "Marco Sandoval — Software Engineer";
-  const siteDescription = settings?.siteDescription || "Software engineer with 7+ years shipping production code.";
-  const siteName = settings?.siteName || "Marco Sandoval";
+  const siteTitle = settings?.siteTitle || "Spacehole tech — Software Engineering";
+  const siteDescription = settings?.siteDescription || "Software engineering with 7+ years shipping production code.";
+  const siteName = settings?.siteName || "Spacehole tech";
   const keywords = settings?.keywords?.map(k => k.keyword) || ["software engineer", "full-stack"];
   const ogImageUrl = typeof settings?.ogImage === 'object' ? settings.ogImage.url : "/og-image.png";
   const ogLocale = settings?.ogLocale || "es_MX";
@@ -99,7 +99,7 @@ export default async function RootLayout({
   const locale = "es";
   const settings = await fetchSettings(locale);
   const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL;
-  const siteName = settings?.siteName || "Marco Sandoval";
+  const siteName = settings?.siteName || "Spacehole tech";
   const siteDescription = settings?.siteDescription || "";
   const jobTitle = settings?.jobTitle || "Software Engineer";
 

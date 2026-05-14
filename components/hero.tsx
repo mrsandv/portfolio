@@ -128,7 +128,7 @@ export function Hero({ settings }: { settings: SiteSettings | null }) {
               </div>
               <div className="flex flex-col">
                 <p className="text-[10px] font-bold leading-tight text-foreground uppercase tracking-tight">
-                  {idx === 0 && resumes.length > 1 ? t.ctaCV : (resumes.length === 1 ? t.ctaCV : "Resume")}
+                  {t.ctaCV}
                 </p>
                 <p className="font-mono text-[9px] font-medium text-muted-foreground">
                   {resume.label}
@@ -139,7 +139,7 @@ export function Hero({ settings }: { settings: SiteSettings | null }) {
           {resumes.length === 1 && (
              <div className="w-full py-4 text-center border-t border-border/10 mt-1">
                 <p className="font-mono text-[7px] uppercase tracking-widest text-muted-foreground/40">
-                   Single Version Active
+                   {t.singleVersion}
                 </p>
              </div>
           )}

@@ -57,8 +57,7 @@ const SETTINGS_ES: SettingsLocale = {
   stackTitle: "Stack tecnológico",
   processTitle: "Metodología de trabajo",
   contactTitle: "Contacto",
-  contactSubtitle:
-    "Tiempo de respuesta habitual: 24 a 48 horas hábiles.",
+  contactSubtitle: "Tiempo de respuesta habitual: 24 a 48 horas hábiles.",
   faqTitle: "Preguntas frecuentes",
   finalCtaLine1: "CONSTRUYAMOS",
   finalCtaLine2: "JUNTOS.",
@@ -94,9 +93,8 @@ const SETTINGS_EN: SettingsLocale = {
 
 // Non-localized fields (required by validation, only re-applied on each run)
 const SETTINGS_SHARED = {
-  siteName: "Marco Sandoval",
-  email: "gustavo@commandostudio.com",
-  logoLetter: "M",
+  siteName: "Spacehole tech",
+  email: "mrsandvv@gmail.com",
   ogLocale: "es_MX",
 };
 
@@ -254,8 +252,18 @@ async function run() {
 
     if (existing.docs[0]) {
       const id = existing.docs[0].id;
-      await payload.update({ collection: "methodology", id, locale: "es", data: { ...step.es, order: step.order } });
-      await payload.update({ collection: "methodology", id, locale: "en", data: { ...step.en, order: step.order } });
+      await payload.update({
+        collection: "methodology",
+        id,
+        locale: "es",
+        data: { ...step.es, order: step.order },
+      });
+      await payload.update({
+        collection: "methodology",
+        id,
+        locale: "en",
+        data: { ...step.en, order: step.order },
+      });
       console.log(`✓ Methodology[${step.order}] updated`);
     } else {
       const created = await payload.create({
@@ -263,7 +271,12 @@ async function run() {
         locale: "es",
         data: { ...step.es, order: step.order },
       });
-      await payload.update({ collection: "methodology", id: created.id, locale: "en", data: { ...step.en, order: step.order } });
+      await payload.update({
+        collection: "methodology",
+        id: created.id,
+        locale: "en",
+        data: { ...step.en, order: step.order },
+      });
       console.log(`✓ Methodology[${step.order}] created`);
     }
   }
@@ -279,8 +292,18 @@ async function run() {
 
     if (existing.docs[0]) {
       const id = existing.docs[0].id;
-      await payload.update({ collection: "faq", id, locale: "es", data: { ...item.es, order: item.order } });
-      await payload.update({ collection: "faq", id, locale: "en", data: { ...item.en, order: item.order } });
+      await payload.update({
+        collection: "faq",
+        id,
+        locale: "es",
+        data: { ...item.es, order: item.order },
+      });
+      await payload.update({
+        collection: "faq",
+        id,
+        locale: "en",
+        data: { ...item.en, order: item.order },
+      });
       console.log(`✓ FAQ[${item.order}] updated`);
     } else {
       const created = await payload.create({
@@ -288,7 +311,12 @@ async function run() {
         locale: "es",
         data: { ...item.es, order: item.order },
       });
-      await payload.update({ collection: "faq", id: created.id, locale: "en", data: { ...item.en, order: item.order } });
+      await payload.update({
+        collection: "faq",
+        id: created.id,
+        locale: "en",
+        data: { ...item.en, order: item.order },
+      });
       console.log(`✓ FAQ[${item.order}] created`);
     }
   }

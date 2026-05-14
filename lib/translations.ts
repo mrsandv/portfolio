@@ -17,6 +17,7 @@ export const translations = {
       ctaConnectLabel: "Hablemos de tu idea",
       ctaCV: "Ver CV",
       cvLabel: "PDF · 2026",
+      singleVersion: "Single Version Active",
     },
     portfolio: {
       title: "Lab",
@@ -35,9 +36,11 @@ export const translations = {
         viewRepo: "Repo",
         viewDemo: "Demo",
         privateRepo: "Repo privado",
+        snippet: "// snippet",
       },
       comingSoon: "Próximamente",
       viewProject: "Ver Proyecto",
+      empty: "// No se encontraron registros",
     },
     finalCta: {
       headlineLine1: "VAMOS A CONSTRUIR",
@@ -45,6 +48,7 @@ export const translations = {
     },
     stack: {
       title: "Stack en producción",
+      empty: "// No hay tecnologías registradas",
     },
     process: {
       title: "Cómo trabajo",
@@ -96,6 +100,7 @@ export const translations = {
     },
     faq: {
       title: "Preguntas frecuentes",
+      empty: "// No hay preguntas frecuentes",
       items: [
         {
           question: "¿Cuál es tu disponibilidad típica?",
@@ -148,6 +153,7 @@ export const translations = {
       ctaConnectLabel: "Tell me about your idea",
       ctaCV: "View CV",
       cvLabel: "PDF · 2026",
+      singleVersion: "Single Version Active",
     },
     portfolio: {
       title: "Lab",
@@ -166,9 +172,11 @@ export const translations = {
         viewRepo: "Repo",
         viewDemo: "Demo",
         privateRepo: "Private repo",
+        snippet: "// snippet",
       },
       comingSoon: "Coming Soon",
       viewProject: "View Project",
+      empty: "// No records found",
     },
     finalCta: {
       headlineLine1: "LET'S BUILD",
@@ -176,6 +184,7 @@ export const translations = {
     },
     stack: {
       title: "Stack in production",
+      empty: "// No technologies registered",
     },
     process: {
       title: "How I work",
@@ -227,6 +236,7 @@ export const translations = {
     },
     faq: {
       title: "FAQ",
+      empty: "// No FAQs registered",
       items: [
         {
           question: "What's your typical availability?",

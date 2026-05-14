@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import { Github, Linkedin, Mail, Menu, X, Instagram } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import { LanguageToggle } from "@/components/language-toggle";
@@ -27,8 +28,7 @@ export function Navbar({
   const { language } = useLanguageStore();
   const t = translations[language].nav;
 
-  const siteName = settings?.siteName || "Marco Sandoval";
-  const logoLetter = settings?.logoLetter || "M";
+  const siteName = settings?.siteName || "Spacehole tech";
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 20);
@@ -56,9 +56,14 @@ export function Navbar({
             animate={{ opacity: 1 }}
             className="flex items-center gap-2 group"
           >
-            <div className="h-8 w-8 rounded-lg bg-primary flex items-center justify-center text-primary-foreground font-black text-xl transition-transform group-hover:rotate-12">
-              {logoLetter}
-            </div>
+            <Image
+              src="/logo.webp"
+              alt={siteName}
+              width={32}
+              height={32}
+              priority
+              className="h-8 w-8 transition-transform group-hover:rotate-12"
+            />
             <span className="hidden font-mono text-sm font-bold uppercase tracking-tighter sm:block text-foreground">
               {siteName}
             </span>

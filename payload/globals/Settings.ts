@@ -201,12 +201,6 @@ export const Settings: GlobalConfig = {
           label: "Branding",
           fields: [
             {
-              name: "logoLetter",
-              type: "text",
-              defaultValue: "M",
-              admin: { description: "Single letter shown inside the navbar logo badge" },
-            },
-            {
               name: "jobTitle",
               type: "text",
               localized: true,

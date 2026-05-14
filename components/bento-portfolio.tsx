@@ -144,7 +144,7 @@ export function BentoPortfolio({
                   <Terminal className="h-8 w-8 text-muted-foreground" />
                 </div>
                 <p className="text-muted-foreground font-mono text-sm">
-                  {language === "es" ? "No se encontraron registros" : "No records found"}
+                  {t.empty}
                 </p>
               </motion.div>
             )}
@@ -205,7 +205,7 @@ function ProjectMedia({
       <div className="bg-[#22272e] overflow-hidden">
         <div className="flex items-center justify-between border-b border-white/5 px-4 py-2 font-mono text-[10px] uppercase tracking-wider text-white/50">
           <span>{project.language}</span>
-          <span>// snippet</span>
+          <span>{t.labels.snippet}</span>
         </div>
         <div
           className="overflow-x-auto p-4 text-[12px] leading-relaxed [&_pre]:!bg-transparent [&_pre]:!p-0"

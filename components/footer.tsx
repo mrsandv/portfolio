@@ -22,7 +22,7 @@ export function Footer({
 }) {
   const { language } = useLanguageStore();
   const t = translations[language].footer;
-  const siteName = settings?.siteName || "Marco Sandoval";
+  const siteName = settings?.siteName || "Spacehole tech";
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });

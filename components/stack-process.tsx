@@ -47,7 +47,7 @@ function Stack({ items, title }: { items: StackItem[]; title?: string }) {
       ) : (
         <div className="rounded-2xl border border-dashed border-border py-12 flex flex-col items-center justify-center bg-card/50">
            <p className="text-muted-foreground font-mono text-sm italic">
-            {language === "es" ? "// No hay tecnologías registradas" : "// No technologies registered"}
+            {t.empty}
           </p>
         </div>
       )}

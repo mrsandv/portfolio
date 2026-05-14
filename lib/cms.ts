@@ -34,7 +34,6 @@ export type SiteSettings = {
   finalCtaLine1?: string;
   finalCtaLine2?: string;
   // Branding
-  logoLetter?: string;
   jobTitle?: string;
   ogLocale?: string;
 };

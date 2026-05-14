@@ -55,7 +55,7 @@ const EN: LocaleData = {
 // Non-localized fields (required by validation). Only set on first run; safe to re-run.
 const SHARED = {
   siteName: "Marco Sandoval",
-  email: "gustavo@commandostudio.com",
+  email: "mrsandvv@gmail.com",
 };
 
 async function run() {
