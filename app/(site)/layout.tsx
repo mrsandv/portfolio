@@ -28,6 +28,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const siteName = settings?.siteName || "Marco Sandoval";
   const keywords = settings?.keywords?.map(k => k.keyword) || ["software engineer", "full-stack"];
   const ogImageUrl = typeof settings?.ogImage === 'object' ? settings.ogImage.url : "/og-image.png";
+  const ogLocale = settings?.ogLocale || "es_MX";
 
   return {
     metadataBase: SITE_URL ? new URL(SITE_URL) : undefined,
@@ -50,7 +51,7 @@ export async function generateMetadata(): Promise<Metadata> {
     },
     openGraph: {
       type: "website",
-      locale: "es_MX",
+      locale: ogLocale,
       url: SITE_URL,
       siteName: siteName,
       title: siteTitle,
@@ -100,13 +101,14 @@ export default async function RootLayout({
   const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL;
   const siteName = settings?.siteName || "Marco Sandoval";
   const siteDescription = settings?.siteDescription || "";
+  const jobTitle = settings?.jobTitle || "Software Engineer";
 
   const personJsonLd = {
     "@context": "https://schema.org",
     "@type": "Person",
     name: siteName,
     url: SITE_URL,
-    jobTitle: "Software Engineer",
+    jobTitle,
     description: siteDescription,
     sameAs: settings?.socialLinks?.map(l => l.url) || [],
   };

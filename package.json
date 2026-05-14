@@ -9,7 +9,9 @@
     "lint": "eslint .",
     "payload": "PAYLOAD_CONFIG_PATH=payload.config.ts payload",
     "generate:types": "pnpm payload generate:types",
-    "generate:importmap": "pnpm payload generate:importmap"
+    "generate:importmap": "pnpm payload generate:importmap",
+    "seed:settings": "doppler run -- tsx scripts/seed-settings.ts",
+    "seed:content": "doppler run -- tsx scripts/seed-content.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",

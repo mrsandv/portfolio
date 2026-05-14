@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from "motion/react";
 import { LanguageToggle } from "@/components/language-toggle";
 import { useLanguageStore } from "@/hooks/use-language";
 import { translations } from "@/lib/translations";
+import type { SiteSettings } from "@/lib/cms";
 
 const SOCIAL_ICONS: Record<string, React.ElementType> = {
   linkedin: Linkedin,
@@ -14,11 +15,20 @@ const SOCIAL_ICONS: Record<string, React.ElementType> = {
   instagram: Instagram,
 };
 
-export function Navbar({ staticLinks = {} }: { staticLinks?: Record<string, string> }) {
+export function Navbar({
+  staticLinks = {},
+  settings,
+}: {
+  staticLinks?: Record<string, string>;
+  settings?: SiteSettings | null;
+}) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { language } = useLanguageStore();
   const t = translations[language].nav;
+
+  const siteName = settings?.siteName || "Marco Sandoval";
+  const logoLetter = settings?.logoLetter || "M";
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 20);
@@ -47,10 +57,10 @@ export function Navbar({ staticLinks = {} }: { staticLinks?: Record<string, stri
             className="flex items-center gap-2 group"
           >
             <div className="h-8 w-8 rounded-lg bg-primary flex items-center justify-center text-primary-foreground font-black text-xl transition-transform group-hover:rotate-12">
-              M
+              {logoLetter}
             </div>
             <span className="hidden font-mono text-sm font-bold uppercase tracking-tighter sm:block text-foreground">
-              Marco Sandoval
+              {siteName}
             </span>
           </motion.a>
 

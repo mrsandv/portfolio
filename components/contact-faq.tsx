@@ -21,6 +21,7 @@ import { useTheme } from "next-themes";
 import { useLanguageStore } from "@/hooks/use-language";
 import { translations } from "@/lib/translations";
 import type { FAQItem } from "@/lib/faq";
+import type { SiteSettings } from "@/lib/cms";
 
 const TURNSTILE_SITE_KEY = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
 
@@ -40,13 +41,19 @@ type ContactFormValues = z.infer<typeof contactSchema>;
 
 export function ContactFAQ({
   faqs = { es: [], en: [] },
+  settings,
 }: {
   faqs?: { es: FAQItem[]; en: FAQItem[] };
+  settings?: SiteSettings | null;
 }) {
   const { language } = useLanguageStore();
   const t = translations[language].contact;
   const tFaq = translations[language].faq;
   const { theme } = useTheme();
+
+  const contactTitle = settings?.contactTitle || t.title;
+  const contactSubtitle = settings?.contactSubtitle || t.subtitle;
+  const faqTitle = settings?.faqTitle || tFaq.title;
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
@@ -101,7 +108,7 @@ export function ContactFAQ({
             <div className="flex items-center gap-3">
               <MessageSquare className="h-6 w-6 text-primary" />
               <h2 className="text-3xl font-black tracking-tight text-foreground">
-                {t.title}
+                {contactTitle}
               </h2>
             </div>
 
@@ -196,7 +203,7 @@ export function ContactFAQ({
             <div className="flex items-center gap-3">
               <HelpCircle className="h-6 w-6 text-primary" />
               <h2 className="text-3xl font-black tracking-tight text-foreground">
-                {tFaq.title}
+                {faqTitle}
               </h2>
             </div>
 
@@ -215,7 +222,7 @@ export function ContactFAQ({
             </div>
 
             <p className="rounded-2xl border border-border bg-secondary/50 p-6 text-center text-sm italic text-muted-foreground">
-              {t.subtitle}
+              {contactSubtitle}
             </p>
           </motion.div>
         </div>

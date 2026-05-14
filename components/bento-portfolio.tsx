@@ -9,6 +9,7 @@ import { useLanguageStore } from "@/hooks/use-language";
 import { translations } from "@/lib/translations";
 import type { HighlightedProject } from "@/lib/highlight";
 import type { ProjectKind } from "@/lib/projects";
+import type { SiteSettings } from "@/lib/cms";
 
 const cellEntrance = (delay: number) => ({
   initial: { opacity: 0, y: 16 },
@@ -25,11 +26,20 @@ const projectVariants = {
 
 const KIND_FILTERS: ("all" | ProjectKind)[] = ["all", "snippet", "client", "open"];
 
-export function BentoPortfolio({ projects }: { projects: HighlightedProject[] }) {
+export function BentoPortfolio({
+  projects,
+  settings,
+}: {
+  projects: HighlightedProject[];
+  settings?: SiteSettings | null;
+}) {
   const { language } = useLanguageStore();
   const t = translations[language].portfolio;
   const common = translations[language].common;
   const [activeKind, setActiveKind] = useState<"all" | ProjectKind>("all");
+
+  const sectionTitle = settings?.portfolioTitle || t.title;
+  const sectionDescription = settings?.portfolioDescription || t.description;
 
   const filteredProjects = projects.filter(
     (p) => activeKind === "all" || p.kind === activeKind,
@@ -48,9 +58,9 @@ export function BentoPortfolio({ projects }: { projects: HighlightedProject[] })
             </div>
             <div>
               <h2 className="text-3xl font-black tracking-tight text-foreground">
-                {t.title}
+                {sectionTitle}
               </h2>
-              <p className="text-muted-foreground">{t.description}</p>
+              <p className="text-muted-foreground">{sectionDescription}</p>
             </div>
           </motion.div>
 

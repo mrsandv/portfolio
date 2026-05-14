@@ -30,13 +30,13 @@ export default async function Home() {
 
   return (
     <main className="min-h-screen bg-background">
-      <Navbar staticLinks={socialLinks} />
+      <Navbar staticLinks={socialLinks} settings={settings} />
       <Hero settings={settings} />
-      <BentoPortfolio projects={projects} />
-      <StackProcess stack={stack} methodology={methodology} />
-      <FinalCTA />
-      <ContactFAQ faqs={{ es: faqs_es, en: faqs_en }} />
-      <Footer socialLinks={socialLinks} />
+      <BentoPortfolio projects={projects} settings={settings} />
+      <StackProcess stack={stack} methodology={methodology} settings={settings} />
+      <FinalCTA settings={settings} />
+      <ContactFAQ faqs={{ es: faqs_es, en: faqs_en }} settings={settings} />
+      <Footer socialLinks={socialLinks} settings={settings} />
     </main>
   );
 }

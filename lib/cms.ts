@@ -1,6 +1,12 @@
 import { getPayload } from "payload";
 import config from "@payload-config";
 
+export type SocialLink = {
+  platform: string;
+  url: string;
+  showInFinalCta?: boolean;
+};
+
 export type SiteSettings = {
   siteName: string;
   siteTitle: string;
@@ -16,7 +22,21 @@ export type SiteSettings = {
   resumes?: { label: string; file: { url: string } | string }[];
   availability?: { role: string }[];
   email: string;
-  socialLinks?: { platform: string; url: string }[];
+  socialLinks?: SocialLink[];
+  // Section Headings
+  portfolioTitle?: string;
+  portfolioDescription?: string;
+  stackTitle?: string;
+  processTitle?: string;
+  contactTitle?: string;
+  contactSubtitle?: string;
+  faqTitle?: string;
+  finalCtaLine1?: string;
+  finalCtaLine2?: string;
+  // Branding
+  logoLetter?: string;
+  jobTitle?: string;
+  ogLocale?: string;
 };
 
 export type MethodologyStep = {

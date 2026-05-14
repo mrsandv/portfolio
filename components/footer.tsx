@@ -3,6 +3,7 @@
 import { ArrowUp, Linkedin, Github, X, Instagram, Mail } from "lucide-react";
 import { useLanguageStore } from "@/hooks/use-language";
 import { translations } from "@/lib/translations";
+import type { SiteSettings } from "@/lib/cms";
 
 const SOCIAL_ICONS: Record<string, React.ElementType> = {
   linkedin: Linkedin,
@@ -12,9 +13,16 @@ const SOCIAL_ICONS: Record<string, React.ElementType> = {
   email: Mail,
 };
 
-export function Footer({ socialLinks = {} }: { socialLinks?: Record<string, string> }) {
+export function Footer({
+  socialLinks = {},
+  settings,
+}: {
+  socialLinks?: Record<string, string>;
+  settings?: SiteSettings | null;
+}) {
   const { language } = useLanguageStore();
   const t = translations[language].footer;
+  const siteName = settings?.siteName || "Marco Sandoval";
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -26,7 +34,7 @@ export function Footer({ socialLinks = {} }: { socialLinks?: Record<string, stri
         <div className="flex flex-col md:flex-row justify-between items-center gap-8">
           <div className="space-y-4 text-center md:text-left">
             <h3 className="text-xl font-black tracking-tight text-foreground">
-              Marco Sandoval
+              {siteName}
             </h3>
             <p className="text-xs text-muted-foreground max-w-xs">
               {t.builtWith}

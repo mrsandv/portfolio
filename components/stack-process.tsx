@@ -3,7 +3,7 @@
 import { Terminal, Zap } from "lucide-react";
 import { motion } from "motion/react";
 import type { StackItem } from "@/lib/stack";
-import type { MethodologyStep } from "@/lib/cms";
+import type { MethodologyStep, SiteSettings } from "@/lib/cms";
 import { useLanguageStore } from "@/hooks/use-language";
 import { translations } from "@/lib/translations";
 
@@ -13,7 +13,7 @@ const cellEntrance = (delay: number) => ({
   transition: { duration: 0.5, delay, ease: "easeOut" as const },
 });
 
-function Stack({ items }: { items: StackItem[] }) {
+function Stack({ items, title }: { items: StackItem[]; title?: string }) {
   const { language } = useLanguageStore();
   const t = translations[language].stack;
   return (
@@ -21,7 +21,7 @@ function Stack({ items }: { items: StackItem[] }) {
       <motion.div {...cellEntrance(0)} className="flex items-center gap-3">
         <Terminal className="h-5 w-5 text-primary" />
         <h2 className="text-2xl font-black tracking-tight text-foreground">
-          {t.title}
+          {title || t.title}
         </h2>
       </motion.div>
 
@@ -55,13 +55,13 @@ function Stack({ items }: { items: StackItem[] }) {
   );
 }
 
-function Process({ steps }: { steps: MethodologyStep[] }) {
+function Process({ steps, title }: { steps: MethodologyStep[]; title?: string }) {
   const { language } = useLanguageStore();
   const t = translations[language].process;
-  
+
   // Fallback to translations if no steps in CMS
-  const displaySteps = steps.length > 0 
-    ? steps 
+  const displaySteps = steps.length > 0
+    ? steps
     : Object.entries(translations[language].process.steps).map(([key, value]) => ({
         title: value.title,
         duration: value.duration,
@@ -74,7 +74,7 @@ function Process({ steps }: { steps: MethodologyStep[] }) {
       <motion.div {...cellEntrance(0.4)} className="flex items-center gap-3">
         <Zap className="h-5 w-5 text-primary" />
         <h2 className="text-2xl font-black tracking-tight text-foreground">
-          {t.title}
+          {title || t.title}
         </h2>
       </motion.div>
 
@@ -106,18 +106,20 @@ function Process({ steps }: { steps: MethodologyStep[] }) {
   );
 }
 
-export function StackProcess({ 
-  stack = [], 
-  methodology = [] 
-}: { 
+export function StackProcess({
+  stack = [],
+  methodology = [],
+  settings,
+}: {
   stack?: StackItem[];
   methodology?: MethodologyStep[];
+  settings?: SiteSettings | null;
 }) {
   return (
     <section className="px-6 py-12">
       <div className="mx-auto max-w-7xl space-y-12">
-        <Stack items={stack} />
-        <Process steps={methodology} />
+        <Stack items={stack} title={settings?.stackTitle} />
+        <Process steps={methodology} title={settings?.processTitle} />
       </div>
     </section>
   );
