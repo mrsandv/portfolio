@@ -5,17 +5,11 @@ import Image from "next/image";
 import { ExternalLink, Globe, Layers, Terminal, Filter, Lock, Github } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import { Badge } from "@/components/ui/badge";
-import { useLanguageStore } from "@/hooks/use-language";
+import { cellEntrance } from "@/lib/animations";
 import { translations } from "@/lib/translations";
 import type { HighlightedProject } from "@/lib/highlight";
 import type { ProjectKind } from "@/lib/projects";
 import type { SiteSettings } from "@/lib/cms";
-
-const cellEntrance = (delay: number) => ({
-  initial: { opacity: 0, y: 16 },
-  animate: { opacity: 1, y: 0 },
-  transition: { duration: 0.5, delay, ease: "easeOut" as const },
-});
 
 const projectVariants = {
   initial: { opacity: 0, scale: 0.95 },
@@ -33,9 +27,8 @@ export function BentoPortfolio({
   projects: HighlightedProject[];
   settings?: SiteSettings | null;
 }) {
-  const { language } = useLanguageStore();
-  const t = translations[language].portfolio;
-  const common = translations[language].common;
+  const t = translations.portfolio;
+  const common = translations.common;
   const [activeKind, setActiveKind] = useState<"all" | ProjectKind>("all");
 
   const sectionTitle = settings?.portfolioTitle || t.title;
@@ -80,58 +73,15 @@ export function BentoPortfolio({
 
           <AnimatePresence mode="popLayout">
             {filteredProjects.length > 0 ? (
-              filteredProjects.map((project, index) => {
-                const baseDelay = 0.1 + index * 0.05;
-                const isLarge = project.size === "large";
-                const isMedium = project.size === "medium";
-
-                return (
-                  <motion.div
-                    key={project.id}
-                    layout
-                    {...projectVariants}
-                    transition={{ ...projectVariants.transition, delay: baseDelay }}
-                    className={`group relative flex flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-sm transition-all hover:border-primary/40 ${
-                      isLarge
-                        ? "md:col-span-2 md:row-span-2"
-                        : isMedium
-                          ? "md:col-span-2"
-                          : "md:col-span-1"
-                    }`}
-                  >
-                    <ProjectMedia project={project} t={t} />
-
-                    <div className="flex flex-1 flex-col p-6">
-                      <div className="mb-2 flex items-start justify-between gap-3">
-                        <h3 className="text-xl font-bold text-foreground">
-                          {project.title}
-                        </h3>
-                        <Badge variant="secondary" className="font-mono text-[10px] shrink-0">
-                          {project.status}
-                        </Badge>
-                      </div>
-                      <p className="mb-4 text-sm leading-relaxed text-muted-foreground">
-                        {project.description}
-                      </p>
-
-                      <div className="mb-6 flex flex-wrap gap-1.5">
-                        {project.tags.map((tag) => (
-                          <span
-                            key={tag}
-                            className="rounded-md bg-secondary/50 px-2 py-0.5 font-mono text-[10px] text-muted-foreground"
-                          >
-                            {tag}
-                          </span>
-                        ))}
-                      </div>
-
-                      <div className="mt-auto">
-                        <ProjectActions project={project} t={t} common={common} />
-                      </div>
-                    </div>
-                  </motion.div>
-                );
-              })
+              filteredProjects.map((project, index) => (
+                <ProjectCell
+                  key={project.id}
+                  project={project}
+                  index={index}
+                  t={t}
+                  common={common}
+                />
+              ))
             ) : (
               <motion.div
                 layout
@@ -193,12 +143,81 @@ function FilterRow<T extends string>({
   );
 }
 
+function ProjectCell({
+  project,
+  index,
+  t,
+  common,
+}: {
+  project: HighlightedProject;
+  index: number;
+  t: typeof translations.portfolio;
+  common: typeof translations.common;
+}) {
+  const [showCli, setShowCli] = useState(false);
+  const baseDelay = 0.1 + index * 0.05;
+  const isLarge = project.size === "large";
+  const isMedium = project.size === "medium";
+
+  return (
+    <motion.div
+      layout
+      {...projectVariants}
+      transition={{ ...projectVariants.transition, delay: baseDelay }}
+      className={`group relative flex flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-sm transition-all hover:border-primary/40 ${
+        isLarge
+          ? "md:col-span-2 md:row-span-2"
+          : isMedium
+            ? "md:col-span-2"
+            : "md:col-span-1"
+      }`}
+    >
+      <ProjectMedia project={project} t={t} showCli={showCli} />
+
+      <div className="flex flex-1 flex-col p-6">
+        <div className="mb-2 flex items-start justify-between gap-3">
+          <h3 className="text-xl font-bold text-foreground">{project.title}</h3>
+          <Badge variant="secondary" className="font-mono text-[10px] shrink-0">
+            {project.status}
+          </Badge>
+        </div>
+        <p className="mb-4 text-sm leading-relaxed text-muted-foreground">
+          {project.description}
+        </p>
+
+        <div className="mb-6 flex flex-wrap gap-1.5">
+          {project.tags.map((tag) => (
+            <span
+              key={tag}
+              className="rounded-md bg-secondary/50 px-2 py-0.5 font-mono text-[10px] text-muted-foreground"
+            >
+              {tag}
+            </span>
+          ))}
+        </div>
+
+        <div className="mt-auto">
+          <ProjectActions
+            project={project}
+            t={t}
+            common={common}
+            showCli={showCli}
+            onToggleCli={() => setShowCli((s) => !s)}
+          />
+        </div>
+      </div>
+    </motion.div>
+  );
+}
+
 function ProjectMedia({
   project,
   t,
+  showCli = false,
 }: {
   project: HighlightedProject;
-  t: typeof translations.es.portfolio;
+  t: typeof translations.portfolio;
+  showCli?: boolean;
 }) {
   if (project.kind === "snippet") {
     return (
@@ -242,6 +261,20 @@ function ProjectMedia({
   }
 
   if (project.kind === "open") {
+    if (showCli && project.cliHtml) {
+      return (
+        <div className="bg-[#22272e] overflow-hidden">
+          <div className="flex items-center gap-2 border-b border-white/5 px-4 py-2 font-mono text-[10px] uppercase tracking-wider text-white/50">
+            <Terminal className="h-3 w-3" />
+            <span>{t.labels.install}</span>
+          </div>
+          <div
+            className="overflow-x-auto p-4 text-[12px] leading-relaxed [&_pre]:!bg-transparent [&_pre]:!p-0"
+            dangerouslySetInnerHTML={{ __html: project.cliHtml }}
+          />
+        </div>
+      );
+    }
     if (project.screenshot) {
       return (
         <div className="relative aspect-video w-full bg-secondary">
@@ -278,10 +311,14 @@ function ProjectActions({
   project,
   t,
   common,
+  showCli = false,
+  onToggleCli,
 }: {
   project: HighlightedProject;
-  t: typeof translations.es.portfolio;
-  common: typeof translations.es.common;
+  t: typeof translations.portfolio;
+  common: typeof translations.common;
+  showCli?: boolean;
+  onToggleCli?: () => void;
 }) {
   if (project.isComingSoon) {
     return (
@@ -311,6 +348,7 @@ function ProjectActions({
   }
 
   if (project.kind === "open") {
+    const showInstallToggle = !project.demoUrl && project.cliHtml && onToggleCli;
     return (
       <div className="flex flex-wrap items-center gap-4">
         {project.demoUrl && (
@@ -324,6 +362,18 @@ function ProjectActions({
             <span>{t.labels.viewDemo}</span>
             <ExternalLink className="h-3 w-3" />
           </a>
+        )}
+        {showInstallToggle && (
+          <button
+            type="button"
+            onClick={onToggleCli}
+            className={`flex cursor-pointer items-center gap-1.5 text-sm font-bold transition-colors ${
+              showCli ? "text-foreground" : "text-accent hover:text-accent/80"
+            }`}
+          >
+            <Terminal className="h-4 w-4" />
+            <span>{t.labels.install}</span>
+          </button>
         )}
         <a
           href={project.repoUrl}

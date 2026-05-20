@@ -34,8 +34,4 @@ export type OpenProject = ProjectBase & {
 
 export type Project = SnippetProject | ClientProject | OpenProject;
 
-/**
- * Static fallbacks have been removed. 
- * All project data should be managed via Payload CMS.
- */
 export const PROJECTS: Project[] = [];

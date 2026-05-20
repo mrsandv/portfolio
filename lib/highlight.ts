@@ -1,5 +1,6 @@
 import { createHighlighter, type Highlighter } from "shiki";
 import { PROJECTS, type Project } from "@/lib/projects";
+import { logError } from "@/lib/log";
 
 const SUPPORTED_LANGS = ["go", "typescript", "javascript", "rust", "python", "bash", "shell"] as const;
 const THEME = "github-dark-dimmed";
@@ -107,7 +108,7 @@ async function fetchProjectsFromPayload(): Promise<Project[] | null> {
     });
     return result.docs.map((doc) => mapPayloadToProject(doc as PayloadProjectDoc));
   } catch (err) {
-    console.error("[highlight] Payload fetch failed, falling back to static:", err);
+    logError("highlight", err);
     return null;
   }
 }

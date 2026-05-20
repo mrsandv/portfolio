@@ -4,6 +4,7 @@ export const Stack: CollectionConfig = {
   slug: "stack",
   admin: {
     useAsTitle: "name",
+    defaultColumns: ["name", "slug", "order"],
   },
   access: { read: () => true },
   fields: [
@@ -11,21 +12,15 @@ export const Stack: CollectionConfig = {
       name: "name",
       type: "text",
       required: true,
+      admin: { description: "Display name (e.g. Go, TypeScript, AWS)" },
     },
     {
-      name: "svg",
-      type: "textarea",
-      required: true,
-      admin: {
-        description: "Raw SVG code for the icon",
-      },
-    },
-    {
-      name: "hex",
+      name: "slug",
       type: "text",
       required: true,
       admin: {
-        description: "Hex color code without # (e.g. 00ADD8)",
+        description:
+          "Icon slug. First match in simple-icons; otherwise must exist in lib/stack-extras.ts.",
       },
     },
     {
@@ -33,9 +28,7 @@ export const Stack: CollectionConfig = {
       type: "number",
       required: true,
       defaultValue: 0,
-      admin: {
-        position: "sidebar",
-      },
+      admin: { position: "sidebar" },
     },
   ],
 };

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useMemo, useState, useRef } from "react";
 import {
   Send,
   Loader2,
@@ -18,18 +18,12 @@ import * as z from "zod";
 import { toast } from "sonner";
 import { Turnstile, type TurnstileInstance } from "@marsidev/react-turnstile";
 import { useTheme } from "next-themes";
-import { useLanguageStore } from "@/hooks/use-language";
+import { cellEntrance } from "@/lib/animations";
 import { translations } from "@/lib/translations";
 import type { FAQItem } from "@/lib/faq";
 import type { SiteSettings } from "@/lib/cms";
 
 const TURNSTILE_SITE_KEY = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
-
-const cellEntrance = (delay: number) => ({
-  initial: { opacity: 0, y: 16 },
-  animate: { opacity: 1, y: 0 },
-  transition: { duration: 0.5, delay, ease: "easeOut" as const },
-});
 
 const buildContactSchema = (v: { nameMin: string; emailInvalid: string; messageMin: string }) =>
   z.object({
@@ -41,15 +35,14 @@ const buildContactSchema = (v: { nameMin: string; emailInvalid: string; messageM
 type ContactFormValues = z.infer<ReturnType<typeof buildContactSchema>>;
 
 export function ContactFAQ({
-  faqs = { es: [], en: [] },
+  faqs = [],
   settings,
 }: {
-  faqs?: { es: FAQItem[]; en: FAQItem[] };
+  faqs?: FAQItem[];
   settings?: SiteSettings | null;
 }) {
-  const { language } = useLanguageStore();
-  const t = translations[language].contact;
-  const tFaq = translations[language].faq;
+  const t = translations.contact;
+  const tFaq = translations.faq;
   const { theme } = useTheme();
 
   const contactTitle = settings?.contactTitle || t.title;
@@ -61,16 +54,16 @@ export function ContactFAQ({
   const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
   const turnstileRef = useRef<TurnstileInstance>(null);
 
+  const schema = useMemo(() => buildContactSchema(t.validation), [t.validation]);
+
   const {
     register,
     handleSubmit,
     reset,
     formState: { errors },
   } = useForm<ContactFormValues>({
-    resolver: zodResolver(buildContactSchema(t.validation)),
+    resolver: zodResolver(schema),
   });
-
-  const currentFaqs = faqs[language] || [];
 
   const onSubmit = async (data: ContactFormValues) => {
     if (!turnstileToken) {
@@ -93,7 +86,7 @@ export function ContactFAQ({
       reset();
       setTurnstileToken(null);
       turnstileRef.current?.reset();
-    } catch (error) {
+    } catch {
       toast.error(t.toasts.error);
     } finally {
       setIsSubmitting(false);
@@ -104,7 +97,6 @@ export function ContactFAQ({
     <section id="contact" className="px-6 py-12">
       <div className="mx-auto max-w-7xl">
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-2">
-          {/* Contact Form */}
           <motion.div {...cellEntrance(0)} className="space-y-8">
             <div className="flex items-center gap-3">
               <MessageSquare className="h-6 w-6 text-primary" />
@@ -174,8 +166,11 @@ export function ContactFAQ({
                       ref={turnstileRef}
                       siteKey={TURNSTILE_SITE_KEY}
                       onSuccess={setTurnstileToken}
+                      onExpire={() => setTurnstileToken(null)}
+                      onError={() => setTurnstileToken(null)}
                       options={{
                         theme: theme === "dark" ? "dark" : "light",
+                        appearance: "interaction-only",
                       }}
                     />
                   </div>
@@ -183,8 +178,11 @@ export function ContactFAQ({
 
                 <button
                   type="submit"
-                  disabled={isSubmitting || (TURNSTILE_SITE_KEY ? !turnstileToken : false)}
-                  className="group relative flex w-full items-center justify-center gap-2 rounded-xl bg-primary px-8 py-4 font-bold text-primary-foreground transition-all hover:bg-primary/90 disabled:opacity-50"
+                  disabled={
+                    isSubmitting ||
+                    (TURNSTILE_SITE_KEY ? !turnstileToken : false)
+                  }
+                  className="group relative flex w-full cursor-pointer items-center justify-center gap-2 rounded-xl bg-primary px-8 py-4 font-bold text-primary-foreground transition-all hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-50"
                 >
                   {isSubmitting ? (
                     <Loader2 className="h-5 w-5 animate-spin" />
@@ -199,7 +197,6 @@ export function ContactFAQ({
             </form>
           </motion.div>
 
-          {/* FAQ Accordion */}
           <motion.div {...cellEntrance(0.2)} className="space-y-8">
             <div className="flex items-center gap-3">
               <HelpCircle className="h-6 w-6 text-primary" />
@@ -209,8 +206,8 @@ export function ContactFAQ({
             </div>
 
             <div className="space-y-3">
-              {currentFaqs.length > 0 ? (
-                currentFaqs.map((faq, i) => (
+              {faqs.length > 0 ? (
+                faqs.map((faq, i) => (
                   <FAQItem key={i} faq={faq} index={i} />
                 ))
               ) : (

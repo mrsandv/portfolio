@@ -1,17 +1,10 @@
 "use client";
 
-import { ArrowUp, Linkedin, Github, X, Instagram, Mail } from "lucide-react";
-import { useLanguageStore } from "@/hooks/use-language";
+import { ArrowUp } from "lucide-react";
+import { SITE_NAME } from "@/lib/constants";
+import { SOCIAL_META } from "@/lib/social-links";
 import { translations } from "@/lib/translations";
 import type { SiteSettings } from "@/lib/cms";
-
-const SOCIAL_ICONS: Record<string, React.ElementType> = {
-  linkedin: Linkedin,
-  github: Github,
-  twitter: X,
-  instagram: Instagram,
-  email: Mail,
-};
 
 export function Footer({
   socialLinks = {},
@@ -20,9 +13,8 @@ export function Footer({
   socialLinks?: Record<string, string>;
   settings?: SiteSettings | null;
 }) {
-  const { language } = useLanguageStore();
-  const t = translations[language].footer;
-  const siteName = settings?.siteName || "Spacehole tech";
+  const t = translations.footer;
+  const siteName = settings?.siteName || SITE_NAME;
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -47,8 +39,9 @@ export function Footer({
           <div className="flex flex-col items-center md:items-end gap-6">
             <div className="flex items-center gap-4">
               {Object.entries(socialLinks).map(([platform, url]) => {
-                const Icon = SOCIAL_ICONS[platform];
-                if (!Icon) return null;
+                const meta = SOCIAL_META[platform];
+                if (!meta) return null;
+                const Icon = meta.icon;
                 return (
                   <a
                     key={platform}
@@ -64,8 +57,9 @@ export function Footer({
             </div>
 
             <button
+              type="button"
               onClick={scrollToTop}
-              className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-wider text-muted-foreground hover:text-primary transition-colors group"
+              className="flex cursor-pointer items-center gap-2 font-mono text-[10px] uppercase tracking-wider text-muted-foreground hover:text-primary transition-colors group"
             >
               <span>{t.backToTop}</span>
               <ArrowUp className="h-3 w-3 transition-transform group-hover:-translate-y-1" />

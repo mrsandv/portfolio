@@ -1,37 +1,25 @@
 "use client";
 
 import { motion } from "motion/react";
-import { ArrowRight, Github, Instagram, Linkedin, Mail, Send, X } from "lucide-react";
-import { useLanguageStore } from "@/hooks/use-language";
+import { ArrowRight } from "lucide-react";
+import { cellEntrance } from "@/lib/animations";
+import { SOCIAL_META } from "@/lib/social-links";
 import { translations } from "@/lib/translations";
-import type { SiteSettings } from "@/lib/cms";
+import type { SiteSettings, SocialLink } from "@/lib/cms";
 
-const cellEntrance = (delay: number) => ({
-  initial: { opacity: 0, y: 16 },
-  animate: { opacity: 1, y: 0 },
-  transition: { duration: 0.5, delay, ease: "easeOut" as const },
-});
-
-const SOCIAL_META: Record<
-  string,
-  { label: string; icon: React.ElementType; color: string }
-> = {
-  linkedin: { label: "LinkedIn", icon: Linkedin, color: "hover:text-blue-500" },
-  github: { label: "GitHub", icon: Github, color: "hover:text-foreground" },
-  twitter: { label: "X", icon: X, color: "hover:text-foreground" },
-  instagram: { label: "Instagram", icon: Instagram, color: "hover:text-pink-500" },
-  telegram: { label: "Telegram", icon: Send, color: "hover:text-sky-500" },
-  email: { label: "Email", icon: Mail, color: "hover:text-accent" },
-};
-
-export function FinalCTA({ settings }: { settings: SiteSettings | null }) {
-  const { language } = useLanguageStore();
-  const t = translations[language].finalCta;
+export function FinalCTA({
+  settings,
+  socialLinks,
+}: {
+  settings: SiteSettings | null;
+  socialLinks?: SocialLink[];
+}) {
+  const t = translations.finalCta;
 
   const line1 = settings?.finalCtaLine1 || t.headlineLine1;
   const line2 = settings?.finalCtaLine2 || t.headlineLine2;
 
-  const ctaSocials = (settings?.socialLinks ?? [])
+  const ctaSocials = (socialLinks ?? settings?.socialLinks ?? [])
     .filter((link) => link.showInFinalCta !== false && SOCIAL_META[link.platform])
     .map((link) => ({ ...SOCIAL_META[link.platform], href: link.url }));
 

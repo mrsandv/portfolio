@@ -2,20 +2,13 @@
 
 import { Terminal, Zap } from "lucide-react";
 import { motion } from "motion/react";
-import type { StackItem } from "@/lib/stack";
+import { resolveStackIcon, type StackItem } from "@/lib/stack";
 import type { MethodologyStep, SiteSettings } from "@/lib/cms";
-import { useLanguageStore } from "@/hooks/use-language";
+import { cellEntrance } from "@/lib/animations";
 import { translations } from "@/lib/translations";
 
-const cellEntrance = (delay: number) => ({
-  initial: { opacity: 0, y: 16 },
-  animate: { opacity: 1, y: 0 },
-  transition: { duration: 0.5, delay, ease: "easeOut" as const },
-});
-
 function Stack({ items, title }: { items: StackItem[]; title?: string }) {
-  const { language } = useLanguageStore();
-  const t = translations[language].stack;
+  const t = translations.stack;
   return (
     <div id="stack" className="space-y-6">
       <motion.div {...cellEntrance(0)} className="flex items-center gap-3">
@@ -27,22 +20,26 @@ function Stack({ items, title }: { items: StackItem[]; title?: string }) {
 
       {items.length > 0 ? (
         <div className="grid grid-cols-2 gap-3 md:grid-cols-6">
-          {items.map((item, index) => (
-            <motion.div
-              key={item.name}
-              {...cellEntrance(0.05 + index * 0.05)}
-              className="group flex flex-col items-center justify-center rounded-2xl border border-border bg-card p-6 shadow-sm transition-all hover:border-primary/40"
-            >
-              <div
-                style={{ color: `#${item.hex}` }}
-                className="mb-3 h-8 w-8 transition-transform group-hover:scale-110 [&_svg]:h-full [&_svg]:w-full [&_path]:fill-current [&_text]:fill-current"
-                dangerouslySetInnerHTML={{ __html: item.svg }}
-              />
-              <span className="font-mono text-xs font-bold uppercase tracking-wider text-muted-foreground">
-                {item.name}
-              </span>
-            </motion.div>
-          ))}
+          {items.map((item, index) => {
+            const icon = resolveStackIcon(item.slug);
+            if (!icon) return null;
+            return (
+              <motion.div
+                key={item.slug}
+                {...cellEntrance(0.05 + index * 0.05)}
+                className="group flex flex-col items-center justify-center rounded-2xl border border-border bg-card p-6 shadow-sm transition-all hover:border-primary/40"
+              >
+                <div
+                  style={{ color: `#${icon.hex}` }}
+                  className="mb-3 h-8 w-8 transition-transform group-hover:scale-110 [&_svg]:h-full [&_svg]:w-full [&_path]:fill-current [&_text]:fill-current"
+                  dangerouslySetInnerHTML={{ __html: icon.svg }}
+                />
+                <span className="font-mono text-xs font-bold uppercase tracking-wider text-muted-foreground">
+                  {item.name}
+                </span>
+              </motion.div>
+            );
+          })}
         </div>
       ) : (
         <div className="rounded-2xl border border-dashed border-border py-12 flex flex-col items-center justify-center bg-card/50">
@@ -56,13 +53,11 @@ function Stack({ items, title }: { items: StackItem[]; title?: string }) {
 }
 
 function Process({ steps, title }: { steps: MethodologyStep[]; title?: string }) {
-  const { language } = useLanguageStore();
-  const t = translations[language].process;
+  const t = translations.process;
 
-  // Fallback to translations if no steps in CMS
   const displaySteps = steps.length > 0
     ? steps
-    : Object.entries(translations[language].process.steps).map(([key, value]) => ({
+    : Object.entries(translations.process.steps).map(([, value]) => ({
         title: value.title,
         duration: value.duration,
         description: value.description,

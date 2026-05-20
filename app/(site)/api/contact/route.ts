@@ -1,11 +1,15 @@
 import { NextResponse } from "next/server";
 import { Resend } from "resend";
+import { fetchSettings } from "@/lib/cms";
+import { logError } from "@/lib/log";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 const TURNSTILE_VERIFY_URL =
   "https://challenges.cloudflare.com/turnstile/v0/siteverify";
 const TURNSTILE_SECRET = process.env.TURNSTILE_SECRET_KEY;
+const FROM_EMAIL =
+  process.env.CONTACT_FROM_EMAIL || "Portfolio Contact <onboarding@resend.dev>";
 
 async function verifyTurnstile(token: string, ip: string | null): Promise<boolean> {
   const body = new URLSearchParams();
@@ -18,7 +22,7 @@ async function verifyTurnstile(token: string, ip: string | null): Promise<boolea
     const result = (await response.json()) as { success?: boolean };
     return result.success === true;
   } catch (error) {
-    console.error("Turnstile verify error:", error);
+    logError("turnstile", error);
     return false;
   }
 }
@@ -50,22 +54,32 @@ export async function POST(request: Request) {
       );
     }
 
+    const settings = await fetchSettings("en");
+    const toEmail = settings?.email;
+    if (!toEmail) {
+      logError("contact", "settings.email missing — cannot deliver message");
+      return NextResponse.json(
+        { error: "Contact destination not configured" },
+        { status: 500 }
+      );
+    }
+
     const { data, error } = await resend.emails.send({
-      from: "Portfolio Contact <onboarding@resend.dev>",
-      to: ["hello@mrsan.dev"],
+      from: FROM_EMAIL,
+      to: [toEmail],
       replyTo: email,
       subject: `New contact from ${name}`,
       text: `Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`,
     });
 
     if (error) {
-      console.error("Resend error:", error);
+      logError("resend", error);
       return NextResponse.json({ error: error.message }, { status: 400 });
     }
 
     return NextResponse.json({ success: true, data });
   } catch (error) {
-    console.error("Internal error:", error);
+    logError("contact", error);
     return NextResponse.json(
       { error: "Internal server error" },
       { status: 500 }

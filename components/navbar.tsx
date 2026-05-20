@@ -2,19 +2,12 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import { Github, Linkedin, Mail, Menu, X, Instagram } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
-import { LanguageToggle } from "@/components/language-toggle";
-import { useLanguageStore } from "@/hooks/use-language";
+import { SITE_NAME } from "@/lib/constants";
+import { SOCIAL_META } from "@/lib/social-links";
 import { translations } from "@/lib/translations";
 import type { SiteSettings } from "@/lib/cms";
-
-const SOCIAL_ICONS: Record<string, React.ElementType> = {
-  linkedin: Linkedin,
-  github: Github,
-  twitter: X,
-  instagram: Instagram,
-};
 
 export function Navbar({
   staticLinks = {},
@@ -25,10 +18,9 @@ export function Navbar({
 }) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const { language } = useLanguageStore();
-  const t = translations[language].nav;
+  const t = translations.nav;
 
-  const siteName = settings?.siteName || "Spacehole tech";
+  const siteName = settings?.siteName || SITE_NAME;
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 20);
@@ -48,13 +40,12 @@ export function Navbar({
       }`}
     >
       <div className="mx-auto max-w-7xl px-6">
-        <nav className="relative flex items-center justify-between">
-          {/* Logo */}
+        <nav className="flex items-center justify-between gap-4 rounded-full border border-border/40 bg-background/60 p-1.5 pl-3 backdrop-blur-md md:pl-4">
           <motion.a
             href="/"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="flex items-center gap-2 group"
+            className="flex shrink-0 items-center gap-2 group"
           >
             <Image
               src="/logo.webp"
@@ -69,8 +60,7 @@ export function Navbar({
             </span>
           </motion.a>
 
-          {/* Desktop Nav */}
-          <div className="absolute left-1/2 hidden -translate-x-1/2 items-center gap-1 rounded-full border border-border/40 bg-background/60 p-1 backdrop-blur-md md:flex">
+          <div className="hidden items-center gap-1 md:flex">
             {navLinks.map((link) => (
               <a
                 key={link.name}
@@ -88,12 +78,12 @@ export function Navbar({
             </a>
           </div>
 
-          {/* Actions */}
-          <div className="flex items-center gap-2 md:gap-4">
-            <div className="hidden items-center gap-1 border-r border-border pr-4 md:flex">
+          <div className="flex items-center gap-1">
+            <div className="hidden items-center gap-1 md:flex">
               {Object.entries(staticLinks).map(([platform, url]) => {
-                const Icon = SOCIAL_ICONS[platform];
-                if (!Icon) return null;
+                const meta = SOCIAL_META[platform];
+                if (!meta) return null;
+                const Icon = meta.icon;
                 return (
                   <a
                     key={platform}
@@ -108,9 +98,8 @@ export function Navbar({
               })}
             </div>
 
-            <LanguageToggle />
-
             <button
+              type="button"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               className="rounded-full bg-secondary p-2 text-foreground md:hidden"
             >
@@ -120,7 +109,6 @@ export function Navbar({
         </nav>
       </div>
 
-      {/* Mobile Menu */}
       <AnimatePresence>
         {mobileMenuOpen && (
           <motion.div

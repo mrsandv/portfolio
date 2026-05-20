@@ -3,10 +3,11 @@ import { Geist, Geist_Mono } from "next/font/google";
 import Script from "next/script";
 import type { ReactNode } from "react";
 import { Analytics } from "@vercel/analytics/next";
-import { SpeedInsights } from "@vercel/speed-insights/next"
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import { ThemeProvider } from "@/components/theme-provider";
-import { LanguageProvider } from "@/components/language-provider";
+import { Toaster } from "@/components/toaster";
 import { fetchSettings } from "@/lib/cms";
+import { SITE_NAME } from "@/lib/constants";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -19,16 +20,24 @@ const geistMono = Geist_Mono({
 });
 
 export async function generateMetadata(): Promise<Metadata> {
-  const locale = "es";
-  const settings = await fetchSettings(locale);
+  const settings = await fetchSettings("en");
   const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL;
 
-  const siteTitle = settings?.siteTitle || "Spacehole tech — Software Engineering";
-  const siteDescription = settings?.siteDescription || "Software engineering with 7+ years shipping production code.";
-  const siteName = settings?.siteName || "Spacehole tech";
-  const keywords = settings?.keywords?.map(k => k.keyword) || ["software engineer", "full-stack"];
-  const ogImageUrl = typeof settings?.ogImage === 'object' ? settings.ogImage.url : "/og-image.png";
-  const ogLocale = settings?.ogLocale || "es_MX";
+  const siteTitle =
+    settings?.siteTitle || `${SITE_NAME} — Software Engineering`;
+  const siteDescription =
+    settings?.siteDescription ||
+    "Software engineering with 7+ years shipping production code.";
+  const siteName = settings?.siteName || SITE_NAME;
+  const keywords = settings?.keywords?.map((k) => k.keyword) || [
+    "software engineer",
+    "full-stack",
+  ];
+  const ogImageUrl =
+    typeof settings?.ogImage === "object"
+      ? settings.ogImage.url
+      : "/og-image.png";
+  const ogLocale = settings?.ogLocale || "en_US";
 
   return {
     metadataBase: SITE_URL ? new URL(SITE_URL) : undefined,
@@ -45,7 +54,6 @@ export async function generateMetadata(): Promise<Metadata> {
     alternates: {
       canonical: "/",
       languages: {
-        "es-MX": "/",
         "en-US": "/",
       },
     },
@@ -96,10 +104,9 @@ export default async function RootLayout({
 }: Readonly<{
   children: ReactNode;
 }>) {
-  const locale = "es";
-  const settings = await fetchSettings(locale);
+  const settings = await fetchSettings("en");
   const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL;
-  const siteName = settings?.siteName || "Spacehole tech";
+  const siteName = settings?.siteName || SITE_NAME;
   const siteDescription = settings?.siteDescription || "";
   const jobTitle = settings?.jobTitle || "Software Engineer";
 
@@ -110,12 +117,12 @@ export default async function RootLayout({
     url: SITE_URL,
     jobTitle,
     description: siteDescription,
-    sameAs: settings?.socialLinks?.map(l => l.url) || [],
+    sameAs: settings?.socialLinks?.map((l) => l.url) || [],
   };
 
   return (
     <html
-      lang="es"
+      lang="en"
       suppressHydrationWarning
       className={`${geistSans.variable} ${geistMono.variable}`}
     >
@@ -126,7 +133,8 @@ export default async function RootLayout({
           enableSystem={false}
           disableTransitionOnChange
         >
-          <LanguageProvider>{children}</LanguageProvider>
+          {children}
+          <Toaster />
         </ThemeProvider>
 
         <Script

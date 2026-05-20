@@ -11,10 +11,6 @@
 import { getPayload } from "payload";
 import config from "../payload.config";
 
-// ─────────────────────────────────────────────────────────────────────────────
-// SETTINGS — Localized fields
-// ─────────────────────────────────────────────────────────────────────────────
-
 type SettingsLocale = {
   siteTitle: string;
   siteDescription: string;
@@ -98,10 +94,6 @@ const SETTINGS_SHARED = {
   ogLocale: "es_MX",
 };
 
-// ─────────────────────────────────────────────────────────────────────────────
-// METHODOLOGY — 3 steps
-// ─────────────────────────────────────────────────────────────────────────────
-
 type MethodologyStep = {
   order: number;
   es: { title: string; duration: string; description: string };
@@ -155,10 +147,6 @@ const METHODOLOGY_STEPS: MethodologyStep[] = [
     },
   },
 ];
-
-// ─────────────────────────────────────────────────────────────────────────────
-// FAQ — 4 items
-// ─────────────────────────────────────────────────────────────────────────────
 
 type FAQEntry = {
   order: number;
@@ -221,14 +209,9 @@ const FAQ_ITEMS: FAQEntry[] = [
   },
 ];
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Runner
-// ─────────────────────────────────────────────────────────────────────────────
-
 async function run() {
   const payload = await getPayload({ config });
 
-  // Settings ──────────────────────────────────────────────────────────────
   for (const [locale, data] of [
     ["es", SETTINGS_ES],
     ["en", SETTINGS_EN],
@@ -241,7 +224,6 @@ async function run() {
     console.log(`✓ Settings updated → ${locale}`);
   }
 
-  // Methodology ──────────────────────────────────────────────────────────
   for (const step of METHODOLOGY_STEPS) {
     const existing = await payload.find({
       collection: "methodology",
@@ -281,7 +263,6 @@ async function run() {
     }
   }
 
-  // FAQ ──────────────────────────────────────────────────────────────────
   for (const item of FAQ_ITEMS) {
     const existing = await payload.find({
       collection: "faq",

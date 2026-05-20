@@ -11,7 +11,8 @@
     "generate:types": "pnpm payload generate:types",
     "generate:importmap": "pnpm payload generate:importmap",
     "seed:settings": "doppler run -- tsx scripts/seed-settings.ts",
-    "seed:content": "doppler run -- tsx scripts/seed-content.ts"
+    "seed:content": "doppler run -- tsx scripts/seed-content.ts",
+    "seed:stack": "doppler run -- tsx scripts/seed-stack.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
@@ -41,8 +42,7 @@
     "simple-icons": "^16.18.1",
     "sonner": "^1.7.1",
     "tailwind-merge": "^3.3.1",
-    "zod": "^4.4.3",
-    "zustand": "^5.0.13"
+    "zod": "^4.4.3"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.2.0",
@@ -51,6 +51,7 @@
     "@types/react-dom": "19.2.3",
     "postcss": "^8.5",
     "tailwindcss": "^4.2.0",
+    "tsx": "^4.22.2",
     "tw-animate-css": "1.3.3",
     "typescript": "5.7.3"
   },
