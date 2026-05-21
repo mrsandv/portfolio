@@ -1,4 +1,6 @@
+import { cache } from "react";
 import { logError } from "./log";
+import type { Language } from "./translations";
 
 export type FAQItem = {
   question: string;
@@ -6,7 +8,7 @@ export type FAQItem = {
   order?: number;
 };
 
-export async function fetchFAQFromPayload(locale: string = "es"): Promise<FAQItem[]> {
+export const fetchFAQFromPayload = cache(async (locale: Language = "en"): Promise<FAQItem[]> => {
   if (!process.env.MONGODB_URI) return [];
   try {
     const { getPayload } = await import("payload");
@@ -16,11 +18,11 @@ export async function fetchFAQFromPayload(locale: string = "es"): Promise<FAQIte
       collection: "faq",
       limit: 100,
       sort: "order",
-      locale: locale as any,
+      locale,
     });
     return result.docs as unknown as FAQItem[];
   } catch (err) {
     logError("faq", err);
     return [];
   }
-}
+});

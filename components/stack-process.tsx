@@ -2,20 +2,20 @@
 
 import { Terminal, Zap } from "lucide-react";
 import { motion } from "motion/react";
-import { resolveStackIcon, type StackItem } from "@/lib/stack";
-import type { MethodologyStep, SiteSettings } from "@/lib/cms";
+import { useLanguageStore } from "@/hooks/use-language";
 import { cellEntrance } from "@/lib/animations";
+import type { Localized, MethodologyStep, SiteSettings } from "@/lib/cms";
+import { resolveStackIcon, type StackItem } from "@/lib/stack";
 import { translations } from "@/lib/translations";
 
 function Stack({ items, title }: { items: StackItem[]; title?: string }) {
-  const t = translations.stack;
+  const language = useLanguageStore((s) => s.language);
+  const t = translations[language].stack;
   return (
     <div id="stack" className="space-y-6">
       <motion.div {...cellEntrance(0)} className="flex items-center gap-3">
         <Terminal className="h-5 w-5 text-primary" />
-        <h2 className="text-2xl font-black tracking-tight text-foreground">
-          {title || t.title}
-        </h2>
+        <h2 className="text-2xl font-black tracking-tight text-foreground">{title || t.title}</h2>
       </motion.div>
 
       {items.length > 0 ? (
@@ -43,9 +43,7 @@ function Stack({ items, title }: { items: StackItem[]; title?: string }) {
         </div>
       ) : (
         <div className="rounded-2xl border border-dashed border-border py-12 flex flex-col items-center justify-center bg-card/50">
-           <p className="text-muted-foreground font-mono text-sm italic">
-            {t.empty}
-          </p>
+          <p className="text-muted-foreground font-mono text-sm italic">{t.empty}</p>
         </div>
       )}
     </div>
@@ -53,24 +51,24 @@ function Stack({ items, title }: { items: StackItem[]; title?: string }) {
 }
 
 function Process({ steps, title }: { steps: MethodologyStep[]; title?: string }) {
-  const t = translations.process;
+  const language = useLanguageStore((s) => s.language);
+  const t = translations[language].process;
 
-  const displaySteps = steps.length > 0
-    ? steps
-    : Object.entries(translations.process.steps).map(([, value]) => ({
-        title: value.title,
-        duration: value.duration,
-        description: value.description,
-        order: 0
-      }));
+  const displaySteps =
+    steps.length > 0
+      ? steps
+      : Object.entries(t.steps).map(([, value]) => ({
+          title: value.title,
+          duration: value.duration,
+          description: value.description,
+          order: 0,
+        }));
 
   return (
     <div id="process" className="space-y-6">
       <motion.div {...cellEntrance(0.4)} className="flex items-center gap-3">
         <Zap className="h-5 w-5 text-primary" />
-        <h2 className="text-2xl font-black tracking-tight text-foreground">
-          {title || t.title}
-        </h2>
+        <h2 className="text-2xl font-black tracking-tight text-foreground">{title || t.title}</h2>
       </motion.div>
 
       <div className="grid grid-cols-1 gap-3 md:grid-cols-3">
@@ -90,9 +88,7 @@ function Process({ steps, title }: { steps: MethodologyStep[]; title?: string })
                   {step.duration}
                 </span>
               </div>
-              <p className="text-sm leading-relaxed text-muted-foreground">
-                {step.description}
-              </p>
+              <p className="text-sm leading-relaxed text-muted-foreground">{step.description}</p>
             </motion.div>
           );
         })}
@@ -103,18 +99,20 @@ function Process({ steps, title }: { steps: MethodologyStep[]; title?: string })
 
 export function StackProcess({
   stack = [],
-  methodology = [],
+  methodology,
   settings,
 }: {
   stack?: StackItem[];
-  methodology?: MethodologyStep[];
-  settings?: SiteSettings | null;
+  methodology: Localized<MethodologyStep[]>;
+  settings?: Localized<SiteSettings | null>;
 }) {
+  const language = useLanguageStore((s) => s.language);
+  const current = settings?.[language] ?? null;
   return (
     <section className="px-6 py-12">
       <div className="mx-auto max-w-7xl space-y-12">
-        <Stack items={stack} title={settings?.stackTitle} />
-        <Process steps={methodology} title={settings?.processTitle} />
+        <Stack items={stack} title={current?.stackTitle} />
+        <Process steps={methodology[language]} title={current?.processTitle} />
       </div>
     </section>
   );

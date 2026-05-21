@@ -1,7 +1,8 @@
-import type { StackItem } from "./stack";
+import { cache } from "react";
 import { logError } from "./log";
+import type { StackItem } from "./stack";
 
-export async function fetchStackFromPayload(): Promise<StackItem[]> {
+export const fetchStackFromPayload = cache(async (): Promise<StackItem[]> => {
   if (!process.env.MONGODB_URI) return [];
   try {
     const { getPayload } = await import("payload");
@@ -17,4 +18,4 @@ export async function fetchStackFromPayload(): Promise<StackItem[]> {
     logError("stack", err);
     return [];
   }
-}
+});

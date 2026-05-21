@@ -1,15 +1,16 @@
 "use client";
 
-import { useState } from "react";
+import { ExternalLink, Filter, Github, Globe, Layers, Lock, Terminal } from "lucide-react";
+import { AnimatePresence, motion } from "motion/react";
 import Image from "next/image";
-import { ExternalLink, Globe, Layers, Terminal, Filter, Lock, Github } from "lucide-react";
-import { motion, AnimatePresence } from "motion/react";
+import { useState } from "react";
 import { Badge } from "@/components/ui/badge";
+import { useLanguageStore } from "@/hooks/use-language";
 import { cellEntrance } from "@/lib/animations";
-import { translations } from "@/lib/translations";
+import type { Localized, SiteSettings } from "@/lib/cms";
 import type { HighlightedProject } from "@/lib/highlight";
 import type { ProjectKind } from "@/lib/projects";
-import type { SiteSettings } from "@/lib/cms";
+import { type Translations, translations } from "@/lib/translations";
 
 const projectVariants = {
   initial: { opacity: 0, scale: 0.95 },
@@ -25,18 +26,18 @@ export function BentoPortfolio({
   settings,
 }: {
   projects: HighlightedProject[];
-  settings?: SiteSettings | null;
+  settings?: Localized<SiteSettings | null>;
 }) {
-  const t = translations.portfolio;
-  const common = translations.common;
+  const language = useLanguageStore((s) => s.language);
+  const t = translations[language].portfolio;
+  const common = translations[language].common;
   const [activeKind, setActiveKind] = useState<"all" | ProjectKind>("all");
 
-  const sectionTitle = settings?.portfolioTitle || t.title;
-  const sectionDescription = settings?.portfolioDescription || t.description;
+  const current = settings?.[language] ?? null;
+  const sectionTitle = current?.portfolioTitle || t.title;
+  const sectionDescription = current?.portfolioDescription || t.description;
 
-  const filteredProjects = projects.filter(
-    (p) => activeKind === "all" || p.kind === activeKind,
-  );
+  const filteredProjects = projects.filter((p) => activeKind === "all" || p.kind === activeKind);
 
   return (
     <section id="work" className="px-6 py-12">
@@ -50,9 +51,7 @@ export function BentoPortfolio({
               <Layers className="h-6 w-6" />
             </div>
             <div>
-              <h2 className="text-3xl font-black tracking-tight text-foreground">
-                {sectionTitle}
-              </h2>
+              <h2 className="text-3xl font-black tracking-tight text-foreground">{sectionTitle}</h2>
               <p className="text-muted-foreground">{sectionDescription}</p>
             </div>
           </motion.div>
@@ -93,9 +92,7 @@ export function BentoPortfolio({
                 <div className="rounded-full bg-secondary p-4 mb-4">
                   <Terminal className="h-8 w-8 text-muted-foreground" />
                 </div>
-                <p className="text-muted-foreground font-mono text-sm">
-                  {t.empty}
-                </p>
+                <p className="text-muted-foreground font-mono text-sm">{t.empty}</p>
               </motion.div>
             )}
           </AnimatePresence>
@@ -128,9 +125,10 @@ function FilterRow<T extends string>({
       </div>
       {options.map((option) => (
         <button
+          type="button"
           key={option}
           onClick={() => onSelect(option)}
-          className={`rounded-full px-3 py-1 text-xs font-medium transition-all ${
+          className={`cursor-pointer rounded-full px-3 py-1 text-xs font-medium transition-all ${
             active === option
               ? "bg-primary text-primary-foreground shadow-sm"
               : "bg-secondary text-muted-foreground hover:bg-secondary/80 hover:text-foreground"
@@ -151,8 +149,8 @@ function ProjectCell({
 }: {
   project: HighlightedProject;
   index: number;
-  t: typeof translations.portfolio;
-  common: typeof translations.common;
+  t: Translations["portfolio"];
+  common: Translations["common"];
 }) {
   const [showCli, setShowCli] = useState(false);
   const baseDelay = 0.1 + index * 0.05;
@@ -165,11 +163,7 @@ function ProjectCell({
       {...projectVariants}
       transition={{ ...projectVariants.transition, delay: baseDelay }}
       className={`group relative flex flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-sm transition-all hover:border-primary/40 ${
-        isLarge
-          ? "md:col-span-2 md:row-span-2"
-          : isMedium
-            ? "md:col-span-2"
-            : "md:col-span-1"
+        isLarge ? "md:col-span-2 md:row-span-2" : isMedium ? "md:col-span-2" : "md:col-span-1"
       }`}
     >
       <ProjectMedia project={project} t={t} showCli={showCli} />
@@ -181,9 +175,7 @@ function ProjectCell({
             {project.status}
           </Badge>
         </div>
-        <p className="mb-4 text-sm leading-relaxed text-muted-foreground">
-          {project.description}
-        </p>
+        <p className="mb-4 text-sm leading-relaxed text-muted-foreground">{project.description}</p>
 
         <div className="mb-6 flex flex-wrap gap-1.5">
           {project.tags.map((tag) => (
@@ -216,7 +208,7 @@ function ProjectMedia({
   showCli = false,
 }: {
   project: HighlightedProject;
-  t: typeof translations.portfolio;
+  t: Translations["portfolio"];
   showCli?: boolean;
 }) {
   if (project.kind === "snippet") {
@@ -315,8 +307,8 @@ function ProjectActions({
   onToggleCli,
 }: {
   project: HighlightedProject;
-  t: typeof translations.portfolio;
-  common: typeof translations.common;
+  t: Translations["portfolio"];
+  common: Translations["common"];
   showCli?: boolean;
   onToggleCli?: () => void;
 }) {

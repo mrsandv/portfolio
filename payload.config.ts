@@ -1,17 +1,16 @@
+import path from "node:path";
+import { fileURLToPath } from "node:url";
 import { mongooseAdapter } from "@payloadcms/db-mongodb";
 import { lexicalEditor } from "@payloadcms/richtext-lexical";
 import { vercelBlobStorage } from "@payloadcms/storage-vercel-blob";
-import path from "path";
 import { buildConfig } from "payload";
-import { fileURLToPath } from "url";
 import sharp from "sharp";
-
-import { Users } from "./payload/collections/Users";
+import { FAQ } from "./payload/collections/FAQ";
 import { Media } from "./payload/collections/Media";
+import { Methodology } from "./payload/collections/Methodology";
 import { Projects } from "./payload/collections/Projects";
 import { Stack } from "./payload/collections/Stack";
-import { FAQ } from "./payload/collections/FAQ";
-import { Methodology } from "./payload/collections/Methodology";
+import { Users } from "./payload/collections/Users";
 import { Settings } from "./payload/globals/Settings";
 
 const filename = fileURLToPath(import.meta.url);
@@ -29,18 +28,18 @@ export default buildConfig({
       { label: "Spanish", code: "es" },
       { label: "English", code: "en" },
     ],
-    defaultLocale: "es",
+    defaultLocale: "en",
     fallback: true,
   },
   collections: [Users, Media, Projects, Stack, FAQ, Methodology],
   globals: [Settings],
   editor: lexicalEditor(),
-  secret: process.env.PAYLOAD_SECRET,
+  secret: process.env.PAYLOAD_SECRET ?? "",
   typescript: {
     outputFile: path.resolve(dirname, "payload-types.ts"),
   },
   db: mongooseAdapter({
-    url: process.env.MONGODB_URI,
+    url: process.env.MONGODB_URI ?? "",
   }),
   sharp,
   plugins: [

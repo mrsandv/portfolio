@@ -1,4 +1,4 @@
-import { Github, Instagram, Linkedin, Send, type LucideIcon } from "lucide-react";
+import { Github, Instagram, Linkedin, type LucideIcon, Send } from "lucide-react";
 
 export type SocialMeta = {
   label: string;

@@ -1,26 +1,30 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import Image from "next/image";
 import { Menu, X } from "lucide-react";
-import { motion, AnimatePresence } from "motion/react";
+import { AnimatePresence, motion } from "motion/react";
+import Image from "next/image";
+import { useEffect, useState } from "react";
+import { LanguageToggle } from "@/components/language-toggle";
+import { useLanguageStore } from "@/hooks/use-language";
+import type { Localized, SiteSettings } from "@/lib/cms";
 import { SITE_NAME } from "@/lib/constants";
 import { SOCIAL_META } from "@/lib/social-links";
 import { translations } from "@/lib/translations";
-import type { SiteSettings } from "@/lib/cms";
 
 export function Navbar({
   staticLinks = {},
   settings,
 }: {
   staticLinks?: Record<string, string>;
-  settings?: SiteSettings | null;
+  settings?: Localized<SiteSettings | null>;
 }) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const t = translations.nav;
+  const language = useLanguageStore((s) => s.language);
+  const t = translations[language].nav;
 
-  const siteName = settings?.siteName || SITE_NAME;
+  const current = settings?.[language] ?? null;
+  const siteName = current?.siteName || SITE_NAME;
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 20);
@@ -98,6 +102,8 @@ export function Navbar({
               })}
             </div>
 
+            <LanguageToggle />
+
             <button
               type="button"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -130,8 +136,9 @@ export function Navbar({
               ))}
               <div className="flex items-center gap-4 pt-4 border-t border-border">
                 {Object.entries(staticLinks).map(([platform, url]) => {
-                  const Icon = SOCIAL_ICONS[platform];
-                  if (!Icon) return null;
+                  const meta = SOCIAL_META[platform];
+                  if (!meta) return null;
+                  const Icon = meta.icon;
                   return (
                     <a
                       key={platform}

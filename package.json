@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint .",
+    "lint": "biome check .",
+    "lint:fix": "biome check --write .",
+    "format": "biome format --write .",
     "payload": "PAYLOAD_CONFIG_PATH=payload.config.ts payload",
     "generate:types": "pnpm payload generate:types",
     "generate:importmap": "pnpm payload generate:importmap",
@@ -42,9 +44,11 @@
     "simple-icons": "^16.18.1",
     "sonner": "^1.7.1",
     "tailwind-merge": "^3.3.1",
-    "zod": "^4.4.3"
+    "zod": "^4.4.3",
+    "zustand": "^5.0.13"
   },
   "devDependencies": {
+    "@biomejs/biome": "^2.4.15",
     "@tailwindcss/postcss": "^4.2.0",
     "@types/node": "^22",
     "@types/react": "19.2.14",

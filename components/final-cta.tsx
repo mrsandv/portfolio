@@ -1,25 +1,28 @@
 "use client";
 
-import { motion } from "motion/react";
 import { ArrowRight } from "lucide-react";
+import { motion } from "motion/react";
+import { useLanguageStore } from "@/hooks/use-language";
 import { cellEntrance } from "@/lib/animations";
+import type { Localized, SiteSettings, SocialLink } from "@/lib/cms";
 import { SOCIAL_META } from "@/lib/social-links";
 import { translations } from "@/lib/translations";
-import type { SiteSettings, SocialLink } from "@/lib/cms";
 
 export function FinalCTA({
   settings,
   socialLinks,
 }: {
-  settings: SiteSettings | null;
+  settings: Localized<SiteSettings | null>;
   socialLinks?: SocialLink[];
 }) {
-  const t = translations.finalCta;
+  const language = useLanguageStore((s) => s.language);
+  const t = translations[language].finalCta;
+  const current = settings[language];
 
-  const line1 = settings?.finalCtaLine1 || t.headlineLine1;
-  const line2 = settings?.finalCtaLine2 || t.headlineLine2;
+  const line1 = current?.finalCtaLine1 || t.headlineLine1;
+  const line2 = current?.finalCtaLine2 || t.headlineLine2;
 
-  const ctaSocials = (socialLinks ?? settings?.socialLinks ?? [])
+  const ctaSocials = (socialLinks ?? current?.socialLinks ?? [])
     .filter((link) => link.showInFinalCta !== false && SOCIAL_META[link.platform])
     .map((link) => ({ ...SOCIAL_META[link.platform], href: link.url }));
 
@@ -34,10 +37,7 @@ export function FinalCTA({
         </motion.div>
 
         {ctaSocials.length > 0 && (
-          <motion.div
-            {...cellEntrance(0.1)}
-            className="flex flex-wrap justify-center gap-4"
-          >
+          <motion.div {...cellEntrance(0.1)} className="flex flex-wrap justify-center gap-4">
             {ctaSocials.map((social) => (
               <a
                 key={social.label}

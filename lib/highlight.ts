@@ -1,8 +1,17 @@
+import { cache } from "react";
 import { createHighlighter, type Highlighter } from "shiki";
-import { PROJECTS, type Project } from "@/lib/projects";
 import { logError } from "@/lib/log";
+import type { Project } from "@/lib/projects";
 
-const SUPPORTED_LANGS = ["go", "typescript", "javascript", "rust", "python", "bash", "shell"] as const;
+const SUPPORTED_LANGS = [
+  "go",
+  "typescript",
+  "javascript",
+  "rust",
+  "python",
+  "bash",
+  "shell",
+] as const;
 const THEME = "github-dark-dimmed";
 
 let highlighterPromise: Promise<Highlighter> | null = null;
@@ -113,7 +122,7 @@ async function fetchProjectsFromPayload(): Promise<Project[] | null> {
   }
 }
 
-export async function getHighlightedProjects(): Promise<HighlightedProject[]> {
+export const getHighlightedProjects = cache(async (): Promise<HighlightedProject[]> => {
   const source = await fetchProjectsFromPayload();
 
   if (!source || source.length === 0) {
@@ -133,4 +142,4 @@ export async function getHighlightedProjects(): Promise<HighlightedProject[]> {
       return project;
     }),
   );
-}
+});

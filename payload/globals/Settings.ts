@@ -54,7 +54,9 @@ export const Settings: GlobalConfig = {
               name: "profileLink",
               type: "text",
               required: false,
-              admin: { description: "Link when clicking the profile picture (e.g. LinkedIn or About page)" },
+              admin: {
+                description: "Link when clicking the profile picture (e.g. LinkedIn or About page)",
+              },
             },
             {
               name: "heroTitle",
@@ -210,8 +212,8 @@ export const Settings: GlobalConfig = {
             {
               name: "ogLocale",
               type: "text",
-              defaultValue: "es_MX",
-              admin: { description: "OpenGraph locale (e.g. es_MX, en_US)" },
+              defaultValue: "en_US",
+              admin: { description: "OpenGraph locale (e.g. en_US, es_MX)" },
             },
           ],
         },

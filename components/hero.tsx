@@ -1,22 +1,25 @@
 "use client";
 
-import { ArrowRight, FileText, ExternalLink } from "lucide-react";
+import { ArrowRight, ExternalLink, FileText } from "lucide-react";
 import { motion } from "motion/react";
 import { GlitchAvatar } from "@/components/glitch-avatar";
+import { useLanguageStore } from "@/hooks/use-language";
 import { cellEntrance } from "@/lib/animations";
+import type { Localized, SiteSettings } from "@/lib/cms";
 import { translations } from "@/lib/translations";
-import type { SiteSettings } from "@/lib/cms";
 
-export function Hero({ settings }: { settings: SiteSettings | null }) {
-  const t = translations.hero;
+export function Hero({ settings }: { settings: Localized<SiteSettings | null> }) {
+  const language = useLanguageStore((s) => s.language);
+  const t = translations[language].hero;
+  const current = settings[language];
 
-  const title = settings?.heroTitle || t.title;
-  const titleAccent = settings?.heroTitleAccent || t.titleAccent;
-  const description = settings?.heroDescription || t.description;
-  const tagline = settings?.heroTagline || t.tagline;
-  const availability = settings?.availability?.map(a => a.role) || t.statusRoles;
+  const title = current?.heroTitle || t.title;
+  const titleAccent = current?.heroTitleAccent || t.titleAccent;
+  const description = current?.heroDescription || t.description;
+  const tagline = current?.heroTagline || t.tagline;
+  const availability = current?.availability?.map((a) => a.role) || t.statusRoles;
 
-  const firstResume = settings?.resumes?.[0];
+  const firstResume = current?.resumes?.[0];
   const resume = firstResume
     ? {
         label: firstResume.label,
@@ -24,8 +27,11 @@ export function Hero({ settings }: { settings: SiteSettings | null }) {
       }
     : { label: t.cvLabel, url: "/cv.pdf" };
 
-  const profileImg = typeof settings?.profilePicture === 'object' ? settings.profilePicture.url : (settings?.profilePicture || "/hero-photo.jpg");
-  const profileLink = settings?.profileLink;
+  const profileImg =
+    typeof current?.profilePicture === "object"
+      ? current.profilePicture.url
+      : current?.profilePicture || "/hero-photo.jpg";
+  const profileLink = current?.profileLink;
 
   return (
     <section className="relative px-6 pt-28 pb-12 md:pt-32">
@@ -35,8 +41,7 @@ export function Hero({ settings }: { settings: SiteSettings | null }) {
           className="rounded-2xl border border-border bg-card p-8 shadow-sm md:col-start-1 md:col-end-4 md:row-start-1 md:row-end-2 md:p-12"
         >
           <h1 className="text-balance text-4xl font-black leading-[0.95] tracking-tight text-foreground md:text-6xl lg:text-7xl">
-            {title}{" "}
-            <span className="text-accent">{titleAccent}</span>
+            {title} <span className="text-accent">{titleAccent}</span>
           </h1>
           <p className="mt-6 max-w-3xl text-pretty text-base leading-relaxed text-muted-foreground md:text-lg">
             {description}
@@ -51,7 +56,12 @@ export function Hero({ settings }: { settings: SiteSettings | null }) {
           className="group/avatar relative overflow-hidden rounded-2xl border border-border bg-secondary shadow-sm md:col-start-4 md:row-start-1 md:row-end-3"
         >
           {profileLink ? (
-            <a href={profileLink} target="_blank" rel="noopener noreferrer" className="block h-full w-full">
+            <a
+              href={profileLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block h-full w-full"
+            >
               <GlitchAvatar src={profileImg} />
               <div className="absolute bottom-4 right-4 z-10 rounded-full bg-background/80 p-2 opacity-0 backdrop-blur-sm transition-opacity group-hover/avatar:opacity-100">
                 <ExternalLink className="h-4 w-4 text-primary" />

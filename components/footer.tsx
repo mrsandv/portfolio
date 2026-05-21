@@ -1,20 +1,23 @@
 "use client";
 
 import { ArrowUp } from "lucide-react";
+import { useLanguageStore } from "@/hooks/use-language";
+import type { Localized, SiteSettings } from "@/lib/cms";
 import { SITE_NAME } from "@/lib/constants";
 import { SOCIAL_META } from "@/lib/social-links";
 import { translations } from "@/lib/translations";
-import type { SiteSettings } from "@/lib/cms";
 
 export function Footer({
   socialLinks = {},
   settings,
 }: {
   socialLinks?: Record<string, string>;
-  settings?: SiteSettings | null;
+  settings?: Localized<SiteSettings | null>;
 }) {
-  const t = translations.footer;
-  const siteName = settings?.siteName || SITE_NAME;
+  const language = useLanguageStore((s) => s.language);
+  const t = translations[language].footer;
+  const current = settings?.[language] ?? null;
+  const siteName = current?.siteName || SITE_NAME;
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -25,12 +28,8 @@ export function Footer({
       <div className="mx-auto max-w-7xl">
         <div className="flex flex-col md:flex-row justify-between items-center gap-8">
           <div className="space-y-4 text-center md:text-left">
-            <h3 className="text-xl font-black tracking-tight text-foreground">
-              {siteName}
-            </h3>
-            <p className="text-xs text-muted-foreground max-w-xs">
-              {t.builtWith}
-            </p>
+            <h3 className="text-xl font-black tracking-tight text-foreground">{siteName}</h3>
+            <p className="text-xs text-muted-foreground max-w-xs">{t.builtWith}</p>
             <p className="text-[10px] font-mono uppercase tracking-widest text-muted-foreground/60">
               © {new Date().getFullYear()} · {t.rightsReserved}
             </p>
