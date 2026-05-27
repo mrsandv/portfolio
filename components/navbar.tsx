@@ -20,6 +20,7 @@ export function Navbar({
 }) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState<string | null>(null);
   const language = useLanguageStore((s) => s.language);
   const t = translations[language].nav;
 
@@ -33,9 +34,38 @@ export function Navbar({
   }, []);
 
   const navLinks = [
-    { name: t.works, href: "#work" },
-    { name: t.contact, href: "#contact" },
+    { name: t.works, href: "#work", id: "work" },
+    { name: t.contact, href: "#contact", id: "contact" },
   ];
+
+  useEffect(() => {
+    const ids = ["work", "contact"];
+    const sections = ids
+      .map((id) => document.getElementById(id))
+      .filter((el): el is HTMLElement => el !== null);
+    if (sections.length === 0) return;
+
+    const visible = new Map<string, number>();
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          visible.set(entry.target.id, entry.intersectionRatio);
+        }
+        let topId: string | null = null;
+        let topRatio = 0;
+        for (const [id, ratio] of visible) {
+          if (ratio > topRatio) {
+            topRatio = ratio;
+            topId = id;
+          }
+        }
+        setActiveSection(topRatio > 0 ? topId : null);
+      },
+      { rootMargin: "-30% 0px -50% 0px", threshold: [0, 0.25, 0.5, 0.75, 1] },
+    );
+    for (const section of sections) observer.observe(section);
+    return () => observer.disconnect();
+  }, []);
 
   return (
     <header
@@ -65,21 +95,23 @@ export function Navbar({
           </motion.a>
 
           <div className="hidden items-center gap-1 md:flex">
-            {navLinks.map((link) => (
-              <a
-                key={link.name}
-                href={link.href}
-                className="rounded-full px-5 py-2 text-xs font-bold text-muted-foreground transition-all hover:bg-secondary hover:text-foreground"
-              >
-                {link.name}
-              </a>
-            ))}
-            <a
-              href="#contact"
-              className="rounded-full bg-primary px-5 py-2 text-xs font-bold text-primary-foreground transition-opacity hover:opacity-90"
-            >
-              {t.hire}
-            </a>
+            {navLinks.map((link) => {
+              const isActive = activeSection === link.id;
+              return (
+                <a
+                  key={link.name}
+                  href={link.href}
+                  aria-current={isActive ? "page" : undefined}
+                  className={`rounded-full px-5 py-2 text-xs font-bold transition-all ${
+                    isActive
+                      ? "bg-secondary text-foreground"
+                      : "text-muted-foreground hover:bg-secondary hover:text-foreground"
+                  }`}
+                >
+                  {link.name}
+                </a>
+              );
+            })}
           </div>
 
           <div className="flex items-center gap-1">
@@ -124,16 +156,22 @@ export function Navbar({
             className="border-b border-border bg-background md:hidden overflow-hidden"
           >
             <div className="flex flex-col gap-4 p-6">
-              {navLinks.map((link) => (
-                <a
-                  key={link.name}
-                  href={link.href}
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="text-lg font-bold text-foreground"
-                >
-                  {link.name}
-                </a>
-              ))}
+              {navLinks.map((link) => {
+                const isActive = activeSection === link.id;
+                return (
+                  <a
+                    key={link.name}
+                    href={link.href}
+                    onClick={() => setMobileMenuOpen(false)}
+                    aria-current={isActive ? "page" : undefined}
+                    className={`text-lg font-bold ${
+                      isActive ? "text-primary" : "text-foreground"
+                    }`}
+                  >
+                    {link.name}
+                  </a>
+                );
+              })}
               <div className="flex items-center gap-4 pt-4 border-t border-border">
                 {Object.entries(staticLinks).map(([platform, url]) => {
                   const meta = SOCIAL_META[platform];
