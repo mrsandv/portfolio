@@ -20,13 +20,14 @@ export const Projects: CollectionConfig = {
       ],
       admin: { position: "sidebar" },
     },
-    { name: "title", type: "text", required: true },
-    { name: "description", type: "textarea", required: true },
+    { name: "title", type: "text", required: true, localized: true },
+    { name: "description", type: "textarea", required: true, localized: true },
     {
       name: "tags",
       type: "array",
       required: true,
       minRows: 1,
+      localized: true,
       fields: [{ name: "tag", type: "text", required: true }],
     },
     {
@@ -41,7 +42,7 @@ export const Projects: CollectionConfig = {
       ],
       admin: { position: "sidebar" },
     },
-    { name: "status", type: "text", required: true, defaultValue: "Shipped" },
+    { name: "status", type: "text", required: true, defaultValue: "Shipped", localized: true },
     {
       name: "isComingSoon",
       type: "checkbox",
@@ -68,6 +69,7 @@ export const Projects: CollectionConfig = {
       name: "output",
       type: "textarea",
       required: false,
+      localized: true,
       admin: { condition: (data) => data?.kind === "snippet" },
     },
     // Client + Open: screenshot

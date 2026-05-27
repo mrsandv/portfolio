@@ -2,6 +2,7 @@ import { cache } from "react";
 import { createHighlighter, type Highlighter } from "shiki";
 import { logError } from "@/lib/log";
 import type { Project } from "@/lib/projects";
+import type { Language } from "@/lib/translations";
 
 const SUPPORTED_LANGS = [
   "go",
@@ -104,7 +105,7 @@ function mapPayloadToProject(doc: PayloadProjectDoc): Project {
   };
 }
 
-async function fetchProjectsFromPayload(): Promise<Project[] | null> {
+async function fetchProjectsFromPayload(locale: Language): Promise<Project[] | null> {
   if (!process.env.MONGODB_URI) return null;
   try {
     const { getPayload } = await import("payload");
@@ -114,6 +115,7 @@ async function fetchProjectsFromPayload(): Promise<Project[] | null> {
       collection: "projects",
       limit: 100,
       depth: 1,
+      locale,
     });
     return result.docs.map((doc) => mapPayloadToProject(doc as PayloadProjectDoc));
   } catch (err) {
@@ -122,24 +124,26 @@ async function fetchProjectsFromPayload(): Promise<Project[] | null> {
   }
 }
 
-export const getHighlightedProjects = cache(async (): Promise<HighlightedProject[]> => {
-  const source = await fetchProjectsFromPayload();
+export const getHighlightedProjects = cache(
+  async (locale: Language = "en"): Promise<HighlightedProject[]> => {
+    const source = await fetchProjectsFromPayload(locale);
 
-  if (!source || source.length === 0) {
-    return [];
-  }
+    if (!source || source.length === 0) {
+      return [];
+    }
 
-  return Promise.all(
-    source.map(async (project): Promise<HighlightedProject> => {
-      if (project.kind === "snippet") {
-        const codeHtml = await highlight(project.code, project.language);
-        return { ...project, codeHtml };
-      }
-      if (project.kind === "open" && project.cli) {
-        const cliHtml = await highlight(project.cli, "bash");
-        return { ...project, cliHtml };
-      }
-      return project;
-    }),
-  );
-});
+    return Promise.all(
+      source.map(async (project): Promise<HighlightedProject> => {
+        if (project.kind === "snippet") {
+          const codeHtml = await highlight(project.code, project.language);
+          return { ...project, codeHtml };
+        }
+        if (project.kind === "open" && project.cli) {
+          const cliHtml = await highlight(project.cli, "bash");
+          return { ...project, cliHtml };
+        }
+        return project;
+      }),
+    );
+  },
+);
