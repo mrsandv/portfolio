@@ -3,19 +3,16 @@ import { Resend } from "resend";
 import { fetchSettings } from "@/lib/cms-server";
 import { logError } from "@/lib/log";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
-
 const TURNSTILE_VERIFY_URL = "https://challenges.cloudflare.com/turnstile/v0/siteverify";
-const TURNSTILE_SECRET = process.env.TURNSTILE_SECRET_KEY;
-const FROM_EMAIL = process.env.CONTACT_FROM_EMAIL || "Portfolio Contact <onboarding@resend.dev>";
 
 async function verifyTurnstile(token: string, ip: string | null): Promise<boolean> {
-  if (!TURNSTILE_SECRET) {
+  const turnstileSecret = process.env.TURNSTILE_SECRET_KEY;
+  if (!turnstileSecret) {
     logError("turnstile", "TURNSTILE_SECRET_KEY missing");
     return false;
   }
   const body = new URLSearchParams();
-  body.append("secret", TURNSTILE_SECRET);
+  body.append("secret", turnstileSecret);
   body.append("response", token);
   if (ip) body.append("remoteip", ip);
 
@@ -31,6 +28,12 @@ async function verifyTurnstile(token: string, ip: string | null): Promise<boolea
 
 export async function POST(request: Request) {
   try {
+    const apiKey = process.env.RESEND_API_KEY;
+    if (!apiKey) {
+      logError("contact", "RESEND_API_KEY missing");
+      return NextResponse.json({ error: "Email service not configured" }, { status: 500 });
+    }
+
     const { name, email, message, turnstileToken } = await request.json();
 
     if (!name || !email || !message) {
@@ -54,8 +57,11 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Contact destination not configured" }, { status: 500 });
     }
 
+    const resend = new Resend(apiKey);
+    const fromEmail = process.env.CONTACT_FROM_EMAIL || "Portfolio Contact <onboarding@resend.dev>";
+
     const { data, error } = await resend.emails.send({
-      from: FROM_EMAIL,
+      from: fromEmail,
       to: [toEmail],
       replyTo: email,
       subject: `New contact from ${name}`,

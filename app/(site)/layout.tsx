@@ -33,7 +33,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const ogLocale = settings?.ogLocale || "en_US";
 
   return {
-    metadataBase: SITE_URL ? new URL(SITE_URL) : undefined,
+    metadataBase: new URL(SITE_URL || "http://localhost:3000"),
     title: {
       default: siteTitle,
       template: `%s — ${siteName}`,
@@ -48,6 +48,7 @@ export async function generateMetadata(): Promise<Metadata> {
       canonical: "/",
       languages: {
         "en-US": "/",
+        "es-MX": "/",
       },
     },
     openGraph: {

@@ -11,8 +11,7 @@ const GLITCH_DELAY_HOVER = 0.2;
 
 const TINT_WARM = "oklch(0.57 0.06 65 / 0.4)";
 const TINT_COOL = "oklch(0.38 0.015 215 / 0.4)";
-const SCANLINES =
-  "repeating-linear-gradient(0deg, transparent 0 2px, currentColor 2px 3px)";
+const SCANLINES = "repeating-linear-gradient(0deg, transparent 0 2px, currentColor 2px 3px)";
 
 export function GlitchAvatar({ src = "/hero-photo.jpg" }: { src?: string }) {
   const [hovered, setHovered] = useState(false);

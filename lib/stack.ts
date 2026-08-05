@@ -1,11 +1,8 @@
 import {
   siExpress,
-  siGin,
   siGo,
-  siJavascript,
   siMongodb,
   siNextdotjs,
-  siNodedotjs,
   siPostgresql,
   siPython,
   siReact,
@@ -15,6 +12,7 @@ import {
   siTypescript,
   siVercel,
 } from "simple-icons";
+import { STACK_DATA } from "./data/stack";
 import { STACK_EXTRAS } from "./stack-extras";
 
 type SimpleIcon = { hex: string; path: string };
@@ -25,11 +23,8 @@ const SIMPLE_ICONS: Record<string, SimpleIcon> = {
   python: siPython,
   react: siReact,
   nextjs: siNextdotjs,
-  javascript: siJavascript,
   typescript: siTypescript,
-  nodejs: siNodedotjs,
   express: siExpress,
-  gin: siGin,
   mongodb: siMongodb,
   postgresql: siPostgresql,
   supabase: siSupabase,
@@ -61,4 +56,4 @@ export function resolveStackIcon(slug: string): ResolvedStackIcon | null {
   return null;
 }
 
-export const STACK: StackItem[] = [];
+export const STACK: StackItem[] = STACK_DATA;
