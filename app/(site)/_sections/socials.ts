@@ -2,7 +2,7 @@ import type { SocialLink } from "@/lib/cms";
 import { fetchSettings } from "@/lib/cms-server";
 
 const FALLBACK_SOCIALS: SocialLink[] = [
-  { platform: "linkedin", url: "https://www.linkedin.com/" },
+  { platform: "linkedin", url: "https://www.linkedin.com/in/mrsan" },
   { platform: "github", url: "https://github.com/" },
   { platform: "instagram", url: "https://www.instagram.com/" },
   { platform: "telegram", url: "https://t.me/" },

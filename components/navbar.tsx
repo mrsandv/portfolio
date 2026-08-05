@@ -2,18 +2,15 @@
 
 import { Menu, X } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
-import Image from "next/image";
 import { useEffect, useState } from "react";
 import { LanguageToggle } from "@/components/language-toggle";
 import { useLanguageStore } from "@/hooks/use-language";
 import type { Localized, SiteSettings } from "@/lib/cms";
-import { SITE_NAME } from "@/lib/constants";
 import { SOCIAL_META } from "@/lib/social-links";
 import { translations } from "@/lib/translations";
 
 export function Navbar({
   staticLinks = {},
-  settings,
 }: {
   staticLinks?: Record<string, string>;
   settings?: Localized<SiteSettings | null>;
@@ -23,9 +20,6 @@ export function Navbar({
   const [activeSection, setActiveSection] = useState<string | null>(null);
   const language = useLanguageStore((s) => s.language);
   const t = translations[language].nav;
-
-  const current = settings?.[language] ?? null;
-  const siteName = current?.siteName || SITE_NAME;
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 20);
@@ -74,26 +68,8 @@ export function Navbar({
       }`}
     >
       <div className="mx-auto max-w-7xl px-6">
-        <nav className="flex items-center justify-between gap-4 rounded-full border border-border/40 bg-background/60 p-1.5 pl-3 backdrop-blur-md md:pl-4">
-          <motion.a
-            href="/"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="flex shrink-0 items-center gap-2 group"
-          >
-            <Image
-              src="/logo.webp"
-              alt={siteName}
-              width={32}
-              height={32}
-              priority
-              className="h-8 w-8 transition-transform group-hover:rotate-12"
-            />
-            <span className="hidden font-mono text-sm font-bold uppercase tracking-tighter sm:block text-foreground">
-              {siteName}
-            </span>
-          </motion.a>
-
+        <nav className="flex items-center justify-between gap-4 rounded-full border border-border/40 bg-background/60 p-2 px-4 backdrop-blur-md md:px-5">
+          {/* Left side: Navigation links */}
           <div className="hidden items-center gap-1 md:flex">
             {navLinks.map((link) => {
               const isActive = activeSection === link.id;
@@ -102,7 +78,7 @@ export function Navbar({
                   key={link.name}
                   href={link.href}
                   aria-current={isActive ? "page" : undefined}
-                  className={`rounded-full px-5 py-2 text-xs font-bold transition-all ${
+                  className={`rounded-full px-4 py-2 text-xs font-bold transition-all ${
                     isActive
                       ? "bg-secondary text-foreground"
                       : "text-muted-foreground hover:bg-secondary hover:text-foreground"
@@ -112,8 +88,25 @@ export function Navbar({
                 </a>
               );
             })}
+            <a
+              href="#contact"
+              className="ml-1 rounded-full bg-primary px-4 py-2 text-xs font-bold text-primary-foreground transition-opacity hover:opacity-90"
+            >
+              {t.hire}
+            </a>
           </div>
 
+          {/* Left side mobile fallback */}
+          <div className="flex items-center md:hidden">
+            <a
+              href="#contact"
+              className="rounded-full bg-primary px-4 py-1.5 text-xs font-bold text-primary-foreground"
+            >
+              {t.hire}
+            </a>
+          </div>
+
+          {/* Right side: Social links & Language toggle */}
           <div className="flex items-center gap-1">
             <div className="hidden items-center gap-1 md:flex">
               {Object.entries(staticLinks).map(([platform, url]) => {
@@ -127,6 +120,7 @@ export function Navbar({
                     target="_blank"
                     rel="noopener noreferrer"
                     className="rounded-full p-2 text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
+                    aria-label={meta.label}
                   >
                     <Icon className="h-4 w-4" />
                   </a>
@@ -140,6 +134,7 @@ export function Navbar({
               type="button"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               className="rounded-full bg-secondary p-2 text-foreground md:hidden"
+              aria-label="Toggle menu"
             >
               {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
             </button>
@@ -164,9 +159,7 @@ export function Navbar({
                     href={link.href}
                     onClick={() => setMobileMenuOpen(false)}
                     aria-current={isActive ? "page" : undefined}
-                    className={`text-lg font-bold ${
-                      isActive ? "text-primary" : "text-foreground"
-                    }`}
+                    className={`text-lg font-bold ${isActive ? "text-primary" : "text-foreground"}`}
                   >
                     {link.name}
                   </a>

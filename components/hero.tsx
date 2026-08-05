@@ -25,7 +25,7 @@ export function Hero({ settings }: { settings: Localized<SiteSettings | null> })
         label: firstResume.label,
         url: typeof firstResume.file === "object" ? firstResume.file.url : firstResume.file,
       }
-    : { label: t.cvLabel, url: "/cv.pdf" };
+    : { label: t.cvLabel, url: "/resume.pdf" };
 
   const profileImg =
     typeof current?.profilePicture === "object"

@@ -25,7 +25,7 @@ export function BentoPortfolio({
   projects,
   settings,
 }: {
-  projects: Localized<HighlightedProject[]>;
+  projects: HighlightedProject[] | Localized<HighlightedProject[]>;
   settings?: Localized<SiteSettings | null>;
 }) {
   const language = useLanguageStore((s) => s.language);
@@ -37,8 +37,12 @@ export function BentoPortfolio({
   const sectionTitle = current?.portfolioTitle || t.title;
   const sectionDescription = current?.portfolioDescription || t.description;
 
-  const filteredProjects = projects[language].filter(
-    (p) => activeKind === "all" || p.kind === activeKind,
+  const projectList: HighlightedProject[] = Array.isArray(projects)
+    ? projects
+    : (projects?.[language] ?? []);
+
+  const filteredProjects = projectList.filter(
+    (p: HighlightedProject) => activeKind === "all" || p.kind === activeKind,
   );
 
   return (

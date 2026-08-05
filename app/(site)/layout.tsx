@@ -1,3 +1,5 @@
+import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import Script from "next/script";
@@ -31,7 +33,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const ogLocale = settings?.ogLocale || "en_US";
 
   return {
-    metadataBase: SITE_URL ? new URL(SITE_URL) : undefined,
+    metadataBase: new URL(SITE_URL || "http://localhost:3000"),
     title: {
       default: siteTitle,
       template: `%s — ${siteName}`,
@@ -46,6 +48,7 @@ export async function generateMetadata(): Promise<Metadata> {
       canonical: "/",
       languages: {
         "en-US": "/",
+        "es-MX": "/",
       },
     },
     openGraph: {
@@ -138,12 +141,14 @@ export default async function RootLayout({
         />
         {process.env.NEXT_PUBLIC_UMAMI_WEBSITE_ID && (
           <Script
-            src="https://cloud.umami.is/script.js"
+            async
+            src={process.env.NEXT_PUBLIC_UMAMI_SRC || "https://cloud.umami.is/script.js"}
             data-website-id={process.env.NEXT_PUBLIC_UMAMI_WEBSITE_ID}
             strategy="afterInteractive"
-            defer
           />
         )}
+        <SpeedInsights />
+        <Analytics />
       </body>
     </html>
   );

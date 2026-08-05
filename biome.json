@@ -14,11 +14,9 @@
       "**/*.json",
       "!**/node_modules",
       "!**/.next",
-      "!**/payload-types.ts",
       "!**/tsconfig.tsbuildinfo",
       "!**/pnpm-lock.yaml",
-      "!**/*.css",
-      "!app/(payload)/admin/importMap.js"
+      "!**/*.css"
     ]
   },
   "formatter": {
