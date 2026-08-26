@@ -4,6 +4,7 @@ import { Menu, X } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import { useEffect, useState } from "react";
 import { LanguageToggle } from "@/components/language-toggle";
+import { ThemeSelector } from "@/components/theme-selector";
 import { useLanguageStore } from "@/hooks/use-language";
 import type { Localized, SiteSettings } from "@/lib/cms";
 import { SOCIAL_META } from "@/lib/social-links";
@@ -126,6 +127,10 @@ export function Navbar({
                   </a>
                 );
               })}
+            </div>
+
+            <div className="hidden md:flex">
+              <ThemeSelector variant="compact" />
             </div>
 
             <LanguageToggle />

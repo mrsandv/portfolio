@@ -1,100 +1,13 @@
 @import "tailwindcss";
 @import "tw-animate-css";
+@import "./spacehole.css";
 
-@custom-variant dark (&:is(.dark *));
-
-/* ─────────────────────────────────────────────────────────────
-   Paleta — Earthy Slate & Copper
-   Beige #DCD7C9 · Slate #2C3639 · Copper #A27B5C · Charcoal #3F4E4F
-   ───────────────────────────────────────────────────────────── */
+/* La paleta y el @custom-variant dark los define spacehole.css,
+   generado desde el repo del theme. No duplicar colores aquí. */
 
 :root {
-  /* surface */
-  --background: oklch(0.87 0.015 90); /* beige */
-  --foreground: oklch(0.28 0.015 230); /* slate text */
-  --card: oklch(0.9 0.01 90); /* slightly lighter beige */
-  --card-foreground: oklch(0.28 0.015 230);
-  --popover: oklch(0.9 0.01 90);
-  --popover-foreground: oklch(0.28 0.015 230);
-
-  /* brand */
-  --primary: oklch(0.28 0.015 230); /* slate */
-  --primary-foreground: oklch(0.9 0.01 90);
-  --secondary: oklch(0.82 0.02 90); /* darker beige */
-  --secondary-foreground: oklch(0.28 0.015 230);
-  --muted: oklch(0.84 0.015 90);
-  --muted-foreground: oklch(0.38 0.015 215); /* charcoal */
-  --accent: oklch(0.57 0.06 65); /* copper */
-  --accent-foreground: oklch(0.9 0.01 90);
-
-  /* feedback */
-  --destructive: oklch(0.55 0.2 25);
-  --destructive-foreground: oklch(0.9 0.01 90);
-
-  /* borders / inputs */
-  --border: oklch(0.8 0.02 90);
-  --input: oklch(0.84 0.015 90);
-  --ring: oklch(0.28 0.015 230);
-
-  /* charts */
-  --chart-1: oklch(0.28 0.015 230);
-  --chart-2: oklch(0.57 0.06 65);
-  --chart-3: oklch(0.38 0.015 215);
-  --chart-4: oklch(0.5 0.03 230);
-  --chart-5: oklch(0.7 0.05 65);
-
-  --radius: 1rem;
-
-  /* sidebar */
-  --sidebar: oklch(0.87 0.015 90);
-  --sidebar-foreground: oklch(0.28 0.015 230);
-  --sidebar-primary: oklch(0.28 0.015 230);
-  --sidebar-primary-foreground: oklch(0.9 0.01 90);
-  --sidebar-accent: oklch(0.82 0.02 90);
-  --sidebar-accent-foreground: oklch(0.28 0.015 230);
-  --sidebar-border: oklch(0.8 0.02 90);
-  --sidebar-ring: oklch(0.28 0.015 230);
-}
-
-.dark {
-  /* dark = slate background + beige text */
-  --background: oklch(0.28 0.015 230);
-  --foreground: oklch(0.87 0.015 90);
-  --card: oklch(0.32 0.015 230);
-  --card-foreground: oklch(0.87 0.015 90);
-  --popover: oklch(0.32 0.015 230);
-  --popover-foreground: oklch(0.87 0.015 90);
-
-  --primary: oklch(0.87 0.015 90); /* beige primary on dark */
-  --primary-foreground: oklch(0.28 0.015 230);
-  --secondary: oklch(0.38 0.015 215); /* charcoal */
-  --secondary-foreground: oklch(0.87 0.015 90);
-  --muted: oklch(0.35 0.015 230);
-  --muted-foreground: oklch(0.7 0.015 90);
-  --accent: oklch(0.57 0.06 65); /* copper */
-  --accent-foreground: oklch(0.28 0.015 230);
-
-  --destructive: oklch(0.55 0.2 25);
-  --destructive-foreground: oklch(0.87 0.015 90);
-
-  --border: oklch(0.35 0.015 230);
-  --input: oklch(0.35 0.015 230);
-  --ring: oklch(0.87 0.015 90);
-
-  --chart-1: oklch(0.87 0.015 90);
-  --chart-2: oklch(0.57 0.06 65);
-  --chart-3: oklch(0.38 0.015 215);
-  --chart-4: oklch(0.5 0.03 230);
-  --chart-5: oklch(0.7 0.05 65);
-
-  --sidebar: oklch(0.28 0.015 230);
-  --sidebar-foreground: oklch(0.87 0.015 90);
-  --sidebar-primary: oklch(0.87 0.015 90);
-  --sidebar-primary-foreground: oklch(0.28 0.015 230);
-  --sidebar-accent: oklch(0.38 0.015 215);
-  --sidebar-accent-foreground: oklch(0.87 0.015 90);
-  --sidebar-border: oklch(0.35 0.015 230);
-  --sidebar-ring: oklch(0.87 0.015 90);
+    /* Geometría, no color: esto no pertenece a los tokens del theme. */
+    --radius: 1rem;
 }
 
 @theme inline {

@@ -219,8 +219,8 @@ function ProjectMedia({
 }) {
   if (project.kind === "snippet") {
     return (
-      <div className="bg-[#22272e] overflow-hidden">
-        <div className="flex items-center justify-between border-b border-white/5 px-4 py-2 font-mono text-[10px] uppercase tracking-wider text-white/50">
+      <div className="overflow-hidden bg-card">
+        <div className="flex items-center justify-between border-b border-border px-4 py-2 font-mono text-[10px] uppercase tracking-wider text-muted-foreground">
           <span>{project.language}</span>
           <span>{t.labels.snippet}</span>
         </div>
@@ -229,8 +229,8 @@ function ProjectMedia({
           dangerouslySetInnerHTML={{ __html: project.codeHtml }}
         />
         {project.output && (
-          <div className="border-t border-white/5 bg-black/20 px-4 py-2 font-mono text-[11px] text-emerald-300">
-            <span className="text-white/40">▶ {t.labels.output}: </span>
+          <div className="border-t border-border bg-black/20 px-4 py-2 font-mono text-[11px] text-emerald-300">
+            <span className="text-muted-foreground">▶ {t.labels.output}: </span>
             {project.output}
           </div>
         )}
@@ -261,8 +261,8 @@ function ProjectMedia({
   if (project.kind === "open") {
     if (showCli && project.cliHtml) {
       return (
-        <div className="bg-[#22272e] overflow-hidden">
-          <div className="flex items-center gap-2 border-b border-white/5 px-4 py-2 font-mono text-[10px] uppercase tracking-wider text-white/50">
+        <div className="overflow-hidden bg-card">
+          <div className="flex items-center gap-2 border-b border-border px-4 py-2 font-mono text-[10px] uppercase tracking-wider text-muted-foreground">
             <Terminal className="h-3 w-3" />
             <span>{t.labels.install}</span>
           </div>
@@ -288,8 +288,8 @@ function ProjectMedia({
     }
     if (project.cliHtml) {
       return (
-        <div className="bg-[#22272e] overflow-hidden">
-          <div className="flex items-center gap-2 border-b border-white/5 px-4 py-2 font-mono text-[10px] uppercase tracking-wider text-white/50">
+        <div className="overflow-hidden bg-card">
+          <div className="flex items-center gap-2 border-b border-border px-4 py-2 font-mono text-[10px] uppercase tracking-wider text-muted-foreground">
             <Terminal className="h-3 w-3" />
             <span>{t.labels.install}</span>
           </div>

@@ -16,7 +16,8 @@
       "!**/.next",
       "!**/tsconfig.tsbuildinfo",
       "!**/pnpm-lock.yaml",
-      "!**/*.css"
+      "!**/*.css",
+      "!themes"
     ]
   },
   "formatter": {

@@ -118,3 +118,28 @@ export function FooterSkeleton() {
     </footer>
   );
 }
+
+export function InstallThemeSkeleton() {
+  return (
+    <section className="border-border/60 border-t py-24">
+      <div className="mx-auto max-w-7xl px-6">
+        <div className="mb-12 max-w-2xl animate-pulse space-y-4">
+          <div className="h-3 w-40 rounded bg-muted" />
+          <div className="h-9 w-80 rounded bg-muted" />
+          <div className="h-16 w-full rounded bg-muted" />
+        </div>
+        <div className="grid gap-10 lg:grid-cols-[1.1fr_1fr]">
+          <div className="h-72 animate-pulse rounded-xl bg-muted" />
+          <div className="flex flex-col gap-8">
+            <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+              {Array.from({ length: 6 }, (_, i) => `flavor-${i}`).map((key) => (
+                <div key={key} className="h-24 animate-pulse rounded-xl bg-muted" />
+              ))}
+            </div>
+            <div className="h-40 animate-pulse rounded-xl bg-muted" />
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
