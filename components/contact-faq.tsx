@@ -20,9 +20,8 @@ import { toast } from "sonner";
 import * as z from "zod";
 import { useLanguageStore } from "@/hooks/use-language";
 import { cellEntrance } from "@/lib/animations";
-import type { Localized, SiteSettings } from "@/lib/cms";
-import type { FAQItem } from "@/lib/faq";
 import { translations } from "@/lib/translations";
+import type { FAQItem, Localized, SiteSettings } from "@/lib/types";
 
 const TURNSTILE_SITE_KEY = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
 

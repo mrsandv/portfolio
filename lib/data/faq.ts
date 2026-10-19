@@ -1,5 +1,4 @@
-import type { Localized } from "../cms";
-import type { FAQItem } from "../faq";
+import type { FAQItem, Localized } from "../types";
 
 const FAQ_ES: FAQItem[] = [
   {

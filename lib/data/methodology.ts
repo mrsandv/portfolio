@@ -1,4 +1,4 @@
-import type { Localized, MethodologyStep } from "../cms";
+import type { Localized, MethodologyStep } from "../types";
 
 const METHODOLOGY_ES: MethodologyStep[] = [
   {

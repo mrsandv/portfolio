@@ -1,8 +1,8 @@
 import { cache } from "react";
 import { createHighlighter, type Highlighter, type ThemeRegistration } from "shiki";
-import type { Localized } from "@/lib/cms";
 import { FLAVORS } from "@/lib/flavors";
 import { PROJECTS, type Project } from "@/lib/projects";
+import type { Localized } from "@/lib/types";
 import backgroundRadiation from "@/themes/spacehole-background-radiation-color-theme.json";
 import deepVoid from "@/themes/spacehole-deep-void-color-theme.json";
 import eventHorizon from "@/themes/spacehole-event-horizon-color-theme.json";

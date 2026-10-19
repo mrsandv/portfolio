@@ -1,5 +1,5 @@
-import type { SocialLink } from "@/lib/cms";
-import { fetchSettings } from "@/lib/cms-server";
+import { fetchSettings } from "@/lib/content";
+import type { SocialLink } from "@/lib/types";
 
 const FALLBACK_SOCIALS: SocialLink[] = [
   { platform: "linkedin", url: "https://www.linkedin.com/in/mrsan" },

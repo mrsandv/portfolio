@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { Resend } from "resend";
-import { fetchSettings } from "@/lib/cms-server";
+import { fetchSettings } from "@/lib/content";
 import { logError } from "@/lib/log";
 
 const TURNSTILE_VERIFY_URL = "https://challenges.cloudflare.com/turnstile/v0/siteverify";

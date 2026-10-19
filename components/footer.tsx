@@ -2,10 +2,10 @@
 
 import { ArrowUp } from "lucide-react";
 import { useLanguageStore } from "@/hooks/use-language";
-import type { Localized, SiteSettings } from "@/lib/cms";
 import { SITE_NAME } from "@/lib/constants";
 import { SOCIAL_META } from "@/lib/social-links";
 import { translations } from "@/lib/translations";
+import type { Localized, SiteSettings } from "@/lib/types";
 
 export function Footer({
   socialLinks = {},

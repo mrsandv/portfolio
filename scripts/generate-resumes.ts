@@ -58,7 +58,10 @@ async function main() {
   await new Promise((r) => setTimeout(r, 1200));
 
   try {
-    const resumeDir = "/Users/mrsan/developer/resume";
+    const resumeDir = process.argv[2] ?? process.env.RESUME_DIR;
+    if (!resumeDir || !fs.existsSync(resumeDir)) {
+      throw new Error("Pass the resume source dir as an argument or set RESUME_DIR");
+    }
     const publicDir = path.resolve("./public");
 
     await compilePDF(path.join(resumeDir, "resume_es.html"), [
