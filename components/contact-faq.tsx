@@ -19,6 +19,7 @@ import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import * as z from "zod";
 import { useLanguageStore } from "@/hooks/use-language";
+import { track } from "@/lib/analytics";
 import { cellEntrance } from "@/lib/animations";
 import { translations } from "@/lib/translations";
 import type { FAQItem, Localized, SiteSettings } from "@/lib/types";
@@ -85,6 +86,7 @@ export function ContactFAQ({
       if (!response.ok) throw new Error("Failed to send message");
 
       setIsSuccess(true);
+      track("contact-sent");
       toast.success(t.toasts.success);
       reset();
       setTurnstileToken(null);

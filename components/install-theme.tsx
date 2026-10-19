@@ -121,6 +121,8 @@ export function InstallTheme({ codeHtml }: { codeHtml: string }) {
                       <button
                         type="button"
                         onClick={() => copy(target.id, command)}
+                        data-umami-event="spacehole-install"
+                        data-umami-event-target={target.id}
                         className="group flex w-full items-center gap-3 rounded-lg border border-border px-3 py-2.5 text-left transition-colors hover:border-muted-foreground"
                         aria-label={`${isCopied ? t.copied : t.copy}: ${command}`}
                       >
@@ -142,6 +144,7 @@ export function InstallTheme({ codeHtml }: { codeHtml: string }) {
 
             <a
               href={REPO}
+              data-umami-event="spacehole-repo"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 self-start rounded-lg bg-primary px-4 py-2.5 font-medium text-primary-foreground text-sm transition-opacity hover:opacity-90"

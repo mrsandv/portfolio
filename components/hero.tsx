@@ -58,6 +58,7 @@ export function Hero({ settings }: { settings: Localized<SiteSettings | null> })
           {profileLink ? (
             <a
               href={profileLink}
+              data-umami-event="hero-profile"
               target="_blank"
               rel="noopener noreferrer"
               className="block h-full w-full"
@@ -115,6 +116,8 @@ export function Hero({ settings }: { settings: Localized<SiteSettings | null> })
 
         <motion.a
           href={resume.url}
+          data-umami-event="cv-download"
+          data-umami-event-lang={language}
           target="_blank"
           rel="noopener noreferrer"
           {...cellEntrance(0.2)}

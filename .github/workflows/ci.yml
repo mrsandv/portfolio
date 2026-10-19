@@ -30,3 +30,15 @@ jobs:
       - run: pnpm lint
       - run: pnpm typecheck
       - run: pnpm build
+
+  # main solo recibe PRs desde develop: feature/* → develop → main.
+  source-branch:
+    name: source-branch
+    if: github.event_name == 'pull_request' && github.base_ref == 'main'
+    runs-on: ubuntu-latest
+    steps:
+      - name: PR hacia main debe venir de develop
+        if: github.head_ref != 'develop'
+        run: |
+          echo "::error::Los PRs a main deben salir de develop (llegó desde '${{ github.head_ref }}')."
+          exit 1

@@ -1,5 +1,3 @@
-import { Analytics } from "@vercel/analytics/next";
-import { SpeedInsights } from "@vercel/speed-insights/next";
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import Script from "next/script";
@@ -140,16 +138,16 @@ export default async function RootLayout({
           strategy="afterInteractive"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }}
         />
+        {/* Se sirve desde /stats (rewrite en next.config.mjs) para que los bloqueadores no lo filtren por dominio. */}
         {process.env.NEXT_PUBLIC_UMAMI_WEBSITE_ID && (
           <Script
-            async
-            src={process.env.NEXT_PUBLIC_UMAMI_SRC || "https://cloud.umami.is/script.js"}
+            src="/stats/script.js"
+            data-host-url="/stats"
             data-website-id={process.env.NEXT_PUBLIC_UMAMI_WEBSITE_ID}
+            data-domains={SITE_URL ? new URL(SITE_URL).hostname : undefined}
             strategy="afterInteractive"
           />
         )}
-        <SpeedInsights />
-        <Analytics />
       </body>
     </html>
   );

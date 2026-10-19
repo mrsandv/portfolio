@@ -4,6 +4,7 @@ import { Check } from "lucide-react";
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 import { useLanguageStore } from "@/hooks/use-language";
+import { track } from "@/lib/analytics";
 import { FLAVORS_BY_PREFERENCE, type FlavorSlug } from "@/lib/flavors";
 import { translations } from "@/lib/translations";
 
@@ -25,6 +26,12 @@ export function ThemeSelector({ variant = "grid" }: { variant?: "grid" | "compac
 
   const active = mounted ? (theme as FlavorSlug) : undefined;
 
+  const select = (slug: FlavorSlug) => {
+    if (slug === active) return;
+    setTheme(slug);
+    track("theme-change", { flavor: slug, location: variant });
+  };
+
   if (variant === "compact") {
     return (
       <fieldset className="flex items-center gap-1 border-0 p-0" aria-label={t.label}>
@@ -34,7 +41,7 @@ export function ThemeSelector({ variant = "grid" }: { variant?: "grid" | "compac
             <button
               key={flavor.slug}
               type="button"
-              onClick={() => setTheme(flavor.slug)}
+              onClick={() => select(flavor.slug)}
               aria-label={flavor.name}
               aria-pressed={isActive}
               title={flavor.name}
@@ -61,7 +68,7 @@ export function ThemeSelector({ variant = "grid" }: { variant?: "grid" | "compac
           <button
             key={flavor.slug}
             type="button"
-            onClick={() => setTheme(flavor.slug)}
+            onClick={() => select(flavor.slug)}
             aria-pressed={isActive}
             className={`group relative flex flex-col gap-3 rounded-xl border p-4 text-left transition-all ${
               isActive
