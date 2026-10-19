@@ -61,6 +61,8 @@ See `.env.example`. None are required to build; without `RESEND_API_KEY` / `TURN
 | `NEXT_PUBLIC_UMAMI_WEBSITE_ID` | Umami; without it the script isn't loaded |
 | `UMAMI_HOST` | Optional: self-hosted Umami instead of Umami Cloud |
 
+Changing a variable in Vercel only applies to the **next build from git**. `vercel redeploy` rebuilds with the variables saved in the original deployment, so it does not pick up new values. After changing a variable, release a commit through the normal flow (or push an empty commit).
+
 ## Metrics
 
 Umami Cloud records visits and events without cookies. The script and the data it sends go through `/stats` (rewrites in `next.config.mjs`), so blockers that filter by domain don't drop it. `data-domains` limits tracking to the `NEXT_PUBLIC_SITE_URL` domain, so Vercel Preview deploys don't pollute the data.
