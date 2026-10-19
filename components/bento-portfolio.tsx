@@ -1,9 +1,10 @@
 "use client";
 
-import { ExternalLink, Filter, Github, Globe, Layers, Lock, Terminal } from "lucide-react";
+import { ExternalLink, Filter, Globe, Layers, Lock, Terminal } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import Image from "next/image";
 import { useState } from "react";
+import { FaGithub } from "react-icons/fa6";
 import { Badge } from "@/components/ui/badge";
 import { useLanguageStore } from "@/hooks/use-language";
 import { cellEntrance } from "@/lib/animations";
@@ -391,7 +392,7 @@ function ProjectActions({
           rel="noopener noreferrer"
           className="flex items-center gap-1.5 text-sm font-bold text-muted-foreground transition-colors hover:text-foreground"
         >
-          <Github className="h-4 w-4" />
+          <FaGithub className="h-4 w-4" />
           <span>{t.labels.viewRepo}</span>
         </a>
       </div>

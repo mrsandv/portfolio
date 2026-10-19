@@ -1,14 +1,16 @@
-import { Github, Instagram, Linkedin, type LucideIcon, Send } from "lucide-react";
+import { Send } from "lucide-react";
+import type { ComponentType } from "react";
+import { FaGithub, FaInstagram, FaLinkedin } from "react-icons/fa6";
 
 export type SocialMeta = {
   label: string;
-  icon: LucideIcon;
+  icon: ComponentType<{ className?: string }>;
   color: string;
 };
 
 export const SOCIAL_META: Record<string, SocialMeta> = {
-  linkedin: { label: "LinkedIn", icon: Linkedin, color: "hover:text-blue-500" },
-  github: { label: "GitHub", icon: Github, color: "hover:text-foreground" },
-  instagram: { label: "Instagram", icon: Instagram, color: "hover:text-pink-500" },
+  linkedin: { label: "LinkedIn", icon: FaLinkedin, color: "hover:text-blue-500" },
+  github: { label: "GitHub", icon: FaGithub, color: "hover:text-foreground" },
+  instagram: { label: "Instagram", icon: FaInstagram, color: "hover:text-pink-500" },
   telegram: { label: "Telegram", icon: Send, color: "hover:text-sky-500" },
 };
