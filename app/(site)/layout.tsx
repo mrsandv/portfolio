@@ -7,8 +7,9 @@ import type { ReactNode } from "react";
 import { LanguageProvider } from "@/components/language-provider";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "@/components/toaster";
-import { fetchSettings } from "@/lib/cms-server";
 import { SITE_NAME } from "@/lib/constants";
+import { fetchSettings } from "@/lib/content";
+import { DEFAULT_FLAVOR, FLAVOR_SLUGS, THEME_STORAGE_KEY } from "@/lib/flavors";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -85,10 +86,8 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export const viewport: Viewport = {
-  themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#DCD7C9" },
-    { media: "(prefers-color-scheme: dark)", color: "#0a0a0a" },
-  ],
+  // Debe coincidir con el fondo de DEFAULT_FLAVOR (Background Radiation).
+  themeColor: "#14101A",
   width: "device-width",
   initialScale: 1,
 };
@@ -122,8 +121,10 @@ export default async function RootLayout({
     >
       <body className="font-sans">
         <ThemeProvider
-          attribute="class"
-          defaultTheme="light"
+          attribute="data-theme"
+          storageKey={THEME_STORAGE_KEY}
+          themes={FLAVOR_SLUGS}
+          defaultTheme={DEFAULT_FLAVOR}
           enableSystem={false}
           disableTransitionOnChange
         >

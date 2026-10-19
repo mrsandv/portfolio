@@ -1,6 +1,5 @@
 import { ContactFAQ } from "@/components/contact-faq";
-import { fetchSettings } from "@/lib/cms-server";
-import { fetchFAQ } from "@/lib/faq";
+import { fetchFAQ, fetchSettings } from "@/lib/content";
 
 export async function ContactFAQSection() {
   const [faqs_es, faqs_en, es, en] = await Promise.all([

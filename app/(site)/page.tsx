@@ -4,6 +4,7 @@ import { ContactFAQSection } from "./_sections/contact-faq-section";
 import { FinalCTASection } from "./_sections/final-cta-section";
 import { FooterSection } from "./_sections/footer-section";
 import { HeroSection } from "./_sections/hero-section";
+import { InstallThemeSection } from "./_sections/install-theme-section";
 import { NavbarSection } from "./_sections/navbar-section";
 import {
   BentoSkeleton,
@@ -11,6 +12,7 @@ import {
   FinalCTASkeleton,
   FooterSkeleton,
   HeroSkeleton,
+  InstallThemeSkeleton,
   NavbarSkeleton,
   StackProcessSkeleton,
 } from "./_sections/skeletons";
@@ -30,6 +32,9 @@ export default function Home() {
       </Suspense>
       <Suspense fallback={<StackProcessSkeleton />}>
         <StackProcessSection />
+      </Suspense>
+      <Suspense fallback={<InstallThemeSkeleton />}>
+        <InstallThemeSection />
       </Suspense>
       <Suspense fallback={<FinalCTASkeleton />}>
         <FinalCTASection />

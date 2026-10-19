@@ -1,4 +1,5 @@
 import { PROJECTS_DATA } from "./data/projects";
+import type { Localized } from "./types";
 
 export type ProjectKind = "snippet" | "client" | "open";
 
@@ -36,4 +37,4 @@ export type OpenProject = ProjectBase & {
 
 export type Project = SnippetProject | ClientProject | OpenProject;
 
-export const PROJECTS: Project[] = PROJECTS_DATA;
+export const PROJECTS: Localized<Project[]> = PROJECTS_DATA;

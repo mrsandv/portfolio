@@ -107,6 +107,23 @@ export const translations = {
       backToTop: "Volver arriba",
       rightsReserved: "Todos los derechos reservados",
     },
+    themes: {
+      label: "Elegir flavor",
+      dark: "Oscuro",
+      light: "Claro",
+      eyebrow: "El theme que estás viendo",
+      title: "¿Te gusta cómo se ve?",
+      description:
+        "Todo el sitio corre sobre Spacehole, una familia de themes que hice en seis flavors. Cámbialo aquí y mira cómo responde — el bloque de código y la página entera usan los mismos colores que tendrías en tu editor.",
+      pickerTitle: "Pruébalos",
+      installTitle: "Instálalo",
+      installNote:
+        "Cuatro oscuros y dos claros. Todos pasan contraste WCAG AA, verificado en cada commit.",
+      copied: "Copiado",
+      copy: "Copiar",
+      viewSource: "Ver el código",
+      currently: "Ahora mismo:",
+    },
     common: {
       live: "Vivo",
       source: "Código",
@@ -218,6 +235,23 @@ export const translations = {
       builtWith: "Built with Next.js, React, Tailwind, and Framer Motion.",
       backToTop: "Back to top",
       rightsReserved: "All rights reserved",
+    },
+    themes: {
+      label: "Pick a flavor",
+      dark: "Dark",
+      light: "Light",
+      eyebrow: "The theme you're looking at",
+      title: "Like how this looks?",
+      description:
+        "This whole site runs on Spacehole, a theme family I built in six flavors. Switch it here and watch it respond — the code block and the entire page use the same colors you'd get in your editor.",
+      pickerTitle: "Try them",
+      installTitle: "Take it with you",
+      installNote:
+        "Four dark, two light. All of them pass WCAG AA contrast, verified on every commit.",
+      copied: "Copied",
+      copy: "Copy",
+      viewSource: "View source",
+      currently: "Currently:",
     },
     common: {
       live: "Live",

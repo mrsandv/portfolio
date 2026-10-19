@@ -4,9 +4,9 @@ import { Terminal, Zap } from "lucide-react";
 import { motion } from "motion/react";
 import { useLanguageStore } from "@/hooks/use-language";
 import { cellEntrance } from "@/lib/animations";
-import type { Localized, MethodologyStep, SiteSettings } from "@/lib/cms";
 import { resolveStackIcon, type StackItem } from "@/lib/stack";
 import { translations } from "@/lib/translations";
+import type { Localized, MethodologyStep, SiteSettings } from "@/lib/types";
 
 function Stack({ items, title }: { items: StackItem[]; title?: string }) {
   const language = useLanguageStore((s) => s.language);
