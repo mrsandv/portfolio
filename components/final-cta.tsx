@@ -42,6 +42,9 @@ export function FinalCTA({
               <a
                 key={social.label}
                 href={social.href}
+                data-umami-event="social-click"
+                data-umami-event-platform={social.label}
+                data-umami-event-location="final-cta"
                 target="_blank"
                 rel="noopener noreferrer"
                 className={`group flex items-center gap-3 rounded-2xl border border-border bg-card px-8 py-4 text-lg font-bold shadow-sm transition-all hover:border-primary/40 ${social.color}`}

@@ -21,13 +21,13 @@ const SUPPORTED_LANGS = [
 ] as const;
 
 /**
- * Los themes salen del mismo JSON que se publica en el Marketplace, así que
- * el código del sitio se ve exactamente como se verá en el editor de quien
- * lo instale. Una sola fuente de verdad.
+ * The themes come from the same JSON that ships to the Marketplace, so the
+ * code on the site looks exactly like it will in the editor of whoever
+ * installs it. A single source of truth.
  *
- * Se importan de forma estática y no con `import()` interpolado: un import
- * dinámico con variable obliga al bundler a incluir el directorio entero y
- * falla en Turbopack.
+ * They're imported statically, not with an interpolated `import()`: a dynamic
+ * import with a variable forces the bundler to include the whole directory
+ * and fails in Turbopack.
  */
 const THEMES = [
   hawking,
@@ -50,7 +50,7 @@ function getHighlighter() {
   return highlighterPromise;
 }
 
-/** Mapa slug → nombre del theme, que es como shiki nombra las variables. */
+/** Map of slug → theme name, which is how shiki names the variables. */
 function themeMap() {
   return Object.fromEntries(FLAVORS.map((f) => [f.slug, `Spacehole ${f.name}`]));
 }
@@ -61,9 +61,9 @@ export async function highlight(code: string, lang: string): Promise<string> {
     ? lang
     : "bash";
 
-  // `defaultColor: false` emite una variable CSS por flavor en vez de un
-  // color fijo; spacehole.css activa la del flavor vigente. Cambiar de theme
-  // en el cliente no vuelve a resaltar nada.
+  // `defaultColor: false` emits one CSS variable per flavor instead of a
+  // fixed color; spacehole.css enables the active flavor's. Switching themes
+  // on the client doesn't re-highlight anything.
   return highlighter.codeToHtml(code, {
     lang: normalizedLang,
     themes: themeMap(),
@@ -78,7 +78,7 @@ export type HighlightedProject =
   | Extract<Project, { kind: "client" }>;
 
 export const getHighlightedProjects = cache(async (): Promise<Localized<HighlightedProject[]>> => {
-  // Cada idioma tiene su propio texto, así que se resalta por separado.
+  // Each language has its own text, so each one is highlighted separately.
   const entries = await Promise.all(
     (["es", "en"] as const).map(async (locale) => {
       const list = PROJECTS[locale] ?? [];

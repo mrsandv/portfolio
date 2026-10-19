@@ -118,6 +118,9 @@ export function Navbar({
                   <a
                     key={platform}
                     href={url}
+                    data-umami-event="social-click"
+                    data-umami-event-platform={platform}
+                    data-umami-event-location="navbar"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="rounded-full p-2 text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
@@ -179,6 +182,9 @@ export function Navbar({
                     <a
                       key={platform}
                       href={url}
+                      data-umami-event="social-click"
+                      data-umami-event-platform={platform}
+                      data-umami-event-location="navbar-mobile"
                       className="text-muted-foreground"
                       target="_blank"
                       rel="noopener noreferrer"

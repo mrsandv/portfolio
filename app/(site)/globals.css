@@ -2,11 +2,11 @@
 @import "tw-animate-css";
 @import "./spacehole.css";
 
-/* La paleta y el @custom-variant dark los define spacehole.css,
-   generado desde el repo del theme. No duplicar colores aquí. */
+/* The palette and the dark @custom-variant come from spacehole.css,
+   generated from the theme repo. Don't duplicate colors here. */
 
 :root {
-    /* Geometría, no color: esto no pertenece a los tokens del theme. */
+    /* Geometry, not color: this doesn't belong in the theme tokens. */
     --radius: 1rem;
 }
 

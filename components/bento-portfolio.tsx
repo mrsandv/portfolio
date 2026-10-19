@@ -334,6 +334,9 @@ function ProjectActions({
     return (
       <a
         href={project.liveUrl}
+        data-umami-event="project-click"
+        data-umami-event-project={project.id}
+        data-umami-event-target="live"
         target="_blank"
         rel="noopener noreferrer"
         className="flex items-center gap-1.5 text-sm font-bold text-accent transition-colors hover:text-accent/80"
@@ -352,6 +355,9 @@ function ProjectActions({
         {project.demoUrl && (
           <a
             href={project.demoUrl}
+            data-umami-event="project-click"
+            data-umami-event-project={project.id}
+            data-umami-event-target="demo"
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center gap-1.5 text-sm font-bold text-accent transition-colors hover:text-accent/80"
@@ -365,6 +371,9 @@ function ProjectActions({
           <button
             type="button"
             onClick={onToggleCli}
+            data-umami-event="project-click"
+            data-umami-event-project={project.id}
+            data-umami-event-target="install"
             className={`flex cursor-pointer items-center gap-1.5 text-sm font-bold transition-colors ${
               showCli ? "text-foreground" : "text-accent hover:text-accent/80"
             }`}
@@ -375,6 +384,9 @@ function ProjectActions({
         )}
         <a
           href={project.repoUrl}
+          data-umami-event="project-click"
+          data-umami-event-project={project.id}
+          data-umami-event-target="repo"
           target="_blank"
           rel="noopener noreferrer"
           className="flex items-center gap-1.5 text-sm font-bold text-muted-foreground transition-colors hover:text-foreground"
