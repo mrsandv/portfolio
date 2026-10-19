@@ -41,3 +41,9 @@ export type MethodologyStep = {
   description: string;
   order: number;
 };
+
+export type FAQItem = {
+  question: string;
+  answer: string;
+  order?: number;
+};

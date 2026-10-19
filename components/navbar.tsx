@@ -6,9 +6,9 @@ import { useEffect, useState } from "react";
 import { LanguageToggle } from "@/components/language-toggle";
 import { ThemeSelector } from "@/components/theme-selector";
 import { useLanguageStore } from "@/hooks/use-language";
-import type { Localized, SiteSettings } from "@/lib/cms";
 import { SOCIAL_META } from "@/lib/social-links";
 import { translations } from "@/lib/translations";
+import type { Localized, SiteSettings } from "@/lib/types";
 
 export function Navbar({
   staticLinks = {},

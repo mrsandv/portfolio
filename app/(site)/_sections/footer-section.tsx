@@ -1,5 +1,5 @@
 import { Footer } from "@/components/footer";
-import { fetchSettings } from "@/lib/cms-server";
+import { fetchSettings } from "@/lib/content";
 import { getSocials } from "./socials";
 
 export async function FooterSection() {

@@ -4,9 +4,9 @@ import { ArrowRight } from "lucide-react";
 import { motion } from "motion/react";
 import { useLanguageStore } from "@/hooks/use-language";
 import { cellEntrance } from "@/lib/animations";
-import type { Localized, SiteSettings, SocialLink } from "@/lib/cms";
 import { SOCIAL_META } from "@/lib/social-links";
 import { translations } from "@/lib/translations";
+import type { Localized, SiteSettings, SocialLink } from "@/lib/types";
 
 export function FinalCTA({
   settings,

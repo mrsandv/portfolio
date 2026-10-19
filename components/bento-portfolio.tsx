@@ -7,10 +7,10 @@ import { useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { useLanguageStore } from "@/hooks/use-language";
 import { cellEntrance } from "@/lib/animations";
-import type { Localized, SiteSettings } from "@/lib/cms";
 import type { HighlightedProject } from "@/lib/highlight";
 import type { ProjectKind } from "@/lib/projects";
 import { type Translations, translations } from "@/lib/translations";
+import type { Localized, SiteSettings } from "@/lib/types";
 
 const projectVariants = {
   initial: { opacity: 0, scale: 0.95 },

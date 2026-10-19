@@ -1,5 +1,5 @@
-import type { Localized } from "../cms";
 import type { Project } from "../projects";
+import type { Localized } from "../types";
 
 /** Comando de instalación que se muestra resaltado en la tarjeta. */
 const SPACEHOLE_CLI = `# VS Code · Cursor · VSCodium

@@ -7,8 +7,8 @@ import type { ReactNode } from "react";
 import { LanguageProvider } from "@/components/language-provider";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "@/components/toaster";
-import { fetchSettings } from "@/lib/cms-server";
 import { SITE_NAME } from "@/lib/constants";
+import { fetchSettings } from "@/lib/content";
 import { DEFAULT_FLAVOR, FLAVOR_SLUGS, THEME_STORAGE_KEY } from "@/lib/flavors";
 import "./globals.css";
 

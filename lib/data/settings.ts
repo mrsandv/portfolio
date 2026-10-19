@@ -1,4 +1,4 @@
-import type { Localized, SiteSettings } from "../cms";
+import type { Localized, SiteSettings } from "../types";
 
 const SETTINGS_ES: SiteSettings = {
   siteName: "Marco Sandoval",

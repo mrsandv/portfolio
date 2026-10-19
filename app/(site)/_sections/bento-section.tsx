@@ -1,5 +1,5 @@
 import { BentoPortfolio } from "@/components/bento-portfolio";
-import { fetchSettings } from "@/lib/cms-server";
+import { fetchSettings } from "@/lib/content";
 import { getHighlightedProjects } from "@/lib/highlight";
 
 export async function BentoSection() {

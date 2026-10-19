@@ -5,8 +5,8 @@ import { motion } from "motion/react";
 import { GlitchAvatar } from "@/components/glitch-avatar";
 import { useLanguageStore } from "@/hooks/use-language";
 import { cellEntrance } from "@/lib/animations";
-import type { Localized, SiteSettings } from "@/lib/cms";
 import { translations } from "@/lib/translations";
+import type { Localized, SiteSettings } from "@/lib/types";
 
 export function Hero({ settings }: { settings: Localized<SiteSettings | null> }) {
   const language = useLanguageStore((s) => s.language);

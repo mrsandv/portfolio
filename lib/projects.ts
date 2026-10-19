@@ -1,5 +1,5 @@
-import type { Localized } from "./cms";
 import { PROJECTS_DATA } from "./data/projects";
+import type { Localized } from "./types";
 
 export type ProjectKind = "snippet" | "client" | "open";
 
