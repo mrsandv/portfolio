@@ -1,9 +1,19 @@
 import { NextResponse } from "next/server";
 import { Resend } from "resend";
+import { z } from "zod";
 import { fetchSettings } from "@/lib/content";
 import { logError } from "@/lib/log";
 
 const TURNSTILE_VERIFY_URL = "https://challenges.cloudflare.com/turnstile/v0/siteverify";
+
+// Mirrors the form's client-side rules, plus upper bounds: the API can be
+// called directly, so the browser checks alone aren't enough.
+const contactSchema = z.object({
+  name: z.string().trim().min(2).max(100),
+  email: z.email().max(254),
+  message: z.string().trim().min(10).max(5000),
+  turnstileToken: z.string().min(1).max(2048),
+});
 
 async function verifyTurnstile(token: string, ip: string | null): Promise<boolean> {
   const turnstileSecret = process.env.TURNSTILE_SECRET_KEY;
@@ -34,15 +44,11 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Email service not configured" }, { status: 500 });
     }
 
-    const { name, email, message, turnstileToken } = await request.json();
-
-    if (!name || !email || !message) {
-      return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
+    const parsed = contactSchema.safeParse(await request.json().catch(() => null));
+    if (!parsed.success) {
+      return NextResponse.json({ error: "Invalid request" }, { status: 400 });
     }
-
-    if (!turnstileToken) {
-      return NextResponse.json({ error: "Verification required" }, { status: 400 });
-    }
+    const { name, email, message, turnstileToken } = parsed.data;
 
     const ip = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? null;
     const verified = await verifyTurnstile(turnstileToken, ip);
