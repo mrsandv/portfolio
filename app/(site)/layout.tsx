@@ -144,11 +144,22 @@ export default async function RootLayout({
             src="/stats/script.js"
             data-host-url="/stats"
             data-website-id={process.env.NEXT_PUBLIC_UMAMI_WEBSITE_ID}
-            data-domains={SITE_URL ? new URL(SITE_URL).hostname : undefined}
+            data-domains={umamiDomains(SITE_URL)}
             strategy="afterInteractive"
           />
         )}
       </body>
     </html>
   );
+}
+
+/**
+ * Hostnames Umami is allowed to track. It compares `location.hostname`
+ * exactly, so both the apex and the www variant are listed: the site URL can
+ * be one while visitors land on the other after a redirect.
+ */
+function umamiDomains(siteUrl: string | undefined) {
+  if (!siteUrl) return undefined;
+  const apex = new URL(siteUrl).hostname.replace(/^www\./, "");
+  return `${apex},www.${apex}`;
 }
