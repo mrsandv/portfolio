@@ -1,5 +1,3 @@
-import { Analytics } from "@vercel/analytics/next";
-import { SpeedInsights } from "@vercel/speed-insights/next";
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import Script from "next/script";
@@ -86,7 +84,7 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export const viewport: Viewport = {
-  // Debe coincidir con el fondo de DEFAULT_FLAVOR (Background Radiation).
+  // Must match the DEFAULT_FLAVOR background (Background Radiation).
   themeColor: "#14101A",
   width: "device-width",
   initialScale: 1,
@@ -140,16 +138,16 @@ export default async function RootLayout({
           strategy="afterInteractive"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }}
         />
+        {/* Served from /stats (rewrite in next.config.mjs) so blockers can't filter it by domain. */}
         {process.env.NEXT_PUBLIC_UMAMI_WEBSITE_ID && (
           <Script
-            async
-            src={process.env.NEXT_PUBLIC_UMAMI_SRC || "https://cloud.umami.is/script.js"}
+            src="/stats/script.js"
+            data-host-url="/stats"
             data-website-id={process.env.NEXT_PUBLIC_UMAMI_WEBSITE_ID}
+            data-domains={SITE_URL ? new URL(SITE_URL).hostname : undefined}
             strategy="afterInteractive"
           />
         )}
-        <SpeedInsights />
-        <Analytics />
       </body>
     </html>
   );

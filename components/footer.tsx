@@ -45,6 +45,9 @@ export function Footer({
                   <a
                     key={platform}
                     href={url}
+                    data-umami-event="social-click"
+                    data-umami-event-platform={platform}
+                    data-umami-event-location="footer"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex h-8 w-8 items-center justify-center rounded-full bg-secondary/50 text-muted-foreground hover:bg-secondary hover:text-foreground transition-all"

@@ -4,14 +4,15 @@ import { Check } from "lucide-react";
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 import { useLanguageStore } from "@/hooks/use-language";
+import { track } from "@/lib/analytics";
 import { FLAVORS_BY_PREFERENCE, type FlavorSlug } from "@/lib/flavors";
 import { translations } from "@/lib/translations";
 
 /**
- * Selector de flavor.
+ * Flavor picker.
  *
- * `variant="grid"` es la versión de la sección: tarjetas con nombre y modo.
- * `variant="compact"` es la del navbar: solo las muestras de color.
+ * `variant="grid"` is the section version: cards with name and appearance.
+ * `variant="compact"` is the navbar version: color swatches only.
  */
 export function ThemeSelector({ variant = "grid" }: { variant?: "grid" | "compact" }) {
   const { theme, setTheme } = useTheme();
@@ -19,11 +20,17 @@ export function ThemeSelector({ variant = "grid" }: { variant?: "grid" | "compac
   const language = useLanguageStore((s) => s.language);
   const t = translations[language].themes;
 
-  // El theme vive en localStorage: hasta que el cliente monta no sabemos
-  // cuál está activo, y pintar uno equivocado provoca un salto visible.
+  // The theme lives in localStorage: until the client mounts we don't know
+  // which one is active, and painting the wrong one causes a visible jump.
   useEffect(() => setMounted(true), []);
 
   const active = mounted ? (theme as FlavorSlug) : undefined;
+
+  const select = (slug: FlavorSlug) => {
+    if (slug === active) return;
+    setTheme(slug);
+    track("theme-change", { flavor: slug, location: variant });
+  };
 
   if (variant === "compact") {
     return (
@@ -34,7 +41,7 @@ export function ThemeSelector({ variant = "grid" }: { variant?: "grid" | "compac
             <button
               key={flavor.slug}
               type="button"
-              onClick={() => setTheme(flavor.slug)}
+              onClick={() => select(flavor.slug)}
               aria-label={flavor.name}
               aria-pressed={isActive}
               title={flavor.name}
@@ -61,7 +68,7 @@ export function ThemeSelector({ variant = "grid" }: { variant?: "grid" | "compac
           <button
             key={flavor.slug}
             type="button"
-            onClick={() => setTheme(flavor.slug)}
+            onClick={() => select(flavor.slug)}
             aria-pressed={isActive}
             className={`group relative flex flex-col gap-3 rounded-xl border p-4 text-left transition-all ${
               isActive

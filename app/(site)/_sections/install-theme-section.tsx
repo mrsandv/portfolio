@@ -2,13 +2,13 @@ import { InstallTheme } from "@/components/install-theme";
 import { highlight } from "@/lib/highlight";
 
 /**
- * El snippet es el propio highlighter del sitio: quien lo lee está viendo
- * el código que produce lo que está viendo.
+ * The snippet is the site's own highlighter: whoever reads it is looking at
+ * the code that renders what they're looking at.
  */
 const SNIPPET = `import { createHighlighter } from "shiki";
 import hawking from "@/themes/spacehole-hawking-color-theme.json";
 
-// El mismo JSON que se publica en el Marketplace.
+// The same JSON that ships to the Marketplace.
 const highlighter = await createHighlighter({
   themes: [hawking, eventHorizon, deepVoid],
   langs: ["typescript", "go", "rust"],
