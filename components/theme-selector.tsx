@@ -9,10 +9,10 @@ import { FLAVORS_BY_PREFERENCE, type FlavorSlug } from "@/lib/flavors";
 import { translations } from "@/lib/translations";
 
 /**
- * Selector de flavor.
+ * Flavor picker.
  *
- * `variant="grid"` es la versión de la sección: tarjetas con nombre y modo.
- * `variant="compact"` es la del navbar: solo las muestras de color.
+ * `variant="grid"` is the section version: cards with name and appearance.
+ * `variant="compact"` is the navbar version: color swatches only.
  */
 export function ThemeSelector({ variant = "grid" }: { variant?: "grid" | "compact" }) {
   const { theme, setTheme } = useTheme();
@@ -20,8 +20,8 @@ export function ThemeSelector({ variant = "grid" }: { variant?: "grid" | "compac
   const language = useLanguageStore((s) => s.language);
   const t = translations[language].themes;
 
-  // El theme vive en localStorage: hasta que el cliente monta no sabemos
-  // cuál está activo, y pintar uno equivocado provoca un salto visible.
+  // The theme lives in localStorage: until the client mounts we don't know
+  // which one is active, and painting the wrong one causes a visible jump.
   useEffect(() => setMounted(true), []);
 
   const active = mounted ? (theme as FlavorSlug) : undefined;

@@ -1,9 +1,9 @@
 /**
- * Eventos de Umami. Los clics en enlaces se registran con atributos
- * `data-umami-event` en el propio elemento; esto es para lo que no es un
- * clic simple (envío del formulario, cambio de theme).
+ * Umami events. Link clicks are tracked with `data-umami-event` attributes
+ * on the element itself; this is for anything that isn't a plain click
+ * (form submission, theme change).
  *
- * Si el script no cargó (bloqueado, sin website id, en desarrollo), no hace nada.
+ * If the script didn't load (blocked, no website id, in development), it's a no-op.
  */
 type EventData = Record<string, string | number>;
 

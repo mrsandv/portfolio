@@ -1,10 +1,10 @@
 /**
- * Catálogo de flavors de Spacehole.
+ * Spacehole flavor catalog.
  *
- * Los colores de aquí son solo para pintar el selector: los que mandan son
- * los de `spacehole.css`, generado desde palette/tokens.json en el repo del
- * theme. Si cambia un color allá, hay que regenerar el CSS y actualizar esta
- * lista — es la única duplicación consciente del sistema.
+ * These colors only paint the picker: the source of truth is `spacehole.css`,
+ * generated from palette/tokens.json in the theme repo. If a color changes
+ * there, regenerate the CSS and update this list — it's the only deliberate
+ * duplication in the system.
  */
 export type FlavorSlug =
   | "hawking"
@@ -18,7 +18,7 @@ export interface Flavor {
   slug: FlavorSlug;
   name: string;
   appearance: "dark" | "light";
-  /** Muestras para el selector: fondo, acento y segundo acento. */
+  /** Picker swatches: background, accent and second accent. */
   swatch: [string, string, string];
 }
 
@@ -63,33 +63,32 @@ export const FLAVORS: Flavor[] = [
 
 export const FLAVOR_SLUGS = FLAVORS.map((f) => f.slug);
 /**
- * Flavor con el que abre el sitio. Hawking es la cara de marca (Marketplace,
- * screenshots), pero para leer el portfolio entero gana Background Radiation:
- * el neón puro cansa en pantallas largas.
+ * Flavor the site opens with. Hawking is the brand face (Marketplace,
+ * screenshots), but Background Radiation is easier for reading the whole
+ * portfolio: pure neon gets tiring on long pages.
  *
- * Debe coincidir con `rootFlavor` en palette/tokens.json del repo del theme,
- * que es lo que se emite en :root como fallback.
+ * Must match `rootFlavor` in palette/tokens.json in the theme repo, which is
+ * what gets emitted on :root as the fallback.
  */
 export const DEFAULT_FLAVOR: FlavorSlug = "background-radiation";
 
 /**
- * Clave de localStorage donde se guarda el flavor elegido.
+ * localStorage key where the chosen flavor is stored.
  *
- * Deliberadamente distinta de la que usa next-themes por defecto ("theme"):
- * ese slot ya lo ocupaba el esquema viejo de light/dark, y un valor guardado
- * gana siempre sobre `defaultTheme`. Sin cambiarla, quien hubiera visitado el
- * sitio antes se quedaba anclado a un theme que ya no existe — y el nuevo
- * default no se veía nunca.
+ * Deliberately different from next-themes' default ("theme"): the old
+ * light/dark scheme already used that slot, and a stored value always wins
+ * over `defaultTheme`. Without changing it, returning visitors were stuck on
+ * a theme that no longer exists — and never saw the new default.
  */
 export const THEME_STORAGE_KEY = "spacehole-flavor";
 
 /**
- * Orden en que se muestran los flavors en el selector: el default primero.
+ * Order the flavors appear in the picker: the default first.
  *
- * `FLAVORS` conserva el orden canónico del theme (el `order` de tokens.json,
- * que refleja la jerarquía de marca). Este es solo el orden de presentación, y
- * se deriva del default en vez de escribirse a mano: si mañana cambia
- * DEFAULT_FLAVOR, la lista se reacomoda sola.
+ * `FLAVORS` keeps the theme's canonical order (the `order` in tokens.json,
+ * which reflects the brand hierarchy). This is only the display order, and
+ * it's derived from the default instead of written by hand: if DEFAULT_FLAVOR
+ * changes, the list rearranges itself.
  */
 export const FLAVORS_BY_PREFERENCE: Flavor[] = [
   ...FLAVORS.filter((f) => f.slug === DEFAULT_FLAVOR),

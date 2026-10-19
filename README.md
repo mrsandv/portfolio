@@ -1,94 +1,94 @@
 # Portfolio
 
-Sitio personal en Next.js 16 (App Router), bilingüe (es/en) y prerenderizado de forma estática. Desplegado en Vercel mediante la integración de GitHub.
+Personal site built with Next.js 16 (App Router), bilingual (es/en) and statically prerendered. Deployed on Vercel through the GitHub integration.
 
 ## Stack
 
-- **Next.js 16 + React 19**, Tailwind CSS 4, `motion` para animaciones.
-- **Contenido estático en TypeScript** (`lib/data/`). No hay CMS ni base de datos: Payload y MongoDB se retiraron en julio de 2026.
-- **Spacehole** como sistema de color: seis flavors (cuatro oscuros, dos claros) seleccionables en el sitio.
-- **Shiki** resalta los snippets una sola vez en el servidor con los seis themes a la vez.
-- **Formulario de contacto**: Cloudflare Turnstile + Resend en `app/(site)/api/contact` (única ruta dinámica).
-- **Analítica**: Umami (Cloud, plan gratuito), servido desde el propio dominio. Ver [Métricas](#métricas).
-- **Biome** para lint y formato.
+- **Next.js 16 + React 19**, Tailwind CSS 4, `motion` for animations.
+- **Static content in TypeScript** (`lib/data/`). No CMS or database: Payload and MongoDB were removed in July 2026.
+- **Spacehole** as the color system: six flavors (four dark, two light) selectable on the site.
+- **Shiki** highlights snippets once on the server, with all six themes at once.
+- **Contact form**: Cloudflare Turnstile + Resend at `app/(site)/api/contact` (the only dynamic route).
+- **Analytics**: Umami (Cloud, free plan), served from the site's own domain. See [Metrics](#metrics).
+- **Biome** for linting and formatting.
 
-## Desarrollo
+## Development
 
 ```bash
 pnpm install
-cp .env.example .env.local   # completar las variables necesarias
+cp .env.example .env.local   # fill in the variables you need
 pnpm dev
 ```
 
-| Script | Qué hace |
+| Script | What it does |
 | --- | --- |
-| `pnpm dev` | Servidor de desarrollo |
-| `pnpm lint` / `pnpm lint:fix` | Biome check (con o sin correcciones) |
+| `pnpm dev` | Development server |
+| `pnpm lint` / `pnpm lint:fix` | Biome check (without or with fixes) |
 | `pnpm typecheck` | `tsc --noEmit` |
-| `pnpm build` | Build de producción |
-| `pnpm validate` | `lint` + `typecheck` + `build`, lo mismo que corre CI |
-| `pnpm resumes <dir>` | Genera los PDFs del CV en `public/` desde los HTML de `<dir>` (o `RESUME_DIR`). Requiere Google Chrome. |
+| `pnpm build` | Production build |
+| `pnpm validate` | `lint` + `typecheck` + `build`, the same as CI |
+| `pnpm resumes <dir>` | Builds the resume PDFs in `public/` from the HTML files in `<dir>` (or `RESUME_DIR`). Requires Google Chrome. |
 
-## Contenido
+## Content
 
-Todo el contenido vive en `lib/data/` y se sirve a través de `lib/content.ts`:
+All content lives in `lib/data/` and is served through `lib/content.ts`:
 
-| Archivo | Contenido |
+| File | Content |
 | --- | --- |
-| `lib/data/settings.ts` | Textos del sitio, hero, SEO, redes, disponibilidad (es/en) |
-| `lib/data/projects.ts` | Proyectos y entradas del Lab (es/en) |
-| `lib/data/stack.ts` | Tecnologías |
-| `lib/data/faq.ts` | Preguntas frecuentes (es/en) |
-| `lib/data/methodology.ts` | Pasos de la metodología (es/en) |
+| `lib/data/settings.ts` | Site copy, hero, SEO, social links, availability (es/en) |
+| `lib/data/projects.ts` | Projects and Lab entries (es/en) |
+| `lib/data/stack.ts` | Technologies |
+| `lib/data/faq.ts` | FAQ (es/en) |
+| `lib/data/methodology.ts` | Methodology steps (es/en) |
 
-Los tipos compartidos están en `lib/types.ts`. Los textos fijos de la interfaz están en `lib/translations.ts`.
+Shared types are in `lib/types.ts`. Fixed UI strings are in `lib/translations.ts`.
 
 ## Themes (Spacehole)
 
-- `app/(site)/spacehole.css` se **genera** desde `palette/tokens.json` en el repo de Spacehole. No editar a mano.
-- `themes/*.json` son los mismos themes que se publican en el Marketplace de VS Code / Open VSX; Shiki los consume directamente.
-- `lib/flavors.ts` duplica las muestras de color solo para el selector. Si cambia la paleta, regenerar el CSS y actualizar esa lista.
+- `app/(site)/spacehole.css` is **generated** from `palette/tokens.json` in the Spacehole repo. Don't edit it by hand.
+- `themes/*.json` are the same themes published to the VS Code Marketplace / Open VSX; Shiki uses them directly.
+- `lib/flavors.ts` duplicates the color swatches for the picker only. If the palette changes, regenerate the CSS and update that list.
 
-## Variables de entorno
+## Environment variables
 
-Ver `.env.example`. Ninguna es necesaria para compilar; sin `RESEND_API_KEY` / `TURNSTILE_SECRET_KEY` el formulario de contacto responde con error.
+See `.env.example`. None are required to build; without `RESEND_API_KEY` / `TURNSTILE_SECRET_KEY` the contact form returns an error.
 
-| Variable | Uso |
+| Variable | Purpose |
 | --- | --- |
-| `NEXT_PUBLIC_SITE_URL` | URL canónica para metadata, sitemap y robots |
-| `RESEND_API_KEY`, `CONTACT_FROM_EMAIL` | Envío del formulario de contacto |
-| `NEXT_PUBLIC_TURNSTILE_SITE_KEY`, `TURNSTILE_SECRET_KEY` | Captcha del formulario |
-| `NEXT_PUBLIC_UMAMI_WEBSITE_ID` | Umami; sin esta variable no se carga el script |
-| `UMAMI_HOST` | Opcional: instancia propia de Umami en vez de Umami Cloud |
+| `NEXT_PUBLIC_SITE_URL` | Canonical URL for metadata, sitemap, robots and Umami's domain filter |
+| `RESEND_API_KEY`, `CONTACT_FROM_EMAIL` | Sending the contact form |
+| `NEXT_PUBLIC_TURNSTILE_SITE_KEY`, `TURNSTILE_SECRET_KEY` | Contact form captcha |
+| `NEXT_PUBLIC_UMAMI_WEBSITE_ID` | Umami; without it the script isn't loaded |
+| `UMAMI_HOST` | Optional: self-hosted Umami instead of Umami Cloud |
 
-## Métricas
+## Metrics
 
-Umami Cloud registra visitas y eventos sin cookies. El script y el envío pasan por `/stats` (rewrites en `next.config.mjs`), así los bloqueadores que filtran por dominio no lo descartan. `data-domains` limita el registro al dominio de `NEXT_PUBLIC_SITE_URL`, de modo que los Preview de Vercel no ensucian los datos.
+Umami Cloud records visits and events without cookies. The script and the data it sends go through `/stats` (rewrites in `next.config.mjs`), so blockers that filter by domain don't drop it. `data-domains` limits tracking to the `NEXT_PUBLIC_SITE_URL` domain, so Vercel Preview deploys don't pollute the data.
 
-**Eventos**
+**Events**
 
-| Evento | Datos | Dónde |
+| Event | Data | Where |
 | --- | --- | --- |
-| `cv-download` | `lang` | Botón de CV en el hero |
-| `hero-profile` | — | Foto del hero (enlace al perfil) |
-| `contact-sent` | — | Formulario enviado con éxito |
-| `project-click` | `project`, `target` (`live` / `demo` / `repo` / `install`) | Tarjetas del portfolio |
-| `spacehole-install` | `target` (`vscode`, `ghostty`, …) | Copiar comando de instalación |
-| `spacehole-repo` | — | Botón al repo de Spacehole |
-| `theme-change` | `flavor`, `location` (`grid` / `compact`) | Selector de flavors |
-| `social-click` | `platform`, `location` | Navbar, footer y CTA final |
+| `cv-download` | `lang` | Resume button in the hero |
+| `hero-profile` | — | Hero photo (profile link) |
+| `contact-sent` | — | Contact form sent successfully |
+| `project-click` | `project`, `target` (`live` / `demo` / `repo` / `install`) | Portfolio cards |
+| `spacehole-install` | `target` (`vscode`, `ghostty`, …) | Copying an install command |
+| `spacehole-repo` | — | Spacehole repo button |
+| `theme-change` | `flavor`, `location` (`grid` / `compact`) | Flavor picker |
+| `social-click` | `platform`, `location` | Navbar, footer and final CTA |
 
-Los enlaces usan atributos `data-umami-event-*`; lo demás pasa por `track()` en `lib/analytics.ts`.
+Links use `data-umami-event-*` attributes; everything else goes through `track()` in `lib/analytics.ts`.
 
-**Campañas (UTM)**: LinkedIn e Instagram abren los enlaces en su navegador interno y suelen perder el referrer, así que todo enlace compartido lleva UTM:
+**Campaigns (UTM)**: LinkedIn and Instagram open links in their in-app browsers and often drop the referrer, so every shared link gets UTM tags:
 
 ```
-?utm_source=linkedin&utm_medium=social&utm_campaign=<campaña>
-?utm_source=instagram&utm_medium=social&utm_campaign=<campaña>
-?utm_source=devto&utm_medium=article&utm_campaign=<slug-del-post>
+?utm_source=linkedin&utm_medium=social&utm_campaign=<campaign>
+?utm_source=instagram&utm_medium=social&utm_campaign=<campaign>
+?utm_source=devto&utm_medium=article&utm_campaign=<post-slug>
 ```
 
-## Flujo de ramas y despliegue
+## Branching and deployment
 
 ```
 feature/* ──PR (squash)──▶ develop ──PR (merge commit)──▶ main
@@ -96,13 +96,17 @@ feature/* ──PR (squash)──▶ develop ──PR (merge commit)──▶ ma
                         Vercel Preview               Vercel Production
 ```
 
-1. Crear una rama desde `develop` (`feat/…`, `fix/…`, `chore/…`).
-2. Abrir PR hacia `develop`. CI corre `validate` y Vercel genera un Preview del PR. Mergear con **squash**.
-3. Para publicar, abrir PR `develop` → `main`. Mergear con **merge commit** (no squash ni rebase), para que `develop` y `main` no diverjan.
-4. Las ramas de feature se borran solas al mergear el PR (*Automatically delete head branches*). Localmente: `git fetch --prune` y `git branch -d <rama>`.
+1. Create a branch from `develop` (`feat/…`, `fix/…`, `chore/…`).
+2. Open a PR into `develop`. CI runs `validate` and Vercel builds a Preview for the PR. Merge with **squash**.
+3. To release, open a PR from `develop` into `main`. Merge with a **merge commit** (not squash or rebase), so `develop` and `main` don't diverge.
+4. Feature branches are deleted automatically when the PR is merged (*Automatically delete head branches*). Locally: `git fetch --prune` and `git branch -d <branch>`.
 
-Cómo se hace cumplir:
+How it's enforced:
 
-- **CI** (`.github/workflows/ci.yml`): `validate` corre `lint`, `typecheck` y `build` en cada PR y push a `develop` y `main`. `source-branch` falla si un PR hacia `main` no sale de `develop`.
-- **Rulesets de GitHub**: `develop` y `main` no aceptan push directo, force-push ni borrado; todo entra por PR con `validate` en verde. `main` además exige `source-branch` y solo permite merge commit.
-- **Vercel**: *Settings → Deployment Checks* con `validate`, para que un deploy de producción no se promueva hasta que CI pase.
+- **CI** (`.github/workflows/ci.yml`): `validate` runs `lint`, `typecheck` and `build` on every PR and push to `develop` and `main`. `source-branch` fails if a PR into `main` doesn't come from `develop`.
+- **GitHub rulesets**: `develop` and `main` don't accept direct pushes, force pushes or deletion; everything goes through a PR with `validate` passing. `main` also requires `source-branch` and only allows merge commits.
+- **Vercel**: *Settings → Deployment Checks* with `validate`, so a production deploy isn't promoted until CI passes.
+
+## Conventions
+
+Everything in this repo is written in English: code, comments, docs, commits and PRs. The only exception is the localized `es` site content in `lib/data/` and `lib/translations.ts`.

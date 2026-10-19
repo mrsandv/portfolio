@@ -84,7 +84,7 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export const viewport: Viewport = {
-  // Debe coincidir con el fondo de DEFAULT_FLAVOR (Background Radiation).
+  // Must match the DEFAULT_FLAVOR background (Background Radiation).
   themeColor: "#14101A",
   width: "device-width",
   initialScale: 1,
@@ -138,7 +138,7 @@ export default async function RootLayout({
           strategy="afterInteractive"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }}
         />
-        {/* Se sirve desde /stats (rewrite en next.config.mjs) para que los bloqueadores no lo filtren por dominio. */}
+        {/* Served from /stats (rewrite in next.config.mjs) so blockers can't filter it by domain. */}
         {process.env.NEXT_PUBLIC_UMAMI_WEBSITE_ID && (
           <Script
             src="/stats/script.js"

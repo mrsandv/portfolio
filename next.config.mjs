@@ -1,4 +1,4 @@
-// Umami Cloud por defecto; UMAMI_HOST apunta a una instancia propia.
+// Umami Cloud by default; UMAMI_HOST points to a self-hosted instance.
 const UMAMI_SCRIPT = process.env.UMAMI_HOST
   ? `${process.env.UMAMI_HOST}/script.js`
   : "https://cloud.umami.is/script.js";
