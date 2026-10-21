@@ -67,7 +67,6 @@ async function main() {
     await compilePDF(path.join(resumeDir, "resume.html"), [
       path.join(resumeDir, "resume.pdf"),
       path.join(publicDir, "resume.pdf"),
-      path.join(publicDir, "cv.pdf"),
     ]);
   } finally {
     chrome.kill();

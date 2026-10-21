@@ -29,7 +29,7 @@ pnpm dev
 | `pnpm typecheck` | `tsc --noEmit` |
 | `pnpm build` | Production build |
 | `pnpm validate` | `lint` + `typecheck` + `build`, the same as CI |
-| `pnpm resumes <dir>` | Builds `public/resume.pdf` and `public/cv.pdf` from `resume.html` in `<dir>` (or `RESUME_DIR`). Requires Google Chrome. |
+| `pnpm resumes <dir>` | Builds `public/resume.pdf` from `resume.html` in `<dir>` (or `RESUME_DIR`). Requires Google Chrome. |
 
 ## Content
 
