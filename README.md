@@ -20,6 +20,8 @@ cp .env.example .env.local   # fill in the variables you need
 pnpm dev
 ```
 
+`pnpm install` also installs the git hooks ([Lefthook](https://lefthook.dev), `lefthook.yml`): Biome checks and fixes the staged files on commit, and `pnpm typecheck` runs on push.
+
 | Script | What it does |
 | --- | --- |
 | `pnpm dev` | Development server |
@@ -27,7 +29,7 @@ pnpm dev
 | `pnpm typecheck` | `tsc --noEmit` |
 | `pnpm build` | Production build |
 | `pnpm validate` | `lint` + `typecheck` + `build`, the same as CI |
-| `pnpm resumes <dir>` | Builds the resume PDFs in `public/` from the HTML files in `<dir>` (or `RESUME_DIR`). Requires Google Chrome. |
+| `pnpm resumes <dir>` | Builds `public/resume.pdf` and `public/cv.pdf` from `resume.html` in `<dir>` (or `RESUME_DIR`). Requires Google Chrome. |
 
 ## Content
 
@@ -42,6 +44,16 @@ All content lives in `lib/data/` and is served through `lib/content.ts`:
 | `lib/data/methodology.ts` | Methodology steps (es/en) |
 
 Shared types are in `lib/types.ts`. Fixed UI strings are in `lib/translations.ts`.
+
+## Languages
+
+Every page lives under a locale prefix, `/en` or `/es`, and is prerendered for both.
+
+- `app/[locale]/` holds the root layout and pages. `getLocale()` (`lib/request-locale.ts`) reads the locale in Server Components. Client components use `useLocale()` (`components/locale-provider.tsx`).
+- `proxy.ts` redirects any path without a prefix (such as `/`) to the visitor's locale: first the `NEXT_LOCALE` cookie set by the language toggle, then `Accept-Language`, then `en`.
+- `lib/i18n.ts` has the locale list, `localeHref()` and `alternates()`, which builds the canonical and hreflang metadata for a page. Use it for every new page.
+- `app/sitemap.ts` lists each page once per locale, with hreflang alternates.
+- `app/[locale]/opengraph-image.tsx` generates the link preview image for each locale.
 
 ## Themes (Spacehole)
 

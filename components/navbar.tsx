@@ -4,22 +4,17 @@ import { Menu, X } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import { useEffect, useState } from "react";
 import { LanguageToggle } from "@/components/language-toggle";
+import { useLocale } from "@/components/locale-provider";
 import { ThemeSelector } from "@/components/theme-selector";
-import { useLanguageStore } from "@/hooks/use-language";
+import { localeHref } from "@/lib/i18n";
 import { SOCIAL_META } from "@/lib/social-links";
 import { translations } from "@/lib/translations";
-import type { Localized, SiteSettings } from "@/lib/types";
 
-export function Navbar({
-  staticLinks = {},
-}: {
-  staticLinks?: Record<string, string>;
-  settings?: Localized<SiteSettings | null>;
-}) {
+export function Navbar({ staticLinks = {} }: { staticLinks?: Record<string, string> }) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState<string | null>(null);
-  const language = useLanguageStore((s) => s.language);
+  const language = useLocale();
   const t = translations[language].nav;
 
   useEffect(() => {
@@ -29,8 +24,8 @@ export function Navbar({
   }, []);
 
   const navLinks = [
-    { name: t.works, href: "#work", id: "work" },
-    { name: t.contact, href: "#contact", id: "contact" },
+    { name: t.works, href: localeHref(language, "#work"), id: "work" },
+    { name: t.contact, href: localeHref(language, "#contact"), id: "contact" },
   ];
 
   useEffect(() => {
@@ -90,7 +85,7 @@ export function Navbar({
               );
             })}
             <a
-              href="#contact"
+              href={localeHref(language, "#contact")}
               className="ml-1 rounded-full bg-primary px-4 py-2 text-xs font-bold text-primary-foreground transition-opacity hover:opacity-90"
             >
               {t.hire}
@@ -100,7 +95,7 @@ export function Navbar({
           {/* Left side mobile fallback */}
           <div className="flex items-center md:hidden">
             <a
-              href="#contact"
+              href={localeHref(language, "#contact")}
               className="rounded-full bg-primary px-4 py-1.5 text-xs font-bold text-primary-foreground"
             >
               {t.hire}

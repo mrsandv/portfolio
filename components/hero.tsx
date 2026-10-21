@@ -3,15 +3,15 @@
 import { ArrowRight, ExternalLink, FileText } from "lucide-react";
 import { motion } from "motion/react";
 import { GlitchAvatar } from "@/components/glitch-avatar";
-import { useLanguageStore } from "@/hooks/use-language";
+import { useLocale } from "@/components/locale-provider";
 import { cellEntrance } from "@/lib/animations";
 import { translations } from "@/lib/translations";
-import type { Localized, SiteSettings } from "@/lib/types";
+import type { SiteSettings } from "@/lib/types";
 
-export function Hero({ settings }: { settings: Localized<SiteSettings | null> }) {
-  const language = useLanguageStore((s) => s.language);
+export function Hero({ settings }: { settings: SiteSettings | null }) {
+  const language = useLocale();
   const t = translations[language].hero;
-  const current = settings[language];
+  const current = settings;
 
   const title = current?.heroTitle || t.title;
   const titleAccent = current?.heroTitleAccent || t.titleAccent;

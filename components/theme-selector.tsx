@@ -3,7 +3,7 @@
 import { Check } from "lucide-react";
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
-import { useLanguageStore } from "@/hooks/use-language";
+import { useLocale } from "@/components/locale-provider";
 import { track } from "@/lib/analytics";
 import { FLAVORS_BY_PREFERENCE, type FlavorSlug } from "@/lib/flavors";
 import { translations } from "@/lib/translations";
@@ -17,7 +17,7 @@ import { translations } from "@/lib/translations";
 export function ThemeSelector({ variant = "grid" }: { variant?: "grid" | "compact" }) {
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
-  const language = useLanguageStore((s) => s.language);
+  const language = useLocale();
   const t = translations[language].themes;
 
   // The theme lives in localStorage: until the client mounts we don't know

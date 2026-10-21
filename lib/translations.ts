@@ -6,6 +6,7 @@ export const translations = {
       works: "Lab",
       contact: "Contacto",
       hire: "Conectemos",
+      switchLanguage: "Ver en inglés",
     },
     hero: {
       title: "Diseño software ",
@@ -135,6 +136,7 @@ export const translations = {
       works: "Lab",
       contact: "Contact",
       hire: "Let's connect",
+      switchLanguage: "View in Spanish",
     },
     hero: {
       title: "I engineer software ",

@@ -2,14 +2,14 @@
 
 import { Terminal, Zap } from "lucide-react";
 import { motion } from "motion/react";
-import { useLanguageStore } from "@/hooks/use-language";
+import { useLocale } from "@/components/locale-provider";
 import { cellEntrance } from "@/lib/animations";
 import { resolveStackIcon, type StackItem } from "@/lib/stack";
 import { translations } from "@/lib/translations";
-import type { Localized, MethodologyStep, SiteSettings } from "@/lib/types";
+import type { MethodologyStep, SiteSettings } from "@/lib/types";
 
 function Stack({ items, title }: { items: StackItem[]; title?: string }) {
-  const language = useLanguageStore((s) => s.language);
+  const language = useLocale();
   const t = translations[language].stack;
   return (
     <div id="stack" className="space-y-6">
@@ -51,7 +51,7 @@ function Stack({ items, title }: { items: StackItem[]; title?: string }) {
 }
 
 function Process({ steps, title }: { steps: MethodologyStep[]; title?: string }) {
-  const language = useLanguageStore((s) => s.language);
+  const language = useLocale();
   const t = translations[language].process;
 
   const displaySteps =
@@ -103,16 +103,15 @@ export function StackProcess({
   settings,
 }: {
   stack?: StackItem[];
-  methodology: Localized<MethodologyStep[]>;
-  settings?: Localized<SiteSettings | null>;
+  methodology: MethodologyStep[];
+  settings?: SiteSettings | null;
 }) {
-  const language = useLanguageStore((s) => s.language);
-  const current = settings?.[language] ?? null;
+  const current = settings ?? null;
   return (
     <section className="px-6 py-12">
       <div className="mx-auto max-w-7xl space-y-12">
         <Stack items={stack} title={current?.stackTitle} />
-        <Process steps={methodology[language]} title={current?.processTitle} />
+        <Process steps={methodology} title={current?.processTitle} />
       </div>
     </section>
   );

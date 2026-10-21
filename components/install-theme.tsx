@@ -3,8 +3,8 @@
 import { Check, Copy, Download } from "lucide-react";
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
+import { useLocale } from "@/components/locale-provider";
 import { ThemeSelector } from "@/components/theme-selector";
-import { useLanguageStore } from "@/hooks/use-language";
 import { FLAVORS, type FlavorSlug } from "@/lib/flavors";
 import { translations } from "@/lib/translations";
 
@@ -48,7 +48,7 @@ export function InstallTheme({ codeHtml }: { codeHtml: string }) {
   const { theme } = useTheme();
   const [mounted, setMounted] = useState(false);
   const [copied, setCopied] = useState<string | null>(null);
-  const language = useLanguageStore((s) => s.language);
+  const language = useLocale();
   const t = translations[language].themes;
 
   useEffect(() => setMounted(true), []);

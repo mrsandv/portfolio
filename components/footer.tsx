@@ -1,22 +1,22 @@
 "use client";
 
 import { ArrowUp } from "lucide-react";
-import { useLanguageStore } from "@/hooks/use-language";
+import { useLocale } from "@/components/locale-provider";
 import { SITE_NAME } from "@/lib/constants";
 import { SOCIAL_META } from "@/lib/social-links";
 import { translations } from "@/lib/translations";
-import type { Localized, SiteSettings } from "@/lib/types";
+import type { SiteSettings } from "@/lib/types";
 
 export function Footer({
   socialLinks = {},
   settings,
 }: {
   socialLinks?: Record<string, string>;
-  settings?: Localized<SiteSettings | null>;
+  settings?: SiteSettings | null;
 }) {
-  const language = useLanguageStore((s) => s.language);
+  const language = useLocale();
   const t = translations[language].footer;
-  const current = settings?.[language] ?? null;
+  const current = settings ?? null;
   const siteName = current?.siteName || SITE_NAME;
 
   const scrollToTop = () => {

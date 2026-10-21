@@ -1,23 +1,34 @@
 "use client";
 
 import { Languages } from "lucide-react";
-import { useLanguageStore } from "@/hooks/use-language";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { useLocale } from "@/components/locale-provider";
+import { LOCALE_COOKIE, otherLocale } from "@/lib/i18n";
+import { translations } from "@/lib/translations";
 
+/** Links to the same page in the other locale and remembers the choice for proxy.ts. */
 export function LanguageToggle() {
-  const language = useLanguageStore((s) => s.language);
-  const toggleLanguage = useLanguageStore((s) => s.toggleLanguage);
+  const language = useLocale();
+  const pathname = usePathname();
+  const target = otherLocale(language);
+  const href = pathname.replace(/^\/(en|es)(?=\/|$)/, `/${target}`);
 
   return (
-    <button
-      type="button"
-      onClick={toggleLanguage}
+    <Link
+      href={href}
+      hrefLang={target}
+      onClick={() => {
+        // biome-ignore lint/suspicious/noDocumentCookie: a plain one-year preference cookie
+        document.cookie = `${LOCALE_COOKIE}=${target}; path=/; max-age=31536000; samesite=lax`;
+      }}
       className="flex h-9 cursor-pointer items-center gap-2 rounded-full bg-secondary px-3 text-foreground transition hover:bg-secondary/80"
-      aria-label="Toggle language"
+      aria-label={translations[language].nav.switchLanguage}
     >
       <Languages className="h-4 w-4" />
       <span className="font-mono text-[10px] font-bold uppercase tracking-wider">
         {language === "es" ? "ESP" : "ENG"}
       </span>
-    </button>
+    </Link>
   );
 }
