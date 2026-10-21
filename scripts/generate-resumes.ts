@@ -64,15 +64,10 @@ async function main() {
     }
     const publicDir = path.resolve("./public");
 
-    await compilePDF(path.join(resumeDir, "resume_es.html"), [
-      path.join(resumeDir, "resume_es.pdf"),
-      path.join(publicDir, "resume_es.pdf"),
-      path.join(publicDir, "cv.pdf"),
-    ]);
-
     await compilePDF(path.join(resumeDir, "resume.html"), [
       path.join(resumeDir, "resume.pdf"),
       path.join(publicDir, "resume.pdf"),
+      path.join(publicDir, "cv.pdf"),
     ]);
   } finally {
     chrome.kill();
