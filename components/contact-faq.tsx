@@ -18,11 +18,11 @@ import { useMemo, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import * as z from "zod";
-import { useLanguageStore } from "@/hooks/use-language";
+import { useLocale } from "@/components/locale-provider";
 import { track } from "@/lib/analytics";
 import { cellEntrance } from "@/lib/animations";
 import { translations } from "@/lib/translations";
-import type { FAQItem, Localized, SiteSettings } from "@/lib/types";
+import type { FAQItem, SiteSettings } from "@/lib/types";
 
 const TURNSTILE_SITE_KEY = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
 
@@ -39,16 +39,16 @@ export function ContactFAQ({
   faqs,
   settings,
 }: {
-  faqs: Localized<FAQItem[]>;
-  settings?: Localized<SiteSettings | null>;
+  faqs: FAQItem[];
+  settings?: SiteSettings | null;
 }) {
-  const language = useLanguageStore((s) => s.language);
+  const language = useLocale();
   const t = translations[language].contact;
   const tFaq = translations[language].faq;
   const { theme } = useTheme();
 
-  const current = settings?.[language] ?? null;
-  const currentFaqs = faqs[language] ?? [];
+  const current = settings ?? null;
+  const currentFaqs = faqs;
   const contactTitle = current?.contactTitle || t.title;
   const contactSubtitle = current?.contactSubtitle || t.subtitle;
   const faqTitle = current?.faqTitle || tFaq.title;

@@ -1,13 +1,14 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { notFound } from "next/navigation";
 import Script from "next/script";
-import type { ReactNode } from "react";
-import { LanguageProvider } from "@/components/language-provider";
+import { LocaleProvider } from "@/components/locale-provider";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "@/components/toaster";
 import { SITE_NAME } from "@/lib/constants";
 import { fetchSettings } from "@/lib/content";
 import { DEFAULT_FLAVOR, FLAVOR_SLUGS, THEME_STORAGE_KEY } from "@/lib/flavors";
+import { alternates, isLocale, LOCALES, otherLocale } from "@/lib/i18n";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -19,8 +20,18 @@ const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
 });
 
-export async function generateMetadata(): Promise<Metadata> {
-  const settings = await fetchSettings("en");
+export function generateStaticParams() {
+  return LOCALES.map((locale) => ({ locale }));
+}
+
+// Only /en and /es exist; anything else under the segment is a 404.
+export const dynamicParams = false;
+
+export async function generateMetadata({ params }: LayoutProps<"/[locale]">): Promise<Metadata> {
+  const { locale } = await params;
+  if (!isLocale(locale)) notFound();
+  const settings = await fetchSettings(locale);
+  const otherSettings = await fetchSettings(otherLocale(locale));
   const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL;
 
   const siteTitle = settings?.siteTitle || `${SITE_NAME} — Software Engineering`;
@@ -28,7 +39,6 @@ export async function generateMetadata(): Promise<Metadata> {
     settings?.siteDescription || "Software engineering with 7+ years shipping production code.";
   const siteName = settings?.siteName || SITE_NAME;
   const keywords = settings?.keywords?.map((k) => k.keyword) || ["software engineer", "full-stack"];
-  const ogImageUrl = typeof settings?.ogImage === "object" ? settings.ogImage.url : "/og-image.png";
   const ogLocale = settings?.ogLocale || "en_US";
 
   return {
@@ -43,34 +53,20 @@ export async function generateMetadata(): Promise<Metadata> {
     creator: siteName,
     publisher: siteName,
     applicationName: siteName,
-    alternates: {
-      canonical: "/",
-      languages: {
-        "en-US": "/",
-        "es-MX": "/",
-      },
-    },
+    alternates: alternates(locale),
     openGraph: {
       type: "website",
       locale: ogLocale,
-      url: SITE_URL,
+      alternateLocale: otherSettings?.ogLocale,
+      url: alternates(locale).canonical,
       siteName: siteName,
       title: siteTitle,
       description: siteDescription,
-      images: [
-        {
-          url: ogImageUrl,
-          width: 1200,
-          height: 630,
-          alt: siteTitle,
-        },
-      ],
     },
     twitter: {
       card: "summary_large_image",
       title: siteTitle,
       description: siteDescription,
-      images: [ogImageUrl],
     },
     robots: {
       index: true,
@@ -90,12 +86,10 @@ export const viewport: Viewport = {
   initialScale: 1,
 };
 
-export default async function RootLayout({
-  children,
-}: Readonly<{
-  children: ReactNode;
-}>) {
-  const settings = await fetchSettings("en");
+export default async function RootLayout({ children, params }: LayoutProps<"/[locale]">) {
+  const { locale } = await params;
+  if (!isLocale(locale)) notFound();
+  const settings = await fetchSettings(locale);
   const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL;
   const siteName = settings?.siteName || SITE_NAME;
   const siteDescription = settings?.siteDescription || "";
@@ -113,7 +107,7 @@ export default async function RootLayout({
 
   return (
     <html
-      lang="en"
+      lang={locale}
       suppressHydrationWarning
       className={`${geistSans.variable} ${geistMono.variable}`}
     >
@@ -126,17 +120,19 @@ export default async function RootLayout({
           enableSystem={false}
           disableTransitionOnChange
         >
-          <LanguageProvider>
+          <LocaleProvider locale={locale}>
             {children}
             <Toaster />
-          </LanguageProvider>
+          </LocaleProvider>
         </ThemeProvider>
 
-        <Script
-          id="ld-person"
+        <script
           type="application/ld+json"
-          strategy="afterInteractive"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }}
+          // Inline (not next/script) so crawlers find it in the initial HTML.
+          // `<` is escaped so the JSON can never close the script tag.
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(personJsonLd).replace(/</g, "\\u003c"),
+          }}
         />
         {/* Served from /stats (rewrite in next.config.mjs) so blockers can't filter it by domain. */}
         {process.env.NEXT_PUBLIC_UMAMI_WEBSITE_ID && (

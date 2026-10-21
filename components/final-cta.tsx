@@ -2,22 +2,22 @@
 
 import { ArrowRight } from "lucide-react";
 import { motion } from "motion/react";
-import { useLanguageStore } from "@/hooks/use-language";
+import { useLocale } from "@/components/locale-provider";
 import { cellEntrance } from "@/lib/animations";
 import { SOCIAL_META } from "@/lib/social-links";
 import { translations } from "@/lib/translations";
-import type { Localized, SiteSettings, SocialLink } from "@/lib/types";
+import type { SiteSettings, SocialLink } from "@/lib/types";
 
 export function FinalCTA({
   settings,
   socialLinks,
 }: {
-  settings: Localized<SiteSettings | null>;
+  settings: SiteSettings | null;
   socialLinks?: SocialLink[];
 }) {
-  const language = useLanguageStore((s) => s.language);
+  const language = useLocale();
   const t = translations[language].finalCta;
-  const current = settings[language];
+  const current = settings;
 
   const line1 = current?.finalCtaLine1 || t.headlineLine1;
   const line2 = current?.finalCtaLine2 || t.headlineLine2;

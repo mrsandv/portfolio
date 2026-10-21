@@ -5,13 +5,13 @@ import { AnimatePresence, motion } from "motion/react";
 import Image from "next/image";
 import { useState } from "react";
 import { FaGithub } from "react-icons/fa6";
+import { useLocale } from "@/components/locale-provider";
 import { Badge } from "@/components/ui/badge";
-import { useLanguageStore } from "@/hooks/use-language";
 import { cellEntrance } from "@/lib/animations";
 import type { HighlightedProject } from "@/lib/highlight";
 import type { ProjectKind } from "@/lib/projects";
 import { type Translations, translations } from "@/lib/translations";
-import type { Localized, SiteSettings } from "@/lib/types";
+import type { SiteSettings } from "@/lib/types";
 
 const projectVariants = {
   initial: { opacity: 0, scale: 0.95 },
@@ -26,23 +26,19 @@ export function BentoPortfolio({
   projects,
   settings,
 }: {
-  projects: HighlightedProject[] | Localized<HighlightedProject[]>;
-  settings?: Localized<SiteSettings | null>;
+  projects: HighlightedProject[];
+  settings?: SiteSettings | null;
 }) {
-  const language = useLanguageStore((s) => s.language);
+  const language = useLocale();
   const t = translations[language].portfolio;
   const common = translations[language].common;
   const [activeKind, setActiveKind] = useState<"all" | ProjectKind>("all");
 
-  const current = settings?.[language] ?? null;
+  const current = settings ?? null;
   const sectionTitle = current?.portfolioTitle || t.title;
   const sectionDescription = current?.portfolioDescription || t.description;
 
-  const projectList: HighlightedProject[] = Array.isArray(projects)
-    ? projects
-    : (projects?.[language] ?? []);
-
-  const filteredProjects = projectList.filter(
+  const filteredProjects = projects.filter(
     (p: HighlightedProject) => activeKind === "all" || p.kind === activeKind,
   );
 

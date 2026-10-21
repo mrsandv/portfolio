@@ -1,0 +1,15 @@
+# Git hooks. Installed by `pnpm install` (the `prepare` script).
+# CI still runs the full `pnpm validate`; these hooks only catch problems earlier.
+
+pre-commit:
+  commands:
+    biome:
+      glob: "*.{js,jsx,ts,tsx,json,jsonc}"
+      # Lint and format only the staged files, then re-stage what Biome fixed.
+      run: pnpm biome check --write --no-errors-on-unmatched --files-ignore-unknown=true {staged_files}
+      stage_fixed: true
+
+pre-push:
+  commands:
+    typecheck:
+      run: pnpm typecheck
